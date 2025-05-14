@@ -1,26 +1,46 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
+import { PackagePlus, Truck, FileText, ListOrdered, Search } from "lucide-react";
 
-export default function Sidebar() {
+type sideBarProps = {
+  isSidebarOpen: boolean;
+};
+
+export default function Sidebar({ isSidebarOpen }:sideBarProps) {
   const router = useRouter();
+  const pathname = usePathname();
+
+  const isInventory = pathname.startsWith("/inventory/search");
+  const isOrders = pathname.startsWith("/orders");
+
 
   const menuItems = [
-    { label: "入庫", path: "/inventory/receive" },
-    { label: "出庫", path: "/inventory/dispatch" },
-    { label: "発注登録", path: "/orders/new" },
-    { label: "納品登録", path: "/orders/receive" },
-    { label: "発注一覧", path: "/orders" },
+    { label: "入庫登録", path: "/inventory/receive", icon: <PackagePlus size={18} /> },
+    { label: "出庫登録", path: "/inventory/dispatch", icon: <Truck size={18} /> },
+    { label: "在庫一覧/検索", path: "/inventory/search" },
+    { label: "トランザクション", path: "/inventory/transactions", icon: <Search size={18} /> },
+    { label: "発注登録", path: "/orders/new", icon: <FileText size={18} /> },
+    { label: "納品登録", path: "/orders/receive", icon: <PackagePlus size={18} /> },
+    { label: "発注一覧/検索", path: "/orders", icon: <ListOrdered size={18} /> },
   ];
 
   return (
-    <aside className="w-48 bg-gray-200 h-screen p-4 hidden md:block">
+  <aside
+    className={`
+      fixed left-0 top-16 z-30
+      w-48 min-h-screen
+      bg-[linear-gradient(to_bottom,_#3D00B8,_#3070C3)]
+      text-white p-4
+      transform transition-transform duration-300 ease-in-out
+      ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+    `}>
       <div className="flex flex-col gap-2">
         {menuItems.map((item) => (
           <button
             key={item.path}
             onClick={() => router.push(item.path)}
-            className="bg-white text-gray-800 hover:bg-gray-100 rounded"
+            className="text-white" 
           >
             {item.label}
           </button>

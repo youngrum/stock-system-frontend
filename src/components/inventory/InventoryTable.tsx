@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { InventoryItem } from '@/types/InventoryItem'
 
 type InventoryTableProps = {
@@ -8,30 +9,53 @@ type InventoryTableProps = {
 
 export default function InventoryTable({ data }: InventoryTableProps) {
   return (
-    <div className="overflow-x-auto bg-white rounded shadow">
-      <table className="w-full text-sm text-left border-collapse">
-        <thead className="bg-gray-100 text-gray-700">
-          <tr>
-            <th className="px-4 py-2 border">ID</th>
-            <th className="px-4 py-2 border">品名</th>
-            <th className="px-4 py-2 border">型番</th>
-            <th className="px-4 py-2 border">カテゴリ</th>
-            <th className="px-4 py-2 border text-right">在庫数</th>
-            <th className="px-4 py-2 border">更新日</th>
-            <th className="px-4 py-2 border">履歴</th>
+    <div className="overflow-x-auto bg-white">
+      <table className="w-full text-sm text-center border-collapse">
+        <thead className="text-gray-700" style={{ color: '#101540' }} >
+          <tr className="font-semibold">
+            <th className="px-4 py-3">入庫</th>
+            <th className="px-4 py-3">出庫</th>
+            <th className="px-4 py-3">ID</th>
+            <th className="px-4 py-3">品名</th>
+            <th className="px-4 py-3">カテゴリ</th>
+            <th className="px-4 py-3">型番</th>
+            <th className="px-4 py-3">在庫数</th>
+            <th className="px-4 py-3">更新日</th>
+            <th className="px-4 py-3">履歴</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="text-gray-700">
           {data.map((item) => (
-            <tr key={item.itemCode} className="hover:bg-gray-50">
-              <td className="px-4 py-2 border">{item.itemCode}</td>
-              <td className="px-4 py-2 border">{item.itemName}</td>
-              <td className="px-4 py-2 border">{item.modelNumber ?? '-'}</td>
-              <td className="px-4 py-2 border">{item.category}</td>
-              <td className="px-4 py-2 border text-right">{item.currentStock}</td>
-              <td className="px-4 py-2 border">{item.lastUpdate}</td>
-              <td className="px-4 py-2 border text-center">
-                <button className="text-blue-600 hover:underline">▶</button>
+            <tr key={item.itemCode} className="hover:bg-blue-50" style={{ borderBottom: '1px solid #101540' }}>
+              <td className="px-4 py-3">
+                <Link
+                  href={`/inventory/receive?itemCode=${item.itemCode}`}
+                  className="text-blue-600 hover:underline"
+                >
+                  ▶
+                </Link>
+              </td>
+              <td className="px-4 py-3">
+                <Link
+                  href={`/inventory/dispatch?itemCode=${item.itemCode}`}
+                  className="text-red-600 hover:underline"
+                >
+                  ▶
+                </Link>
+              </td>
+              <td className="px-4 py-3">{item.itemCode}</td>
+              <td className="px-4 py-3">{item.itemName}</td>
+              <td className="px-4 py-3">{item.category}</td>
+              <td className="px-4 py-3">{item.modelNumber ?? '-'}</td>
+              <td className="px-4 py-3">{item.currentStock}</td>
+              <td className="px-4 py-3">{item.lastUpdate}</td>
+              <td className="px-4 py-3">
+                <Link
+                  href={`/inventory/transaction?itemCode=${item.itemCode}`}
+                  className="text-gray-600 hover:underline"
+                >
+                  ▶
+                </Link>
               </td>
             </tr>
           ))}

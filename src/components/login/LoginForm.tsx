@@ -1,6 +1,7 @@
 'use client'
 
 import { useForm } from 'react-hook-form'
+import Image from "next/image";
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { loginWithCredentials } from '@/lib/auth'
@@ -83,10 +84,12 @@ export default function LoginForm() {
         </div>
         {/* 右：画像エリア */}
         <div className="hidden md:flex w-1/2 items-center justify-center max-w-md">
-          <img
+          <Image
             src="/img_login.png" 
             alt="Login Visual"
             className="w-3/4 h-auto object-contain shadow"
+            width={410}
+            height={285}
           />
         </div>  
       </div>

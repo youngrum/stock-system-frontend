@@ -6,3 +6,10 @@ export interface InventoryItem {
     currentStock: number
     lastUpdate: string
   }
+
+export interface InventorySearchParams {
+  itemCode?: string;
+  itemName?: string;
+  category?: string;
+  modelNumber?: string;
+}

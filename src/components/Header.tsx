@@ -3,6 +3,7 @@ import { logout } from '@/lib/auth';
 import { useAppStore } from '@/stores/useAppStore'
 import { useRouter } from 'next/navigation';
 import { useIsLoggedIn } from '@/lib/hooks/useIsLoggedIn';
+import { useState } from 'react';
 
 type HeaderProps = {
   onToggleSidebar: () => void;

@@ -13,8 +13,7 @@ export default function MePage() {
   }
 
   return (
-    <div className="p-8 bg-gray-50">
-      <div className="flex bg-white px-8 py-4">
+    <div className="flex bg-white w-full justify-center mt-20 p-8">
         {/* 左カラム：リンクボタン */}
         <div className="w-1/3 space-y-4">
           {[
@@ -37,13 +36,12 @@ export default function MePage() {
         </div>
 
         {/* 右カラム：ユーザー表示 */}
-        <div className="w-2/3 flex items-center justify-center">
+        <div className="hidden md:flex w-1/2 items-center justify-center max-w-md">
           <div className="text-center">
             <p className="text-2xl font-semibold">ようこそ</p>
             <p className="text-4xl font-bold mt-2">{authName}さん</p>
           </div>
         </div>
-      </div>
     </div>
   )
 }

@@ -4,7 +4,7 @@ import LoginForm from '@/components/login/LoginForm'
 
 export default function LoginPage() {
   return (
-    <div className="">
+    <div className="mt-20">
       <LoginForm />
     </div>
   )

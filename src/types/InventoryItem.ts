@@ -1,4 +1,4 @@
-export type InventoryItem = {
+export interface InventoryItem {
     itemCode: string
     itemName: string
     modelNumber?: string

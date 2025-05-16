@@ -1,11 +1,8 @@
 import Link from 'next/link'
 import { InventoryItem } from '@/types/InventoryItem'
 
-type InventoryTableProps = {
-  data: InventoryItem[]
-}
 
-export default function InventoryTable({ data }: InventoryTableProps) {
+export default function InventoryTable({ data }: { data: InventoryItem[] }) {
   return (
     <div className="overflow-x-auto bg-white">
       <table className="w-full text-sm text-center border-collapse">

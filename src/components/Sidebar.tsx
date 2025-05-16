@@ -9,16 +9,16 @@ type sideBarProps = {
 
 export default function Sidebar({ isSidebarOpen }:sideBarProps) {
   const router = useRouter();
-  const pathname = usePathname();
+  // const pathname = usePathname();
 
-  const isInventory = pathname.startsWith("/inventory/search");
-  const isOrders = pathname.startsWith("/orders");
+  // const isInventory = pathname.startsWith("/inventory/search");
+  // const isOrders = pathname.startsWith("/orders");
 
 
   const menuItems = [
     { label: "入庫登録", path: "/inventory/receive", icon: <PackagePlus size={18} /> },
     { label: "出庫登録", path: "/inventory/dispatch", icon: <Truck size={18} /> },
-    { label: "在庫一覧/検索", path: "/inventory/search" },
+    { label: "在庫一覧/検索", path: "/inventory", icon: <Search size={18} /> },
     { label: "トランザクション", path: "/inventory/transactions", icon: <Search size={18} /> },
     { label: "発注登録", path: "/orders/new", icon: <FileText size={18} /> },
     { label: "納品登録", path: "/orders/receive", icon: <PackagePlus size={18} /> },

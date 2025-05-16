@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="ja">
       <body className="bg-gray-100 text-gray-900">
         <Header onToggleSidebar={onToggleSidebar} isSidebarOpen={isSidebarOpen} />
-        <div className="flex min-h-screen">
+        <div className="flex">
           <Sidebar isSidebarOpen={isSidebarOpen} />
           <main className="flex-1 p-4">{children}</main>
         </div>

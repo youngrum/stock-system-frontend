@@ -17,7 +17,7 @@ export default function InventoryDispatchPage() {
   useEffect(() => {
     if (!itemCode) return;
 
-    fetch(`/api/inventory/${itemCode}`)
+    fetch(`/api/inventory/search/${itemCode}`)
       .then((res) => res.json())
       .then((data) => setItem(data.data))
       .catch(() => setError('商品情報の取得に失敗しました'));

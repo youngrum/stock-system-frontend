@@ -23,7 +23,7 @@ export default function InventoryReceivePage() {
     if (!itemCode) return
 
     setLoading(true)
-    fetch(`/api/inventory/${itemCode}`)
+    fetch(`/api/inventory/search/${itemCode}`)
       .then((res) => {
         if (!res.ok) throw new Error('データ取得失敗')
         return res.json()

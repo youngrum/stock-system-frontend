@@ -1,32 +1,31 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware';
 
 interface AppState {
   token: string | null // 認証トークン
   authName: string | null // ログインユーザー名
-  isSidebarOpen: boolean // サイドバーの開閉フラグ
-  toggleSidebar: () => void // サイドバーの開閉フラグ切り替え
   setToken: (token: string) => void // トークンの取得
-  clearToken: () => void // トークン解放
-  setAuthName: (authname: string) => void
+  setAuthName: (authName: string) => void
+  clearAuth: () => void // 認証情報解放
+  // isSidebarOpen: boolean // サイドバーの開閉フラグ
+  // toggleSidebar: () => void // サイドバーの開閉フラグ切り替え
 }
 
-export const useAppStore = create<AppState>((set) => ({
-  token: typeof window !== 'undefined' ? localStorage.getItem('token') : null,
-  isSidebarOpen: false,authName: null,
-  setToken: (token) => {
-    localStorage.setItem('token', token)
-    set({ token })
-    console.log("setToken:"+ token)
-  },
-  clearToken: () => {
-    localStorage.removeItem('token')
-    set({ token: null })
-  },
-  toggleSidebar: () => {
-    set((state) => ({ isSidebarOpen: !state.isSidebarOpen }))
-  },
-  setAuthName: (authName) => {
-    set({ authName })
-    console.log("setToken:"+ authName)
-  }
-}))
+export const useAppStore = create(
+  persist(
+    (set): AppState => ({
+      authName: null,
+      token: null,
+      setAuthName: (authName) => set({ authName }),
+      setToken: (token) => set({ token }),
+      clearAuth: () => set({ authName: null, token: null }),
+    }),
+    {
+      name: 'auth-storage',
+      partialize: (state: AppState) => ({
+        authName: state.authName,
+        token: state.token,
+      }),
+    }
+  )
+);

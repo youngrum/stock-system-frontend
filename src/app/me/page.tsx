@@ -5,7 +5,7 @@ import { useAppStore } from '@/stores/useAppStore'
 import Link from 'next/link'
 
 export default function MePage() {
-  const authName = useAppStore(state => state.authName)
+  const authName = useAppStore((state) => state.authName);
 
   return (
     <div className="flex p-8 bg-gray-50 min-h-screen">

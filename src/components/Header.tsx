@@ -1,4 +1,5 @@
 "use client";
+import { useAppStore } from '@/stores/useAppStore'
 
 type HeaderProps = {
   onToggleSidebar: () => void;
@@ -6,6 +7,7 @@ type HeaderProps = {
 };
 
 export default function Header({ onToggleSidebar, isSidebarOpen}: HeaderProps) {
+  const authName = useAppStore((state) => state.authName);
   return (
     <header className="w-full bg-white shadow px-6 py-4 flex items-center justify-between">
       {/* ハンバーガーメニュー */}
@@ -18,7 +20,7 @@ export default function Header({ onToggleSidebar, isSidebarOpen}: HeaderProps) {
 
       {/* ユーザー名（仮表示） */}
       <div className="text-sm text-gray-700 px-3 py-1">
-        tanaka taro
+        {authName}
       </div>
     </header>
   );

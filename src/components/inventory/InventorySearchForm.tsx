@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { InventorySearchParams } from '@/types/InventoryItem';
-import { useState } from 'react';
+import { InventorySearchParams } from "@/types/InventoryItem";
+import { useState } from "react";
 import Image from "next/image";
 
 export default function InventorySearchForm({
@@ -9,14 +9,27 @@ export default function InventorySearchForm({
 }: {
   onSearch: (params: InventorySearchParams) => void;
 }) {
-  const [itemCode, setItemCode] = useState('');
-  const [itemName, setItemName] = useState('');
-  const [category, setCategory] = useState('');
-  const [modelNumber, setModelNumber] = useState('');
+  const [itemCode, setItemCode] = useState("");
+  const [itemName, setItemName] = useState("");
+  const [category, setCategory] = useState("");
+  const [modelNumber, setModelNumber] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch({ itemCode, itemName, category, modelNumber });
+    // 🔽 ここに追加
+    console.log("🔍 フォーム送信時の検索条件", {
+      itemCode,
+      itemName,
+      category,
+      modelNumber,
+    });
+
+    onSearch({
+      itemCode: itemCode || undefined,
+      itemName: itemName || undefined,
+      category: category || undefined,
+      modelNumber: modelNumber || undefined,
+    });
   };
 
   return (
@@ -76,13 +89,13 @@ export default function InventorySearchForm({
           type="submit"
           className="bg-white text-black px-4 py-2 rounded shadow hover:bg-gray-100 transition"
         >
-        <Image
-            src="/icon_search.svg" 
+          <Image
+            src="/icon_search.svg"
             alt="search icon"
             className=""
             width={20}
             height={20}
-        /> 
+          />
         </button>
       </div>
     </form>

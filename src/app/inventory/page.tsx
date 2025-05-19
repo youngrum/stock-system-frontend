@@ -2,6 +2,7 @@
 "use client";
 
 import InventoryTable from "@/components/inventory/InventoryTable";
+import InventoryReceiveModal from "@/components/inventory/InventoryReceiveModal";
 import InventorySearchForm from "@/components/inventory/InventorySearchForm";
 import { useAuthGuard } from "@/lib/hooks/useAuthGuard";
 import { InventoryItem } from "@/types/InventoryItem";
@@ -24,6 +25,12 @@ export default function InventoryListsPage() {
     category: "",
     modelNumber: "",
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
+  const handleReceiveClick = (item: InventoryItem) => {
+    setSelectedItem(item);
+    setIsModalOpen(true);
+  };
 
   useEffect(() => {
     if (!isLoggedIn) return;
@@ -101,7 +108,14 @@ export default function InventoryListsPage() {
         <InventorySearchForm onSearch={setSearchParams} />
       </div>
       {error && <p>{error}</p>}
-      {loading ? <p>読み込み中...</p> : <InventoryTable data={data} />}
+      {loading ? <p>読み込み中...</p> : <InventoryTable data={data} onReceive={handleReceiveClick} />}
+      {selectedItem && (
+      <InventoryReceiveModal 
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        itemCode={selectedItem.itemCode}
+      />
+    )}
     </main>
   );
 }

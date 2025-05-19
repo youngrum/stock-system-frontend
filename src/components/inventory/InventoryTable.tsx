@@ -2,7 +2,13 @@ import Link from 'next/link'
 import { InventoryItem } from '@/types/InventoryItem'
 
 
-export default function InventoryTable({ data }: { data: InventoryItem[] }) {
+export default function InventoryTable({
+  data,
+  onReceive,
+}: {
+  data: InventoryItem[];
+  onReceive: (item: InventoryItem) => void;
+}) {
   return (
     <div className="overflow-x-auto bg-white">
       <table className="w-full text-sm text-center border-collapse">
@@ -23,16 +29,17 @@ export default function InventoryTable({ data }: { data: InventoryItem[] }) {
           {data.map((item) => (
             <tr key={item.itemCode} className="hover:bg-blue-50" style={{ borderBottom: '1px solid #101540' }}>
               <td className="px-4 py-3">
-                <Link
-                  href={`/inventory/receive?itemCode=${item.itemCode}`}
+                {/* <Link
+                  href={`/inventory/receive/${item.itemCode}`}
                   className="text-blue-600 hover:underline"
                 >
                   ▶
-                </Link>
+                </Link> */}
+                <button onClick={() => onReceive(item)} className="text-blue-600">▶</button>
               </td>
               <td className="px-4 py-3">
                 <Link
-                  href={`/inventory/dispatch?itemCode=${item.itemCode}`}
+                  href={`/inventory/dispatch/${item.itemCode}`}
                   className="text-red-600 hover:underline"
                 >
                   ▶

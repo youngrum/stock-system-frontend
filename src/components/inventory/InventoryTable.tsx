@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { InventoryItem } from '@/types/InventoryItem'
-
+import { CircleChevronRight } from 'lucide-react';
 
 export default function InventoryTable({
   data,
@@ -35,14 +35,14 @@ export default function InventoryTable({
                 >
                   ▶
                 </Link> */}
-                <button onClick={() => onReceive(item)} className="text-blue-600">▶</button>
+                <button onClick={() => onReceive(item)} className="text-blue-600"><CircleChevronRight /></button>
               </td>
               <td className="px-4 py-3">
                 <Link
                   href={`/inventory/dispatch/${item.itemCode}`}
                   className="text-red-600 hover:underline"
                 >
-                  ▶
+                  <CircleChevronRight />
                 </Link>
               </td>
               <td className="px-4 py-3">{item.itemCode}</td>

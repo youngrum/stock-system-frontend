@@ -90,7 +90,7 @@ export default function InventoryListsPage() {
 
           {/* 新規登録ボタン */}
           <button
-            className="px-4 py-1 text-sm font-medium text-white rounded shadow-md"
+            className="px-4 py-1 text-sm font-medium text-white rounded shadow-md hover:opacity-90"
             style={{
               background: "linear-gradient(to bottom, #3D00B8, #3070C3)",
             }}

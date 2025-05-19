@@ -61,7 +61,7 @@ export default function InventoryReceiveModal({ isOpen, onClose, itemCode }: Inv
       <div className="relative z-10 bg-white w-[800px] rounded shadow-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Close Button */}
         <button onClick={onClose} className="absolute top-4 right-5 text-gray-500 hover:text-gray-800">
-          <X size={24} />
+          <X className="text-[#0d113d]" />
         </button>
 
         {/* Left: Inventory Info */}

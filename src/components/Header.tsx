@@ -3,7 +3,7 @@ import { logout } from '@/lib/auth';
 import { useAppStore } from '@/stores/useAppStore'
 import { useRouter } from 'next/navigation';
 import { useIsLoggedIn } from '@/lib/hooks/useIsLoggedIn';
-import { useState } from 'react';
+import { Menu, X } from 'lucide-react';
 
 type HeaderProps = {
   onToggleSidebar: () => void;
@@ -29,7 +29,7 @@ export default function Header({ onToggleSidebar, isSidebarOpen}: HeaderProps) {
         className="text-2xl text-gray-700 hover:text-black"
         onClick={onToggleSidebar}
       >
-        {isSidebarOpen ? "×" : "☰"}
+        {isSidebarOpen ? <X className="text-[#0d113d]" /> : <Menu className="text-[#0d113d]" />}
       </button>
 
       <div className="text-sm text-gray-700 px-3 py-1">

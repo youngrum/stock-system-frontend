@@ -4,7 +4,7 @@ export interface InventoryItem {
     modelNumber?: string
     category: string
     currentStock: number
-    lastUpdate: string
+    lastUpdated: string
   }
 
 export interface InventorySearchParams {

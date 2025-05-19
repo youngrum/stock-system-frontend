@@ -16,13 +16,13 @@ export default function Sidebar({ isSidebarOpen }:sideBarProps) {
 
 
   const menuItems = [
-    { label: "入庫登録", path: "/inventory/receive", icon: <PackagePlus size={18} /> },
-    { label: "出庫登録", path: "/inventory/dispatch", icon: <Truck size={18} /> },
+    { label: "入庫登録", path: "/inventory", icon: <PackagePlus size={18} /> },
+    { label: "出庫登録", path: "/inventory", icon: <Truck size={18} /> },
     { label: "在庫一覧/検索", path: "/inventory", icon: <Search size={18} /> },
     { label: "トランザクション", path: "/inventory/transactions", icon: <Search size={18} /> },
-    { label: "発注登録", path: "/orders/new", icon: <FileText size={18} /> },
-    { label: "納品登録", path: "/orders/receive", icon: <PackagePlus size={18} /> },
-    { label: "発注一覧/検索", path: "/orders", icon: <ListOrdered size={18} /> },
+    // { label: "発注登録", path: "/orders/new", icon: <FileText size={18} /> },
+    // { label: "納品登録", path: "/orders/receive", icon: <PackagePlus size={18} /> },
+    // { label: "発注一覧/検索", path: "/orders", icon: <ListOrdered size={18} /> },
   ];
 
   return (
@@ -40,9 +40,11 @@ export default function Sidebar({ isSidebarOpen }:sideBarProps) {
           <button
             key={item.path}
             onClick={() => router.push(item.path)}
-            className="text-white" 
-          >
+            className="text-white my-2" 
+          ><p className="flex items-center">
+            <span className="pr-2 al">{item.icon}</span>
             {item.label}
+            </p>
           </button>
         ))}
       </div>

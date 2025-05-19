@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { InventoryItem } from '@/types/InventoryItem'
-import { CircleChevronRight } from 'lucide-react';
+import { CircleArrowRight } from 'lucide-react';
+import { formatDate } from '@/lib/utils/dateFormat';
 
 export default function InventoryTable({
   data,
@@ -35,14 +36,14 @@ export default function InventoryTable({
                 >
                   ▶
                 </Link> */}
-                <button onClick={() => onReceive(item)} className="text-blue-600"><CircleChevronRight /></button>
+                <button onClick={() => onReceive(item)} className="text-blue-600"><CircleArrowRight /></button>
               </td>
               <td className="px-4 py-3">
                 <Link
                   href={`/inventory/dispatch/${item.itemCode}`}
                   className="text-red-600 hover:underline"
                 >
-                  <CircleChevronRight />
+                  <CircleArrowRight />
                 </Link>
               </td>
               <td className="px-4 py-3">{item.itemCode}</td>
@@ -50,7 +51,7 @@ export default function InventoryTable({
               <td className="px-4 py-3">{item.category}</td>
               <td className="px-4 py-3">{item.modelNumber ?? '-'}</td>
               <td className="px-4 py-3">{item.currentStock}</td>
-              <td className="px-4 py-3">{item.lastUpdate}</td>
+              <td className="px-4 py-3">{formatDate(item.lastUpdated)}</td>
               <td className="px-4 py-3">
                 <Link
                   href={`/inventory/transaction?itemCode=${item.itemCode}`}

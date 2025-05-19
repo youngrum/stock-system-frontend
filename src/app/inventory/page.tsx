@@ -8,7 +8,7 @@ import { useAuthGuard } from "@/lib/hooks/useAuthGuard";
 import { InventoryItem } from "@/types/InventoryItem";
 import { InventorySearchParams } from "@/types/InventoryItem";
 import { useEffect, useState } from "react";
-import Image from "next/image";
+import { Search, X } from 'lucide-react';
 
 import api from "@/services/api";
 
@@ -71,20 +71,9 @@ export default function InventoryListsPage() {
             aria-label="検索フォーム切り替え"
           >
             {showSearchForm ? (
-              <Image
-                src="/icon_x.svg"
-                alt="close icon"
-                width={20}
-                height={20}
-              />
+              <X className="text-[#0d113d]" />
             ) : (
-              <Image
-                src="/icon_search.svg"
-                alt="search icon"
-                className=""
-                width={20}
-                height={20}
-              />
+              <Search className="text-[#0d113d]" />
             )}
           </button>
 

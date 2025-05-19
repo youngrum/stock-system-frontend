@@ -1,10 +1,11 @@
 "use client";
 
-import { useRouter, usePathname } from "next/navigation";
-import { PackagePlus, Truck, FileText, ListOrdered, Search } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { PackagePlus, Truck, Search } from "lucide-react";
 
 type sideBarProps = {
   isSidebarOpen: boolean;
+  onClose: () => void;
 };
 
 export default function Sidebar({ isSidebarOpen }:sideBarProps) {

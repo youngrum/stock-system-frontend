@@ -27,7 +27,7 @@ export default function RootLayout({
         )}
         <div className="flex">
           <Sidebar isSidebarOpen={isSidebarOpen}  onClose={() => setSidebarOpen(false)}/>
-          <main className="flex-1 p-4">{children}</main>
+          <main className="flex-1 p-5">{children}</main>
         </div>
       </body>
     </html>

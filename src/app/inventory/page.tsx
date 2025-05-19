@@ -54,10 +54,10 @@ export default function InventoryListsPage() {
   }, [searchParams]);
 
   return (
-    <main className="bg-white border-gray-400 p-3 shadow mt-20">
+    <main className="bg-white border-gray-400 p-3 shadow mt-20 p-5">
       <div className="flex items-center justify-between mb-4">
         <h2
-          className="text-lg font-bold text-gray-800"
+          className="text-2xl font-bold text-gray-800 text-"
           style={{ color: "#101540" }}
         >
           在庫一覧・検索
@@ -71,20 +71,20 @@ export default function InventoryListsPage() {
             aria-label="検索フォーム切り替え"
           >
             {showSearchForm ? (
-              <X className="text-[#0d113d]" />
+              <X className="text-[#0d113d]" width={30} height={30}/>
             ) : (
-              <Search className="text-[#0d113d]" />
+              <Search className="text-[#0d113d]" width={30} height={30}/>
             )}
           </button>
 
           {/* 新規登録ボタン */}
           <button
-            className="px-4 py-1 text-sm font-medium text-white rounded shadow-md hover:opacity-90"
+            className="px-5 py-3 text-xl font-medium text-white rounded shadow-md hover:opacity-90"
             style={{
               background: "linear-gradient(to bottom, #3D00B8, #3070C3)",
             }}
           >
-            ＋ 在庫新規登録
+            ＋ 新規在庫登録
           </button>
         </div>
       </div>

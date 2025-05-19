@@ -30,21 +30,10 @@ export default function InventoryTable({
           {data.map((item) => (
             <tr key={item.itemCode} className="hover:bg-blue-50" style={{ borderBottom: '1px solid #101540' }}>
               <td className="px-4 py-3">
-                {/* <Link
-                  href={`/inventory/receive/${item.itemCode}`}
-                  className="text-blue-600 hover:underline"
-                >
-                  ▶
-                </Link> */}
-                <button onClick={() => onReceive(item)} className="text-blue-600"><CircleArrowRight /></button>
+                <button onClick={() => onReceive(item)} className="text-[#0d113d]"><CircleArrowRight /></button>
               </td>
               <td className="px-4 py-3">
-                <Link
-                  href={`/inventory/dispatch/${item.itemCode}`}
-                  className="text-red-600 hover:underline"
-                >
-                  <CircleArrowRight />
-                </Link>
+                <button onClick={() => onReceive(item)} className="text-[#0d113d]"><CircleArrowRight /></button>
               </td>
               <td className="px-4 py-3">{item.itemCode}</td>
               <td className="px-4 py-3">{item.itemName}</td>

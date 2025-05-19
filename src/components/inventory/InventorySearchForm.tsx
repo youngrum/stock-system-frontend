@@ -2,7 +2,7 @@
 
 import { InventorySearchParams } from "@/types/InventoryItem";
 import { useState } from "react";
-import Image from "next/image";
+import { Search } from 'lucide-react';
 
 export default function InventorySearchForm({
   onSearch,
@@ -35,7 +35,8 @@ export default function InventorySearchForm({
   return (
     <form
       onSubmit={handleSubmit}
-      className="bg-[#0d113d] text-white p-6 rounded shadow-md mb-6 transition-all duration-300 ease-in-out animate-fade-in"
+      className="p-6 border-b mb-6 transition-all duration-300 ease-in-out animate-fade-in"
+      style={{ borderBottom: '1px solid #101540' }}
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* ID */}
@@ -45,7 +46,7 @@ export default function InventorySearchForm({
             value={itemCode}
             onChange={(e) => setItemCode(e.target.value)}
             placeholder="IDを入力"
-            className="w-full px-3 py-2 rounded bg-white text-black focus:outline-none"
+            className="w-full px-3 py-2 text-[#0d113d] rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100" style={{ border: '1px solid #9F9F9F' }}
           />
         </div>
 
@@ -56,7 +57,7 @@ export default function InventorySearchForm({
             value={itemName}
             onChange={(e) => setItemName(e.target.value)}
             placeholder="品名を入力"
-            className="w-full px-3 py-2 rounded bg-white text-black focus:outline-none"
+            className="w-full px-3 py-2 text-[#0d113d] rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100" style={{ border: '1px solid #9F9F9F' }}
           />
         </div>
 
@@ -67,7 +68,7 @@ export default function InventorySearchForm({
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             placeholder="カテゴリーを入力"
-            className="w-full px-3 py-2 rounded bg-white text-black focus:outline-none"
+            className="w-full px-3 py-2 text-[#0d113d] rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100" style={{ border: '1px solid #9F9F9F' }}
           />
         </div>
 
@@ -78,7 +79,7 @@ export default function InventorySearchForm({
             value={modelNumber}
             onChange={(e) => setModelNumber(e.target.value)}
             placeholder="型番を入力"
-            className="w-full px-3 py-2 rounded bg-white text-black focus:outline-none"
+            className="w-full px-3 py-2 text-[#0d113d] rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100" style={{ border: '1px solid #9F9F9F' }}
           />
         </div>
       </div>
@@ -87,15 +88,12 @@ export default function InventorySearchForm({
       <div className="flex justify-center mt-6">
         <button
           type="submit"
-          className="bg-white text-black px-4 py-2 rounded shadow hover:bg-gray-100 transition"
+          className="text-black px-4 py-2 rounded shadow-md hover:opacity-90"
+          style={{
+              background: "linear-gradient(to bottom, #3D00B8, #3070C3)",
+            }}
         >
-          <Image
-            src="/icon_search.svg"
-            alt="search icon"
-            className=""
-            width={20}
-            height={20}
-          />
+          <Search className="text-white" width={30} height={30}/>
         </button>
       </div>
     </form>

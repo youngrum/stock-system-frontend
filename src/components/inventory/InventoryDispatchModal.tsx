@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react';
-import { InventoryItem } from '@/types/InventoryItem'
-import { X } from 'lucide-react';
-import api from '@/services/api';
+import { useEffect, useState } from "react";
+import { InventoryItem } from "@/types/InventoryItem";
+import { X } from "lucide-react";
+import api from "@/services/api";
 
 interface InventoryDispatchModalProps {
   isOpen: boolean;
@@ -12,16 +12,22 @@ interface InventoryDispatchModalProps {
   onSuccess: () => void;
 }
 
-export default function InventoryDispatchModal({ isOpen, onClose, itemCode, onSuccess }: InventoryDispatchModalProps) {
+export default function InventoryDispatchModal({
+  isOpen,
+  onClose,
+  itemCode,
+  onSuccess,
+}: InventoryDispatchModalProps) {
   const [inventory, setInventory] = useState<InventoryItem | null>(null);
   const [quantity, setQuantity] = useState(1);
-  const [remarks, setRemarks] = useState('');
+  const [remarks, setRemarks] = useState("");
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (isOpen && itemCode) {
-      api.get(`/inventory/${itemCode}`)
-        .then(res => setInventory(res.data.data))
+      api
+        .get(`/inventory/${itemCode}`)
+        .then((res) => setInventory(res.data.data))
         .catch(() => onClose());
     }
   }, [isOpen, itemCode, onClose]);
@@ -29,19 +35,24 @@ export default function InventoryDispatchModal({ isOpen, onClose, itemCode, onSu
   const handleSubmit = async () => {
     if (!quantity || quantity <= 0) return;
 
-    const confirmed = window.confirm(`本当にこの内容で出庫しますか？\n\n対象ID:${itemCode}\n\n数量: ${quantity}\n備考: ${remarks || 'なし'}`);
-  
-    if(!confirmed){
-        window.confirm("処理を取り消しました");
-        return;
-      }
+    const confirmed = window.confirm(
+      `本当にこの内容で出庫しますか？\n\n対象ID:${itemCode}\n\n数量: ${quantity}\n備考: ${
+        remarks || "なし"
+      }`
+    );
+
+    if (!confirmed) {
+      window.confirm("処理を取り消しました");
+      return;
+    }
 
     setLoading(true);
     try {
+      console.log("%o", inventory);
       await api.post(`/inventory/dispatch/${itemCode}`, {
-        itemCode,
-        quantity,
-        remarks: remarks || '-',
+        itemCode: inventory?.itemCode || null,
+        quantity: quantity,
+        remarks: remarks || "-",
       });
       onClose();
       onSuccess();
@@ -56,9 +67,15 @@ export default function InventoryDispatchModal({ isOpen, onClose, itemCode, onSu
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
-      <div className="absolute inset-0 bg-[#0d113d] opacity-40" onClick={onClose} />
+      <div
+        className="absolute inset-0 bg-[#0d113d] opacity-40"
+        onClick={onClose}
+      />
       <div className="relative z-10 bg-white w-[800px] rounded shadow-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-        <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
+        >
           <X size={24} />
         </button>
 
@@ -78,7 +95,7 @@ export default function InventoryDispatchModal({ isOpen, onClose, itemCode, onSu
               type="number"
               min={1}
               value={quantity}
-              onChange={e => setQuantity(Number(e.target.value))}
+              onChange={(e) => setQuantity(Number(e.target.value))}
               className="w-full border rounded px-3 py-2 mt-1"
             />
           </div>
@@ -96,10 +113,10 @@ export default function InventoryDispatchModal({ isOpen, onClose, itemCode, onSu
             disabled={loading}
             className="w-full bg-gradient-to-r text-white py-2 rounded hover:opacity-90"
             style={{
-                background: "linear-gradient(to bottom, #5A00E0, #7040D0)",
-              }}
-            >
-            {loading ? '出庫中...' : '出庫する'}
+              background: "linear-gradient(to bottom, #5A00E0, #7040D0)",
+            }}
+          >
+            {loading ? "出庫中..." : "出庫する"}
           </button>
         </div>
       </div>

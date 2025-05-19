@@ -96,7 +96,7 @@ export default function InventoryDispatchModal({ isOpen, onClose, itemCode, onSu
             disabled={loading}
             className="w-full bg-gradient-to-r text-white py-2 rounded hover:opacity-90"
             style={{
-                background: "linear-gradient(to bottom, #3D00B8, #3070C3)",
+                background: "linear-gradient(to bottom, #5A00E0, #7040D0)",
               }}
             >
             {loading ? '出庫中...' : '出庫する'}

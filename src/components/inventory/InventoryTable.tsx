@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { InventoryItem } from '@/types/InventoryItem'
-import { CircleArrowRight } from 'lucide-react';
+import { ExternalLink, PackagePlus, Truck } from 'lucide-react';
 import { formatDate } from '@/lib/utils/dateFormat';
 
 export default function InventoryTable({
@@ -31,11 +31,11 @@ export default function InventoryTable({
         <tbody className="text-gray-700">
           {data.map((item) => (
             <tr key={item.itemCode} className="hover:bg-blue-50" style={{ borderBottom: '1px solid #101540' }}>
-              <td className="px-4 py-3">
-                <button onClick={() => onReceive(item)} className="text-[#0d113d]"><CircleArrowRight /></button>
+              <td className="px-4 py-3 items-center">
+                <Link href="#" onClick={() => onReceive(item)} className="text-[#0d113d]"><PackagePlus  className="mx-auto"/></Link>
               </td>
               <td className="px-4 py-3">
-                <button onClick={() => onDispach(item)} className="text-[#0d113d]"><CircleArrowRight /></button>
+                <Link href="#" onClick={() => onDispach(item)} className="text-[#0d113d]"><Truck  className="mx-auto"/></Link>
               </td>
               <td className="px-4 py-3">{item.itemCode}</td>
               <td className="px-4 py-3">{item.itemName}</td>
@@ -44,12 +44,7 @@ export default function InventoryTable({
               <td className="px-4 py-3">{item.currentStock}</td>
               <td className="px-4 py-3">{formatDate(item.lastUpdated)}</td>
               <td className="px-4 py-3">
-                <Link
-                  href={`/inventory/transaction?itemCode=${item.itemCode}`}
-                  className="text-gray-600 hover:underline"
-                >
-                  ▶
-                </Link>
+                <Link href="#"className="text-[#0d113d]"><ExternalLink className="mx-auto"/></Link>
               </td>
             </tr>
           ))}

@@ -17,8 +17,8 @@ export default function Sidebar({ isSidebarOpen }:sideBarProps) {
 
 
   const menuItems = [
-    { label: "入庫登録", path: "/recieve", icon: <PackagePlus size={18} /> },
-    { label: "出庫登録", path: "/dispatch", icon: <Truck size={18} /> },
+    { label: "入庫登録", path: "/inventory", icon: <PackagePlus size={18} /> },
+    { label: "出庫登録", path: "/inventory", icon: <Truck size={18} /> },
     { label: "在庫一覧/検索", path: "/inventory", icon: <Search size={18} /> },
     { label: "トランザクション", path: "/inventory/transactions", icon: <Search size={18} /> },
     // { label: "発注登録", path: "/orders/new", icon: <FileText size={18} /> },

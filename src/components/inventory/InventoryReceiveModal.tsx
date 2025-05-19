@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react';
-import { RecieveItem } from '@/types/InventoryItem'
+import { InventoryItem } from '@/types/InventoryItem'
 import { X } from 'lucide-react';
 import api from "@/services/api";
 
@@ -9,11 +9,12 @@ import api from "@/services/api";
 interface InventoryReceiveModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onSuccess: () => void;
   itemCode: string;
 }
 
-export default function InventoryReceiveModal({ isOpen, onClose, itemCode }: InventoryReceiveModalProps) {
-  const [inventory, setInventory] = useState<RecieveItem | null>(null);
+export default function InventoryReceiveModal({ isOpen, onClose, onSuccess, itemCode }: InventoryReceiveModalProps) {
+  const [inventory, setInventory] = useState<InventoryItem | null>(null);
   const [quantity, setQuantity] = useState(1);
   const [supplier, setSupplier] = useState('');
   const [purchasePrice, setPurchasePrice] = useState('');
@@ -52,6 +53,7 @@ export default function InventoryReceiveModal({ isOpen, onClose, itemCode }: Inv
         orderNo: null,
       });
       onClose();
+      onSuccess();
     } catch (err) {
       console.error(err);
     } finally {

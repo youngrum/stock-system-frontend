@@ -3,6 +3,7 @@
 
 import InventoryTable from "@/components/inventory/InventoryTable";
 import InventoryReceiveModal from "@/components/inventory/InventoryReceiveModal";
+import InventoryDispatchModal from "@/components/inventory/InventoryDispatchModal";
 import InventorySearchForm from "@/components/inventory/InventorySearchForm";
 import { useAuthGuard } from "@/lib/hooks/useAuthGuard";
 import { InventoryItem } from "@/types/InventoryItem";
@@ -25,30 +26,34 @@ export default function InventoryListsPage() {
     category: "",
     modelNumber: "",
   });
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
+  const [isRecieveModalOpen, setIsRecieveModalOpen] = useState(false);
   const handleReceiveClick = (item: InventoryItem) => {
     setSelectedItem(item);
-    setIsModalOpen(true);
+    setIsRecieveModalOpen(true);
+  };
+  const [isDispatchModalOpen, setIsDispatchModalOpen] = useState(false);
+  const handleDispatchClick = (item: InventoryItem) => {
+    setSelectedItem(item);
+    setIsDispatchModalOpen(true);
+  };
+  const fetchData = async () => {
+    try {
+      const res = await api.get("/inventory/search", {
+        params: searchParams,
+      });
+      console.log(res.data.data.content);
+      setData(res.data.data.content); // ← ここがAPIのレスポンスに依存する（必要に応じて .data.content）
+    } catch (err) {
+      console.log(err);
+      setError("在庫データの取得に失敗しました");
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
     if (!isLoggedIn) return;
-
-    const fetchData = async () => {
-      try {
-        const res = await api.get("/inventory/search", {
-          params: searchParams,
-        });
-        console.log(res.data.data.content);
-        setData(res.data.data.content); // ← ここがAPIのレスポンスに依存する（必要に応じて .data.content）
-      } catch (err) {
-        console.log(err);
-        setError("在庫データの取得に失敗しました");
-      } finally {
-        setLoading(false);
-      }
-    };
 
     fetchData();
   }, [searchParams]);
@@ -97,14 +102,23 @@ export default function InventoryListsPage() {
         <InventorySearchForm onSearch={setSearchParams} />
       </div>
       {error && <p>{error}</p>}
-      {loading ? <p>読み込み中...</p> : <InventoryTable data={data} onReceive={handleReceiveClick} />}
+      {loading ? <p>読み込み中...</p> : <InventoryTable data={data} onReceive={handleReceiveClick} onDispach={handleDispatchClick}/>}
       {selectedItem && (
-      <InventoryReceiveModal 
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        itemCode={selectedItem.itemCode}
-      />
-    )}
+      <>
+        <InventoryReceiveModal 
+          isOpen={isRecieveModalOpen}
+          onClose={() => setIsRecieveModalOpen(false)}
+          itemCode={selectedItem.itemCode}
+          onSuccess={fetchData}
+        />
+        <InventoryDispatchModal 
+          isOpen={isDispatchModalOpen}
+          onClose={() => setIsDispatchModalOpen(false)}
+          itemCode={selectedItem.itemCode}
+          onSuccess={fetchData}
+        />
+      </>
+      )}
     </main>
   );
 }

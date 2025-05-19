@@ -5,6 +5,12 @@ export interface InventoryItem {
     category: string
     currentStock: number
     lastUpdated: string
+    supplier?: string
+    manufacturer?: string
+    purchasePrice?: number
+    shoppingFee?: number
+    quantity: number
+    remarks: string
   }
 
 export interface InventorySearchParams {
@@ -12,6 +18,7 @@ export interface InventorySearchParams {
   itemName?: string;
   category?: string;
   modelNumber?: string;
+  
 }
 
 export interface RecieveItem {

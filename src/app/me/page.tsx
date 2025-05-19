@@ -17,8 +17,8 @@ export default function MePage() {
         {/* 左カラム：リンクボタン */}
         <div className="w-1/3 space-y-4">
           {[
-            { label: '入庫登録', path: '/inventory/receive' },
-            { label: '出庫登録', path: '/inventory/dispatch' },
+            { label: '入庫登録', path: '/inventory' },
+            { label: '出庫登録', path: '/inventory' },
             { label: '在庫一覧・検索', path: '/inventory' },
             { label: 'トランザクション', path: '/inventory/transaction' },
             { label: '発注登録', path: '/orders' },

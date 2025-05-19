@@ -30,7 +30,7 @@ export default function InventoryTable({
         </thead>
         <tbody className="text-gray-700">
           {data.map((item) => (
-            <tr key={item.itemCode} className="hover:bg-blue-50" style={{ borderBottom: '1px solid #101540' }}>
+            <tr key={item.itemCode} className="hover:bg-gray-200" style={{ borderBottom: '1px solid #101540' }}>
               <td className="px-4 py-3 items-center">
                 <Link href="#" onClick={() => onReceive(item)} className="text-[#0d113d]"><PackagePlus  className="mx-auto"/></Link>
               </td>

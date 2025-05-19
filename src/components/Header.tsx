@@ -32,16 +32,16 @@ export default function Header({ onToggleSidebar, isSidebarOpen}: HeaderProps) {
         {isSidebarOpen ? <X className="text-[#0d113d]" /> : <Menu className="text-[#0d113d]" />}
       </button>
 
-      <div className="text-sm text-gray-700 px-3 py-1">
+      <div className="text-sm px-3 py-1">
       {isLoggedIn && (
       <button
           onClick={handleLogout}
-          className="bg-gray-300 px-3 py-1 rounded hover:bg-gray-200 mr-5"
+          className="text-white bg-gradient-to-b from-gray-600 to-gray-400 px-3 py-1 rounded hover:opacity-80 mr-5"
         >
           Logout
         </button>
       )}
-      {authName}
+      <span className="text-[#0d113d] font-semibold">{authName}</span>
       </div>
     </header>
   );

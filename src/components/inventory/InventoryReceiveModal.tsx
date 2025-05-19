@@ -17,8 +17,9 @@ export default function InventoryReceiveModal({ isOpen, onClose, itemCode }: Inv
   const [quantity, setQuantity] = useState(1);
   const [supplier, setSupplier] = useState('');
   const [purchasePrice, setPurchasePrice] = useState('');
-  const [shoppingFee, setShoppingFee] = useState('');
+  const [shippingFee, setShippingFee] = useState('');
   const [loading, setLoading] = useState(false);
+  const [remarks, setRemarks] = useState('');
 
   useEffect(() => {
     if (isOpen && itemCode) {
@@ -30,6 +31,14 @@ export default function InventoryReceiveModal({ isOpen, onClose, itemCode }: Inv
 
   const handleSubmit = async () => {
     if (!quantity || quantity <= 0) return;
+
+// ✅ 最終確認ダイアログの追加
+  const confirmed = window.confirm(`本当にこの内容で入庫しますか？\n\n対象ID:${itemCode}\n\n数量: ${quantity}\n仕入先: ${supplier || '未入力'}\n単価: ${purchasePrice || '未入力'}\n送料: ${shippingFee || '未入力'}\n備考: ${remarks || 'なし'}`);
+  
+  if(!confirmed){
+    window.confirm("処理を取り消しました");
+    return;
+  } 
     setLoading(true);
     try {
       await api.post(`/inventory/receive/${itemCode}`, {
@@ -67,7 +76,7 @@ export default function InventoryReceiveModal({ isOpen, onClose, itemCode }: Inv
         {/* Left: Inventory Info */}
         <div className="space-y-2">
           <h2 className="text-xl font-semibold">{inventory.itemName}</h2>
-          <p className="text-sm text-gray-600">{itemCode} </p>
+          <p className="text-sm text-gray-600">{inventory.itemCode} </p>
           <p className="text-sm text-gray-600">{inventory.modelNumber}</p>
           <p className="text-[#0d113d]">カテゴリ: {inventory.category}</p>
           <p className="text-[#0d113d]">メーカー: {inventory.manufacturer}</p>
@@ -86,16 +95,40 @@ export default function InventoryReceiveModal({ isOpen, onClose, itemCode }: Inv
             <input type="text" value={supplier} onChange={e => setSupplier(e.target.value)} className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100"
             style={{ border: '1px solid #9F9F9F' }} placeholder="ここに仕入先を入力"/>
           </div>
-          <div>
-            <label className="block text-sm font-medium">単価（任意）</label>
-            <input type="number" value={purchasePrice} onChange={e => setPurchasePrice(e.target.value)} className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100"
-            style={{ border: '1px solid #9F9F9F' }} />
-          </div>
-          <div>
-            <label className="block text-sm font-medium">送料（任意）</label>
-            <input type="number" value={shoppingFee} onChange={e => setShoppingFee(e.target.value)} className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100"
-            style={{ border: '1px solid #9F9F9F' }} />
-          </div>
+          <div className="grid grid-cols-2 gap-4">
+    <div>
+      <label className="block text-sm font-medium">単価（任意）</label>
+      <input
+        type="number"
+        value={purchasePrice}
+        onChange={(e) => setPurchasePrice(e.target.value)}
+        className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100"
+        style={{ border: '1px solid #9F9F9F' }} placeholder="150"
+      />
+    </div>
+    <div>
+      <label className="block text-sm font-medium">送料（任意）</label>
+      <input
+        type="number"
+        value={shippingFee}
+        onChange={(e) => setShippingFee(e.target.value)}
+        className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100"
+        style={{ border: '1px solid #9F9F9F' }}
+        placeholder="1000"
+      />
+    </div>
+  </div>
+  <div>
+    <label className="block text-sm font-medium">備考（任意）</label>
+    <textarea
+      value={remarks}
+      onChange={(e) => setRemarks(e.target.value)}
+      className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100"
+      rows={2}
+      style={{ border: '1px solid #9F9F9F' }}
+      placeholder="716・717案件"
+    />
+  </div>
           <button onClick={handleSubmit} disabled={loading} className="w-full text-white py-2 rounded hover:opacity-90"
           style={{
             background: "linear-gradient(to bottom, #3D00B8, #3070C3)",

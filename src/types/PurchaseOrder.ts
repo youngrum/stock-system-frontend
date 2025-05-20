@@ -1,0 +1,33 @@
+export interface PurchaseOrderDetail {
+    itemCode: string;
+    itemName: string;
+    purchasePrice: number;
+    quantity: number;
+  }
+  
+export interface PurchaseOrder {
+    orderNo: string;
+    supplier: string;
+    orderSubtotal: number;
+    orderDate: string;
+    shippingFee: number;
+    remarks?: string;
+    details?: PurchaseOrderDetail[];
+  }
+  
+export interface TransactionDetail {
+    transactionId: number;
+    transactionType: string;
+    quantity: number;
+    operator: string;
+    remarks?: string;
+    transactionTime: string;
+    stockItem: {
+      itemCode: string;
+      itemName: string;
+      modelNumber: string;
+      category: string;
+    };
+    purchaseOrder?: PurchaseOrder;
+  }
+  

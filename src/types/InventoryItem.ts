@@ -19,17 +19,3 @@ export interface InventorySearchParams {
   category?: string;
   modelNumber?: string;
 }
-
-export interface RecieveItem {
-  itemCode: string;
-  itemName: string;
-  modelNumber?: string;
-  supplier?: string;
-  manufacturer?: string;
-  purchasePrice?: number;
-  shoppingFee?: number;
-  category: string;
-  quantity: number;
-  remarks: string;
-  currentStock: number;
-}

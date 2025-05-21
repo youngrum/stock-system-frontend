@@ -28,18 +28,10 @@ export default function InventoryTable({
             <th className="text-base px-4 py-3">履歴</th>
           </tr>
         </thead>
-<<<<<<< HEAD
         <tbody className="text-gray-700">
           {data.map((item) => (
             <tr key={item.itemCode} className="hover:bg-gray-200" style={{ borderBottom: '1px solid #101540' }}>
-=======
-        <tbody
-          className="text-gray-700"
-          style={{ borderBottom: "1px solid #101540" }}
-        >
-          {data.map((item) => (
-            <tr key={item.itemCode} className="hover:bg-gray-200">
->>>>>>> 3ff985457dfa3e84f81945652ea9f901df0a0da9
+
               <td className="px-4 py-3 items-center">
                 <Link
                   href="#"
@@ -59,11 +51,6 @@ export default function InventoryTable({
                 </Link>
               </td>
               <td className="px-4 py-3">{item.itemCode}</td>
-<<<<<<< HEAD
-              <td className="px-4 py-3 max-w-[200px] truncate whitespace-nowrap">{item.itemName}</td>
-              <td className="px-4 py-3">{item.category}</td>
-              <td className="px-4 py-3 max-w-[200px] truncate whitespace-nowrap">{item.modelNumber ?? '-'}</td>
-=======
               <td className="px-4 py-3 max-w-[300px] truncate">
                 {item.itemName}
               </td>
@@ -71,7 +58,6 @@ export default function InventoryTable({
               <td className="px-4 py-3 max-w-[300px] truncate">
                 {item.modelNumber ?? "-"}
               </td>
->>>>>>> 3ff985457dfa3e84f81945652ea9f901df0a0da9
               <td className="px-4 py-3">{item.currentStock}</td>
               <td className="px-4 py-3">{formatDate(item.lastUpdated)}</td>
               <td className="px-4 py-3">

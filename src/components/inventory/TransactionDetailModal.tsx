@@ -20,9 +20,9 @@ export default function TransactionDetailModal({ transaction, onClose }: Props) 
           <X size={24} />
         </button>
 
-        <h2 className="text-xl font-semibold  max-w-[200px] truncate whitespace-nowrap">{stock.itemName}</h2>
+        <h2 className="text-xl font-semibold">{stock.itemName}</h2>
         <h3 className="font-semibold">{stock.itemCode}</h3>
-        <p className="text-sm text-gray-600  max-w-[200px] truncate whitespace-nowrap">カテゴリ / 型番 <br/>{stock.category} / {stock.modelNumber}</p>
+        <p className="text-sm text-gray-600">カテゴリ / 型番 <br/>{stock.category} / {stock.modelNumber}</p>
 
         <div className="space-y-2">
           <p>処理種別: {transaction.transactionType === 'ORDER_REGIST' ? '発注登録' :

@@ -1,6 +1,5 @@
 "use client";
 
-<<<<<<< HEAD
 import { PackagePlus, Truck, ExternalLink, Bookmark } from 'lucide-react';
 import { formatDate } from '@/lib/utils/dateFormat';
 import { Transaction } from '@/types/Transaction'
@@ -8,15 +7,6 @@ import { TransactionDetail } from '@/types/PurchaseOrder'
 import TransactionDetailModal from '@/components/inventory/TransactionDetailModal';
 import Link from 'next/link';
 import { useState } from 'react';
-=======
-import { PackagePlus, Truck, ExternalLink, Bookmark } from "lucide-react";
-import { formatDate } from "@/lib/utils/dateFormat";
-import { Transaction } from "@/types/Transaction";
-import { TransactionDetail } from "@/types/PurchaseOrder";
-import TransactionDetailModal from "./TransactionDetailModalTransactionDetailModal";
-import Link from "next/link";
-import { useState } from "react";
->>>>>>> 3ff985457dfa3e84f81945652ea9f901df0a0da9
 
 export default function TransactionTable({ data }: { data: Transaction[] }) {
   const [selectedTransaction, setSelectedTransaction] =

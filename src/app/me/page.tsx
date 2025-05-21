@@ -20,7 +20,7 @@ export default function MePage() {
             { label: '入庫登録', path: '/inventory' },
             { label: '出庫登録', path: '/inventory' },
             { label: '在庫一覧・検索', path: '/inventory' },
-            { label: 'トランザクション', path: '/inventory/transaction' },
+            { label: 'トランザクション', path: '/inventory/transactions' },
             { label: '発注登録', path: '/orders' },
             { label: '納品登録', path: '/receive-from-order' },
             { label: '発注履歴・検索', path: '/order-history' }

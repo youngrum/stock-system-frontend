@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react';
 import api from '@/services/api';
 import TransactionTable from '@/components/inventory/TransactionTable';
 import {Transaction} from '@/types/Transaction'
+import { useAuthGuard } from '@/lib/hooks/useAuthGuard';
 
 export default function TransactionPage() {
   const [data, setData] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const isLoggedIn = useAuthGuard();
   const fetchTransactions = async () => {
     try {
       const res = await api.get('/transactions');
@@ -22,11 +23,12 @@ export default function TransactionPage() {
   };
 
   useEffect(() => {
+    if (!isLoggedIn) return;
     fetchTransactions();
   }, []);
 
   return (
-    <main className="bg-white border-gray-400 p-3 shadow mt-20 p-5">
+    <main className="bg-white border-gray-400 p-3 shadow p-5">
         <div className="mb-4">
         <h2
           className="text-2xl font-bold text-gray-800 text-"

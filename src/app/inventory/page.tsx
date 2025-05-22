@@ -10,10 +10,12 @@ import { InventoryItem } from "@/types/InventoryItem";
 import { InventorySearchParams } from "@/types/InventoryItem";
 import { useEffect, useState } from "react";
 import { Search, X } from 'lucide-react';
+import { useRouter } from "next/navigation";
 
 import api from "@/services/api";
 
 export default function InventoryListsPage() {
+  const router = useRouter();
   const isLoggedIn = useAuthGuard();
   const [data, setData] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -59,7 +61,7 @@ export default function InventoryListsPage() {
   }, [searchParams]);
 
   return (
-    <main className="bg-white border-gray-400 p-3 shadow mt-20 p-5">
+    <main className="bg-white border-gray-400 p-3 shadow p-5">
       <div className="flex items-center justify-between mb-4">
         <h2
           className="text-2xl font-bold text-gray-800 text-"
@@ -88,6 +90,7 @@ export default function InventoryListsPage() {
             style={{
               background: "linear-gradient(to bottom, #3D00B8, #3070C3)",
             }}
+            onClick={() => router.push("/inventory/new")}
           >
             ＋ 新規在庫登録
           </button>

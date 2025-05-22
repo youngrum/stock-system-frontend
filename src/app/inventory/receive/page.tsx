@@ -2,15 +2,7 @@
 
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
-
-type InventoryItem = {
-  itemCode: string
-  itemName: string
-  modelNumber: string
-  category: string
-  currentStock: number
-  lastUpdated: string
-}
+import { InventoryItem } from '@/types/InventoryItem'
 
 export default function InventoryReceivePage() {
   const searchParams = useSearchParams()

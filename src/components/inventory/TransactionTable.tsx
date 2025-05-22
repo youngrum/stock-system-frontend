@@ -73,16 +73,16 @@ export default function TransactionTable({ data }: { data: Transaction[] }) {
                 {tx.remarks || "-"}
               </td>
               <td className="px-4 py-2">
-                {tx.purchaseOrder?.orderNo ? (
-                  <Link
-                    href="#"
-                    onClick={() => setSelectedTransaction(tx)}
-                    className="text-[#0d113d]"
-                  >
-                    <ExternalLink className="mx-auto" />
-                  </Link>
-                ) : (
+                {tx.transactionType === "MANUAL_DISPATCH" ? (
                   <span className="text-gray-400">ー</span>
+                ) : (
+                  <Link
+                  href="#"
+                  onClick={() => setSelectedTransaction(tx)}
+                  className="text-[#0d113d]"
+                >
+                  <ExternalLink className="mx-auto" />
+                </Link>
                 )}
               </td>
             </tr>

@@ -13,7 +13,7 @@ export default function MePage() {
   }
 
   return (
-    <div className="flex bg-white w-full justify-center mt-20 p-8">
+    <div className="flex bg-white w-full justify-center p-8">
         {/* 左カラム：リンクボタン */}
         <div className="w-1/3 space-y-4">
           {[

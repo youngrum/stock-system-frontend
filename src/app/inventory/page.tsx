@@ -10,7 +10,7 @@ import { useAuthGuard } from "@/lib/hooks/useAuthGuard";
 import { InventoryItem } from "@/types/InventoryItem";
 import { InventorySearchParams } from "@/types/InventoryItem";
 import { useEffect, useState } from "react";
-import { Search, X } from 'lucide-react';
+import { Search, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 import api from "@/services/api";
@@ -49,8 +49,8 @@ export default function InventoryListsPage() {
         params: {
           ...searchParams, // itemCode, itemName を展開
           page,
-          size: 10
-        }
+          size: 10,
+        },
       });
       console.log(res.data.data.content);
       setData(res.data.data.content); // ← ここがAPIのレスポンスに依存する（必要に応じて .data.content）
@@ -70,7 +70,7 @@ export default function InventoryListsPage() {
   }, [searchParams, page]);
 
   return (
-    <main className="bg-white border-gray-400 p-3 shadow p-5">
+    <main className="bg-white border-gray-400 shadow p-5">
       <div className="flex items-center justify-between mb-4">
         <h2
           className="text-2xl font-bold text-gray-800 text-"
@@ -89,9 +89,9 @@ export default function InventoryListsPage() {
             aria-label="検索フォーム切り替え"
           >
             {showSearchForm ? (
-              <X className="text-[#0d113d]" width={30} height={30}/>
+              <X className="text-[#0d113d]" width={30} height={30} />
             ) : (
-              <Search className="text-[#0d113d]" width={30} height={30}/>
+              <Search className="text-[#0d113d]" width={30} height={30} />
             )}
           </button>
 
@@ -117,24 +117,36 @@ export default function InventoryListsPage() {
       </div>
 
       {error && <p>{error}</p>}
-      {loading ? <p>読み込み中...</p> : <InventoryTable data={data} onReceive={handleReceiveClick} onDispach={handleDispatchClick}/>}
-      {selectedItem && (
-      <>
-        <InventoryReceiveModal 
-          isOpen={isRecieveModalOpen}
-          onClose={() => setIsRecieveModalOpen(false)}
-          itemCode={selectedItem.itemCode}
-          onSuccess={fetchData}
+      {loading ? (
+        <p>読み込み中...</p>
+      ) : (
+        <InventoryTable
+          data={data}
+          onReceive={handleReceiveClick}
+          onDispach={handleDispatchClick}
         />
-        <InventoryDispatchModal 
-          isOpen={isDispatchModalOpen}
-          onClose={() => setIsDispatchModalOpen(false)}
-          itemCode={selectedItem.itemCode}
-          onSuccess={fetchData}
-        />
-      </>
       )}
-      <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+      {selectedItem && (
+        <>
+          <InventoryReceiveModal
+            isOpen={isRecieveModalOpen}
+            onClose={() => setIsRecieveModalOpen(false)}
+            itemCode={selectedItem.itemCode}
+            onSuccess={fetchData}
+          />
+          <InventoryDispatchModal
+            isOpen={isDispatchModalOpen}
+            onClose={() => setIsDispatchModalOpen(false)}
+            itemCode={selectedItem.itemCode}
+            onSuccess={fetchData}
+          />
+        </>
+      )}
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+      />
     </main>
   );
 }

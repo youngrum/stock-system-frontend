@@ -1,15 +1,17 @@
 // app/orders/new/page.tsx
+"use client";
+
 import OrderForm from "@/components/order/OrderForm";
-import {PurchaseOrder} from "@/types/PurchaseOrder"
+import { PurchaseOrderRequest } from "@/types/PurchaseOrder";
 
 export default function OrderNewPage() {
-    const handleOrderSubmit = (formData : PurchaseOrder):void => {
+  const handleOrderSubmit = (formData: PurchaseOrderRequest): void => {
     // APIにPOSTするなど
   };
 
   return (
-    <main>
-        <OrderForm onSubmit={handleOrderSubmit} />
+    <main className="max-w-8xl mx-auto bg-white border-gray-400 shadow p-5">
+      <OrderForm onSubmit={handleOrderSubmit} />
     </main>
   );
 }

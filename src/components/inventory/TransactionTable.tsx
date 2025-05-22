@@ -1,12 +1,12 @@
 "use client";
 
-import { PackagePlus, Truck, ExternalLink, Bookmark } from 'lucide-react';
-import { formatDate } from '@/lib/utils/dateFormat';
-import { Transaction } from '@/types/Transaction'
-import { TransactionDetail } from '@/types/PurchaseOrder'
-import TransactionDetailModal from '@/components/inventory/TransactionDetailModal';
-import Link from 'next/link';
-import { useState } from 'react';
+import { PackagePlus, Truck, ExternalLink, Bookmark } from "lucide-react";
+import { formatDate } from "@/lib/utils/dateFormat";
+import { Transaction } from "@/types/Transaction";
+import { TransactionDetail } from "@/types/PurchaseOrder";
+import TransactionDetailModal from "@/components/inventory/TransactionDetailModal";
+import Link from "next/link";
+import { useState } from "react";
 
 export default function TransactionTable({ data }: { data: Transaction[] }) {
   const [selectedTransaction, setSelectedTransaction] =
@@ -79,12 +79,12 @@ export default function TransactionTable({ data }: { data: Transaction[] }) {
                   <span className="text-gray-400">ー</span>
                 ) : (
                   <Link
-                  href="#"
-                  onClick={() => setSelectedTransaction(tx)}
-                  className="text-[#0d113d]"
-                >
-                  <ExternalLink className="mx-auto" />
-                </Link>
+                    href="#"
+                    onClick={() => setSelectedTransaction(tx)}
+                    className="text-[#0d113d]"
+                  >
+                    <ExternalLink className="mx-auto" />
+                  </Link>
                 )}
               </td>
             </tr>

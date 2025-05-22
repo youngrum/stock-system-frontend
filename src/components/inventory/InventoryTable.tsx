@@ -30,8 +30,11 @@ export default function InventoryTable({
         </thead>
         <tbody className="text-gray-700">
           {data.map((item) => (
-            <tr key={item.itemCode} className="hover:bg-gray-200" style={{ borderBottom: '1px solid #101540' }}>
-
+            <tr
+              key={item.itemCode}
+              className="hover:bg-gray-200"
+              style={{ borderBottom: "1px solid #101540" }}
+            >
               <td className="px-4 py-3 items-center">
                 <Link
                   href="#"
@@ -61,7 +64,10 @@ export default function InventoryTable({
               <td className="px-4 py-3">{item.currentStock}</td>
               <td className="px-4 py-3">{formatDate(item.lastUpdated)}</td>
               <td className="px-4 py-3">
-                <Link href={`/inventory/${item.itemCode}/transactions`} className="text-[#0d113d]">
+                <Link
+                  href={`/inventory/${item.itemCode}/transactions`}
+                  className="text-[#0d113d]"
+                >
                   <ExternalLink className="mx-auto" />
                 </Link>
               </td>

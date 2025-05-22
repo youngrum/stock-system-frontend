@@ -16,6 +16,7 @@ export default function OrderForm({ onSubmit }: Props) {
       modelNumber: "",
       price: 0,
       quantity: 1,
+      remarks: "",
     },
   ]);
   const [supplier, setSupplier] = useState("");
@@ -33,6 +34,7 @@ export default function OrderForm({ onSubmit }: Props) {
         modelNumber: "",
         price: 0,
         quantity: 1,
+        remarks: "",
       },
     ]);
   };
@@ -64,6 +66,7 @@ export default function OrderForm({ onSubmit }: Props) {
         modelNumber: item.modelNumber,
         price: item.price,
         quantity: item.quantity,
+        remarks: item.remarks,
       })),
     };
     onSubmit(formData);
@@ -80,7 +83,7 @@ export default function OrderForm({ onSubmit }: Props) {
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-b pb-3 text-sm">
         <div>
-          <label className="block mb-1 font-semibold">仕入先</label>
+          <label className="block mb-1 pb-3 pt-1 font-semibold">仕入先</label>
           <input
             type="text"
             value={supplier}
@@ -90,11 +93,21 @@ export default function OrderForm({ onSubmit }: Props) {
           />
         </div>
         <div>
-          <label className="block mb-1 font-semibold">発注日</label>
+          <label className="block mb-1 pb-3 pt-1 font-semibold">発注日</label>
           <input
             type="date"
             value={orderDate}
             onChange={(e) => setOrderDate(e.target.value)}
+            className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+            required
+          />
+        </div>
+        <div>
+          <label className="block mb-1 pb-3 pt-1 font-semibold">備考</label>
+          <input
+            type="date"
+            value={remarks}
+            onChange={(e) => setRemarks(e.target.value)}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
             required
           />
@@ -117,80 +130,104 @@ export default function OrderForm({ onSubmit }: Props) {
           </thead>
           <tbody>
             {items.map((item, index) => (
-              <tr key={index} className="bg-white shadow-sm">
-                <td className="pr-2 py-2">
-                  <input
-                    type="text"
-                    value={item.itemCode}
-                    onChange={(e) =>
-                      updateItem(index, "itemCode", e.target.value)
-                    }
-                    className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
-                    required
-                  />
-                </td>
-                <td className="px-2 py-2">
-                  <input
-                    type="text"
-                    value={item.itemName}
-                    onChange={(e) =>
-                      updateItem(index, "itemName", e.target.value)
-                    }
-                    className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
-                  />
-                </td>
-                <td className="px-2 py-2 w-32">
-                  <input
-                    type="text"
-                    value={item.category}
-                    onChange={(e) =>
-                      updateItem(index, "category", e.target.value)
-                    }
-                    className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition w-32"
-                  />
-                </td>
-                <td className="px-2 py-2">
-                  <input
-                    type="text"
-                    value={item.modelNumber}
-                    onChange={(e) =>
-                      updateItem(index, "modelNumber", e.target.value)
-                    }
-                    className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
-                  />
-                </td>
-                <td className="px-2 py-2 w-12">
-                  <input
-                    type="number"
-                    value={item.quantity}
-                    onChange={(e) =>
-                      updateItem(index, "quantity", e.target.value)
-                    }
-                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition w-24"
-                    min={1}
-                    required
-                  />
-                </td>
-                <td className="px-2 py-2 w-12">
-                  <input
-                    type="number"
-                    value={item.price}
-                    onChange={(e) => updateItem(index, "price", e.target.value)}
-                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition w-24"
-                    min={1}
-                    required
-                  />
-                </td>
-                <td className="px-2 py-2 text-center">
-                  <button
-                    type="button"
-                    onClick={() => removeItem(index)}
-                    className="text-red-500 hover:underline"
-                  >
-                    ✕
-                  </button>
-                </td>
-              </tr>
+              <>
+                <tr key={index} className="bg-white">
+                  <td className="pr-2 py-2">
+                    <input
+                      type="text"
+                      value={item.itemCode}
+                      onChange={(e) =>
+                        updateItem(index, "itemCode", e.target.value)
+                      }
+                      className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                      required
+                    />
+                  </td>
+                  <td className="px-2 py-2">
+                    <input
+                      type="text"
+                      value={item.itemName}
+                      onChange={(e) =>
+                        updateItem(index, "itemName", e.target.value)
+                      }
+                      className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                    />
+                  </td>
+                  <td className="px-2 py-2 w-32">
+                    <input
+                      type="text"
+                      value={item.category}
+                      onChange={(e) =>
+                        updateItem(index, "category", e.target.value)
+                      }
+                      className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition w-32"
+                    />
+                  </td>
+                  <td className="px-2 py-2">
+                    <input
+                      type="text"
+                      value={item.modelNumber}
+                      onChange={(e) =>
+                        updateItem(index, "modelNumber", e.target.value)
+                      }
+                      className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                    />
+                  </td>
+                  <td className="px-2 py-2 w-12">
+                    <input
+                      type="number"
+                      value={item.quantity}
+                      onChange={(e) =>
+                        updateItem(index, "quantity", e.target.value)
+                      }
+                      className="bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition w-24"
+                      min={1}
+                      required
+                    />
+                  </td>
+                  <td className="px-2 py-2 w-12">
+                    <input
+                      type="number"
+                      value={item.price}
+                      onChange={(e) =>
+                        updateItem(index, "price", e.target.value)
+                      }
+                      className="bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition w-24"
+                      min={1}
+                      required
+                    />
+                  </td>
+                  <td className="px-2 py-2 text-center">
+                    <button
+                      type="button"
+                      onClick={() => removeItem(index)}
+                      className="text-red-500 hover:underline"
+                    >
+                      ✕
+                    </button>
+                  </td>
+                </tr>
+                <tr>
+                  {/* 2段目：備考欄だけ横長で下段に */}
+                  <td colSpan={6} className="pr-2 py-1">
+                    <label
+                      className="text-sm block mb-3
+                      font-semibold"
+                      style={{ color: "#101540" }}
+                    >
+                      備考
+                    </label>
+                    <input
+                      placeholder="備考"
+                      className="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
+                      value={item.remarks}
+                      onChange={(e) =>
+                        updateItem(index, "remarks", e.target.value)
+                      }
+                    />
+                  </td>
+                </tr>
+              </>
             ))}
           </tbody>
         </table>

@@ -46,4 +46,5 @@ export interface PurchaseOrderDetailRequest {
   category: string;
   price: number;
   quantity: number;
+  remarks: string;
 }

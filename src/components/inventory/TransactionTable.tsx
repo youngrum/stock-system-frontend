@@ -56,7 +56,9 @@ export default function TransactionTable({ data }: { data: Transaction[] }) {
                 {tx.stockItem.itemName || "-"}
               </td>
               <td className="px-4 py-2">
-                {tx.transactionType === "ORDER_REGIST" ? (
+                {tx.quantity === 0 ? (
+                  <span className="text-gray-500">{tx.quantity}</span>
+                ) : tx.transactionType === "ORDER_REGIST" ? (
                   <span className="text-gray-500">({tx.quantity})</span>
                 ) : tx.transactionType === "MANUAL_RECEIVE" ||
                   tx.transactionType === "PURCHASE_RECEIVE" ? (

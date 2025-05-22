@@ -44,7 +44,7 @@ export default function TransactionPage() {
           className="text-2xl font-bold text-gray-800"
           style={{ color: "#101540" }}
         >
-          入出庫一覧・検索
+          入出庫処理一覧・検索
         </h2>
         {loading ? <p>読み込み中...</p> : <TransactionTable data={data} />}
         </div>

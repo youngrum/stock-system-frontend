@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { PackagePlus, Truck, Search } from "lucide-react";
+import { PackagePlus, Truck, Search, Blocks } from "lucide-react";
 
 type sideBarProps = {
   isSidebarOpen: boolean;
@@ -17,8 +17,7 @@ export default function Sidebar({ isSidebarOpen }:sideBarProps) {
 
 
   const menuItems = [
-    { label: "入庫登録", path: "/inventory", icon: <PackagePlus size={18} /> },
-    { label: "出庫登録", path: "/inventory", icon: <Truck size={18} /> },
+    { label: "在庫登録(新規用)", path: "/inventory/new", icon: <Blocks size={18} /> },
     { label: "在庫一覧/検索", path: "/inventory", icon: <Search size={18} /> },
     { label: "トランザクション", path: "/inventory/transactions", icon: <Search size={18} /> },
     // { label: "発注登録", path: "/orders/new", icon: <FileText size={18} /> },
@@ -37,17 +36,29 @@ export default function Sidebar({ isSidebarOpen }:sideBarProps) {
       ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
     `}>
       <div className="flex flex-col gap-2">
-        {menuItems.map((item) => (
+      {menuItems.map((item) => (
+        <div key={item.path} className="relative group">
           <button
-            key={item.path}
             onClick={() => router.push(item.path)}
-            className="text-white my-2" 
-          ><p className="flex items-center">
-            <span className="pr-2 al">{item.icon}</span>
-            {item.label}
+            className="text-white my-2"
+          >
+            <p className="flex items-center">
+              <span className="pr-2">{item.icon}</span>
+              {item.label}
             </p>
           </button>
-        ))}
+
+          {/* ツールチップ表示：在庫一覧/検索のときだけ */}
+          {isSidebarOpen && item.label === "在庫一覧/検索" && (
+            <div className="absolute left-full top-1/2 ml-2 transform -translate-y-1/2 w-max bg-gray-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <ul>
+                <li className="flex items-center gap-2"><PackagePlus/>入庫処理</li>
+                <li className="flex items-center gap-2"><Truck/>出庫処理</li>
+              </ul>
+            </div>
+          )}
+        </div>
+      ))}
       </div>
     </aside>
   );

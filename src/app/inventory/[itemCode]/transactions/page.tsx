@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { Transaction } from '@/types/Transaction';
-import { PackagePlus, Truck} from "lucide-react";
+import { PackagePlus, Truck, Bookmark} from "lucide-react";
 import  Pagination from "@/components/ui/Pagination"
 import { InventoryItem } from '@/types/InventoryItem';
 import api from "@/services/api";
@@ -66,11 +66,16 @@ type Props = {
           {transactions.map((tx) => (
             <tr key={tx.transactionId} className="border-b hover:bg-gray-50">
               <td className="py-2 px-3">
-                {tx.transactionType === "MANUAL_DISPATCH" ? (
+              {tx.transactionType === "MANUAL_RECEIVE" ? (
                   <div className="text-green-800 flex justify-center items-center">
-                  <PackagePlus className="w-5 h-5 mr-1" />
-                  入庫
-                </div>
+                    <PackagePlus className="w-5 h-5 mr-1" />
+                    入庫
+                  </div>
+                ) : tx.transactionType === "ORDER_REGIST" ? (
+                  <div className="text-blue-800 flex justify-center items-center">
+                    <Bookmark className="w-5 h-5 mr-1" />
+                    発注登録
+                  </div>
                 ) : (
                   <div className="text-red-800 flex justify-center items-center">
                     <Truck className="w-5 h-5 mr-1" />
@@ -80,7 +85,11 @@ type Props = {
               </td>
               <td className="py-2 px-3">{tx.transactionTime?.slice(0, 10)}</td>
               <td className="py-2 px-3">{tx.operator}</td>
-              <td className="py-2 px-3">{tx.transactionType === "MANUAL_DISPATCH" ? `-${tx.quantity}` : `+${tx.quantity}`}</td>
+              <td className="py-2 px-3">
+              {tx.transactionType === "MANUAL_DISPATCH" ? `-${tx.quantity}`
+                : tx.transactionType === "ORDER_REGIST" ? `(${tx.quantity})`
+                : `+${tx.quantity}`}
+            </td>
               <td className="py-2 px-3">{tx.remarks || "-"}</td>
             </tr>
           ))}

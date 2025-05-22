@@ -24,8 +24,8 @@ export default function Pagination({ currentPage, totalPages, onPageChange }: Pr
           key={index}
           onClick={() => onPageChange(index)}
           disabled={index === currentPage}
-          className={`px-3 py-1 border rounded ${
-            index === currentPage ? "text-gray-400 bg-gray-100" : "hover:bg-gray-200"
+          className={`px-3 py-1 rounded ${
+            index === currentPage ? "text-gray-400" : "hover:bg-gray-300"
           }`}
         >
           {index + 1}

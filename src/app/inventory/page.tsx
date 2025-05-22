@@ -83,7 +83,9 @@ export default function InventoryListsPage() {
           {/* 🔍 検索マーク */}
           <button
             onClick={toggleSearchForm}
-            className="text-[#101540] hover:text-indigo-600 text-xl focus:outline-none"
+            className={`text-[#101540] hover:text-indigo-600 text-xl focus:outline-none transition-transform duration-300 ${
+              showSearchForm ? "rotate-180" : "rotate-0"
+            }`}
             aria-label="検索フォーム切り替え"
           >
             {showSearchForm ? (
@@ -107,7 +109,7 @@ export default function InventoryListsPage() {
       </div>
       <div
         className={`
-          transition-all duration-300 ease-in-out overflow-hidden
+          transition-all duration-500 ease-in-out overflow-hidden
           ${showSearchForm ? "max-h-[400px]" : "max-h-0"}
         `}
       >

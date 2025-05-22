@@ -26,7 +26,9 @@ export default function Header({ onToggleSidebar, isSidebarOpen}: HeaderProps) {
     <header className="fixed top-0 left-0 w-full bg-white shadow px-6 py-4 flex items-center justify-between z-100">
       {/* ハンバーガーメニュー */}
       <button
-        className="text-2xl text-gray-700 hover:text-black"
+        className={`text-2xl text-gray-700 hover:text-black transition-transform duration-300 ${
+          isSidebarOpen ? "rotate-180" : "rotate-0"
+        }`}
         onClick={onToggleSidebar}
       >
         {isSidebarOpen ? <X className="text-[#0d113d]" /> : <Menu className="text-[#0d113d]" />}

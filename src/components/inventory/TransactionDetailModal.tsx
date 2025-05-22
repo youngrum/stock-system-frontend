@@ -15,7 +15,7 @@ export default function TransactionDetailModal({ transaction, onClose }: Props) 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-[#0d113d] opacity-40" onClick={onClose} />
-      <div className="relative z-10 bg-white w-full max-w-4xl max-h-[70vh] py-10 px-6 rounded-lg shadow-lg overflow-y-auto space-y-4">
+      <div className="relative z-10 bg-white w-full max-w-xl max-h-[70vh] py-10 px-6 rounded-lg shadow-lg overflow-y-auto space-y-4">
         <button onClick={onClose} className="absolute top-4 right-4 text-gray-500 hover:text-gray-800">
           <X size={24} />
         </button>

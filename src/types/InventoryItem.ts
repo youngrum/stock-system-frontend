@@ -9,6 +9,7 @@ export interface InventoryItem {
   purchasePrice?: number;
   shoppingFee?: number;
   quantity: number;
+  lastUpdated: Date;
   remarks?: string;
 }
 

@@ -1,5 +1,6 @@
 export interface Transaction {
     transactionType: 'MANUAL_RECEIVE' | 'MANUAL_DISPATCH' | 'PURCHASE_RECEIVE' | 'ORDER_REGIST';
+    transactionId: bigint;
     quantity: number;
     operator: string;
     remarks: string;
@@ -21,4 +22,5 @@ export interface Transaction {
         createdAt: Date,
         details: []
     }
+    totalPages: number;
 }

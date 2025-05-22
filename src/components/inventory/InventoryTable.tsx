@@ -61,7 +61,7 @@ export default function InventoryTable({
               <td className="px-4 py-3">{item.currentStock}</td>
               <td className="px-4 py-3">{formatDate(item.lastUpdated)}</td>
               <td className="px-4 py-3">
-                <Link href="#" className="text-[#0d113d]">
+                <Link href={`/inventory/${item.itemCode}/transactions`} className="text-[#0d113d]">
                   <ExternalLink className="mx-auto" />
                 </Link>
               </td>

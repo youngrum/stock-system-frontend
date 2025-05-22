@@ -5,6 +5,7 @@ import InventoryTable from "@/components/inventory/InventoryTable";
 import InventoryReceiveModal from "@/components/inventory/InventoryReceiveModal";
 import InventoryDispatchModal from "@/components/inventory/InventoryDispatchModal";
 import InventorySearchForm from "@/components/inventory/InventorySearchForm";
+import Pagination from "@/components/ui/Pagination";
 import { useAuthGuard } from "@/lib/hooks/useAuthGuard";
 import { InventoryItem } from "@/types/InventoryItem";
 import { InventorySearchParams } from "@/types/InventoryItem";
@@ -39,13 +40,21 @@ export default function InventoryListsPage() {
     setSelectedItem(item);
     setIsDispatchModalOpen(true);
   };
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+
   const fetchData = async () => {
     try {
       const res = await api.get("/inventory/search", {
-        params: searchParams,
+        params: {
+          ...searchParams, // itemCode, itemName を展開
+          page,
+          size: 10
+        }
       });
       console.log(res.data.data.content);
       setData(res.data.data.content); // ← ここがAPIのレスポンスに依存する（必要に応じて .data.content）
+      setTotalPages(res.data.data.totalPages);
     } catch (err) {
       console.log(err);
       setError("在庫データの取得に失敗しました");
@@ -58,7 +67,7 @@ export default function InventoryListsPage() {
     if (!isLoggedIn) return;
 
     fetchData();
-  }, [searchParams]);
+  }, [searchParams, page]);
 
   return (
     <main className="bg-white border-gray-400 p-3 shadow p-5">
@@ -104,6 +113,7 @@ export default function InventoryListsPage() {
       >
         <InventorySearchForm onSearch={setSearchParams} />
       </div>
+
       {error && <p>{error}</p>}
       {loading ? <p>読み込み中...</p> : <InventoryTable data={data} onReceive={handleReceiveClick} onDispach={handleDispatchClick}/>}
       {selectedItem && (
@@ -122,6 +132,7 @@ export default function InventoryListsPage() {
         />
       </>
       )}
+      <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
     </main>
   );
 }

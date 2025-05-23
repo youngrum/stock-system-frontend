@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { PackagePlus, Truck, Search, Blocks } from "lucide-react";
+import { PackagePlus, Truck, Search, Blocks,FileText } from "lucide-react";
 
 type sideBarProps = {
   isSidebarOpen: boolean;
@@ -20,7 +20,7 @@ export default function Sidebar({ isSidebarOpen }:sideBarProps) {
     { label: "在庫登録(新規用)", path: "/inventory/new", icon: <Blocks size={18} /> },
     { label: "在庫一覧/検索", path: "/inventory", icon: <Search size={18} /> },
     { label: "トランザクション", path: "/inventory/transactions", icon: <Search size={18} /> },
-    // { label: "発注登録", path: "/orders/new", icon: <FileText size={18} /> },
+    { label: "発注登録", path: "/order", icon: <FileText size={18} /> },
     // { label: "納品登録", path: "/orders/receive", icon: <PackagePlus size={18} /> },
     // { label: "発注一覧/検索", path: "/orders", icon: <ListOrdered size={18} /> },
   ];

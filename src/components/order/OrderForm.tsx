@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { PurchaseOrderRequest } from "@/types/PurchaseOrder";
+import { X } from "lucide-react";
 
 type Props = {
   onSubmit: (formData: PurchaseOrderRequest) => void;
@@ -21,7 +22,7 @@ export default function OrderForm({ onSubmit }: Props) {
   ]);
   const [supplier, setSupplier] = useState("");
   const [orderDate, setOrderDate] = useState<string>("");
-  const [shippingFee, setShippingFee] = useState(0);
+  const [shippingFee, setShippingFee] = useState<number>(0);
   const [remarks, setRemarks] = useState("");
 
   const addItem = () => {
@@ -47,7 +48,7 @@ export default function OrderForm({ onSubmit }: Props) {
     const updated = [...items];
     updated[index] = {
       ...updated[index],
-      [field]: field === "quantity" ? Number(value) : value,
+      [field]: field === "quantity" || field === "price" || field === "shippingFee" ? Number(value) : value,
     };
     setItems(updated);
   };
@@ -75,15 +76,15 @@ export default function OrderForm({ onSubmit }: Props) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-8xl mx-auto p-6 space-y-6"
+      className="max-w-4xl mx-auto p-6 space-y-6"
       style={{ color: "#101540" }}
     >
       <h2 className="text-2xl font-bold">発注登録</h2>
-      <h3 className="text-lg font-semibold mb-2">共通情報</h3>
+      <h3 className="text-lg font-semibold mb-3">共通情報</h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 border-b pb-3 text-sm">
+      <div className="grid md:grid-cols-3 gap-x-4 gap-y-2 border-b pb-3 text-sm">
         <div>
-          <label className="block mb-1 pb-3 pt-1 font-semibold">仕入先</label>
+          <label className="block mb-1 pb-2 pt-1 font-semibold">仕入先</label>
           <input
             type="text"
             value={supplier}
@@ -93,7 +94,7 @@ export default function OrderForm({ onSubmit }: Props) {
           />
         </div>
         <div>
-          <label className="block mb-1 pb-3 pt-1 font-semibold">発注日</label>
+          <label className="block mb-1 pb-2 pt-1 font-semibold">発注日</label>
           <input
             type="date"
             value={orderDate}
@@ -103,134 +104,111 @@ export default function OrderForm({ onSubmit }: Props) {
           />
         </div>
         <div>
-          <label className="block mb-1 pb-3 pt-1 font-semibold">備考</label>
+          <label className="block mb-1 pb-2 pt-1 font-semibold">送料</label>
           <input
-            type="date"
+            type="number"
+            value={shippingFee}
+            onChange={(e) => setShippingFee(e.target.value)}
+            className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
+            required
+          />
+        </div>
+        <div className="col-span-3">
+          <label className="block mb-1 pb-2 pt-1 font-semibold">備考</label>
+          <input
+            type="text"
             value={remarks}
             onChange={(e) => setRemarks(e.target.value)}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
-            required
+            placeholder="使用案件・購入目的など"
           />
         </div>
       </div>
 
       <div>
         <h3 className="text-lg font-semibold mb-2">商品明細</h3>
-        <table className="w-full text-sm">
-          <thead className="" style={{ color: "#101540" }}>
-            <tr>
-              <th className="pr-3 py-2 text-left">商品コード</th>
-              <th className="px-3 py-2 text-left">品名</th>
-              <th className="px-3 py-2 text-left">カテゴリー</th>
-              <th className="px-3 py-2 text-left">型番</th>
-              <th className="px-3 py-2 text-left">数量</th>
-              <th className="px-3 py-2 text-left">単価</th>
-              <th className="px-3 py-2 text-center">削除</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.map((item, index) => (
-              <>
-                <tr key={index} className="bg-white">
-                  <td className="pr-2 py-2">
-                    <input
-                      type="text"
-                      value={item.itemCode}
-                      onChange={(e) =>
-                        updateItem(index, "itemCode", e.target.value)
-                      }
-                      className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
-                      required
-                    />
-                  </td>
-                  <td className="px-2 py-2">
-                    <input
-                      type="text"
-                      value={item.itemName}
-                      onChange={(e) =>
-                        updateItem(index, "itemName", e.target.value)
-                      }
-                      className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
-                    />
-                  </td>
-                  <td className="px-2 py-2 w-32">
-                    <input
-                      type="text"
-                      value={item.category}
-                      onChange={(e) =>
-                        updateItem(index, "category", e.target.value)
-                      }
-                      className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition w-32"
-                    />
-                  </td>
-                  <td className="px-2 py-2">
-                    <input
-                      type="text"
-                      value={item.modelNumber}
-                      onChange={(e) =>
-                        updateItem(index, "modelNumber", e.target.value)
-                      }
-                      className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
-                    />
-                  </td>
-                  <td className="px-2 py-2 w-12">
-                    <input
-                      type="number"
-                      value={item.quantity}
-                      onChange={(e) =>
-                        updateItem(index, "quantity", e.target.value)
-                      }
-                      className="bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition w-24"
-                      min={1}
-                      required
-                    />
-                  </td>
-                  <td className="px-2 py-2 w-12">
-                    <input
-                      type="number"
-                      value={item.price}
-                      onChange={(e) =>
-                        updateItem(index, "price", e.target.value)
-                      }
-                      className="bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition w-24"
-                      min={1}
-                      required
-                    />
-                  </td>
-                  <td className="px-2 py-2 text-center">
-                    <button
-                      type="button"
-                      onClick={() => removeItem(index)}
-                      className="text-red-500 hover:underline"
-                    >
-                      ✕
-                    </button>
-                  </td>
-                </tr>
-                <tr>
-                  {/* 2段目：備考欄だけ横長で下段に */}
-                  <td colSpan={6} className="pr-2 py-1">
-                    <label
-                      className="text-sm block mb-3
-                      font-semibold"
-                      style={{ color: "#101540" }}
-                    >
-                      備考
-                    </label>
-                    <input
-                      placeholder="備考"
-                      className="w-full bg-gray-50 border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-1 focus:ring-blue-500 text-sm"
-                      value={item.remarks}
-                      onChange={(e) =>
-                        updateItem(index, "remarks", e.target.value)
-                      }
-                    />
-                  </td>
-                </tr>
-              </>
-            ))}
-          </tbody>
-        </table>
+        {items.map((item, index) => (
+          <div
+            key={index}
+            className="grid grid-cols-20 gap-x-4 gap-y-1 pt-4 rounded-md bg-white mb-4"
+          >
+            {/* 上段 */}
+            <div className="col-span-4">
+              <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>在庫ID</label>
+              <input
+                type="text"
+                value={item.itemCode}
+                onChange={(e) => updateItem(index, "itemCode", e.target.value)}
+                className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              />
+            </div>
+            <div className="col-span-9">
+              <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>品名</label>
+              <input
+                type="text"
+                value={item.itemName}
+                onChange={(e) => updateItem(index, "itemName", e.target.value)}
+                className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              />
+            </div>
+            <div className="col-span-6 row-span-2">
+              <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>備考</label>
+              <textarea
+                value={item.remarks}
+                onChange={(e) => updateItem(index, "remarks", e.target.value)}
+                className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition min-h-26"
+              />
+            </div>
+            <div className="col-span-1 row-span-2 flex justify-center items-center">
+              <button
+                type="button"
+                onClick={() => removeItem(index)}
+                className="text-red-500 hover:text-red-700 text-xl"
+              >
+                <X />
+              </button>
+            </div>
+
+            {/* 下段 */}
+            <div className="col-span-4">
+              <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>カテゴリー</label>
+              <input
+                type="text"
+                value={item.category}
+                onChange={(e) => updateItem(index, "category", e.target.value)}
+                className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              />
+            </div>
+            <div className="col-span-4">
+              <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>型番</label>
+              <input
+                type="text"
+                value={item.modelNumber}
+                onChange={(e) => updateItem(index, "modelNumber", e.target.value)}
+                className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+              />
+            </div>
+            <div className="col-span-2">
+              <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>数量</label>
+              <input
+                type="number"
+                value={item.quantity}
+                min={1}
+                onChange={(e) => updateItem(index, "quantity", e.target.value)}
+                className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
+              />
+            </div>
+            <div className="col-span-3">
+              <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>単価</label>
+              <input
+                type="number"
+                value={item.price}
+                onChange={(e) => updateItem(index, "price", e.target.value)}
+                className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
+              />
+            </div>
+          </div>
+        ))}
         <button
           type="button"
           onClick={addItem}
@@ -249,7 +227,10 @@ export default function OrderForm({ onSubmit }: Props) {
         </button>
         <button
           type="submit"
-          className="px-4 py-2 border rounded bg-blue-600 text-white hover:bg-blue-700"
+          className="px-4 py-2 border rounded bg-blue-600 text-white hover:opacity-80"
+          style={{
+            background: "linear-gradient(to bottom, #3D00B8, #3070C3)",
+          }}
         >
           登録する
         </button>

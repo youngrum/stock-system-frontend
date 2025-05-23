@@ -27,7 +27,12 @@ export default function TransactionDetailModal({ transaction, onClose }: Props) 
         <div className="space-y-2">
           <p>処理種別: {transaction.transactionType === 'ORDER_REGIST' ? '発注登録' :
             transaction.transactionType === 'MANUAL_DISPATCH' ? '出庫' : '入庫'}</p>
-          <p>数量: {transaction.transactionType === 'MANUAL_DISPATCH' ? `-${transaction.quantity}` : `+${transaction.quantity}`}</p>
+          <p>数量:{transaction.transactionType === "MANUAL_DISPATCH"
+                    ? `-${transaction.quantity}`
+                  : transaction.transactionType === "ORDER_REGIST"
+                    ? `(${transaction.quantity})`
+                  : `+${transaction.quantity}`
+          }</p>
           <p>実行者: {transaction.operator}</p>
           <p>実行日: {transaction.transactionTime.slice(0, 10)}</p>
           <p>備考: {transaction.remarks || '-'}</p>

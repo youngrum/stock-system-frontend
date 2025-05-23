@@ -6,7 +6,7 @@ import { PurchaseOrderRequest } from "@/types/PurchaseOrder";
 
 export default function OrderNewPage() {
   const handleOrderSubmit = (formData: PurchaseOrderRequest): void => {
-    // APIにPOSTするなど
+    console.log("%o", formData);
   };
 
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { PurchaseOrderRequest,OrderItem } from "@/types/PurchaseOrder";
 import { InventoryItem } from "@/types/InventoryItem";
 import { X } from "lucide-react";
@@ -21,6 +21,7 @@ const [items, setItems] = useState<OrderItem[]>([
         quantity: 1,
         remarks: "",
         autoFetchRequired: false,
+        autoSuggestRequired: false,
         readOnlyFields: {
         itemName: false,
         category: false,
@@ -34,7 +35,8 @@ const [items, setItems] = useState<OrderItem[]>([
   const [shippingFee, setShippingFee] = useState<number>(0);
   const [remarks, setRemarks] = useState("");
   const [suggestionsMap, setSuggestionsMap] = useState<Record<number, InventoryItem[]>>({});
-  const [isFocused, setIsFocused] = useState(false);
+  const [focusedField, setFocusedField] = useState<null | { index: number; field: string }>(null);
+  const skipBlurRef = useRef(false); // フォームのフォーカス外しのフラグ
 
   const addItem = () => {
     setItems([
@@ -74,6 +76,9 @@ const [items, setItems] = useState<OrderItem[]>([
 
         // itemCodeが空に戻ったら readOnly を解除
         if (value.trim() === "") {
+            // 空欄なら候補クリア
+            setSuggestionsMap((prev) => ({ ...prev, [index]: [] }));
+            // 他入力欄もクリア
             newItem.itemName = "";
             newItem.category = "";
             newItem.modelNumber = "";
@@ -84,7 +89,13 @@ const [items, setItems] = useState<OrderItem[]>([
             };
         }
       }
-  
+
+      // 品名と型番の変更検知
+      if (field === "itemName" || field === "modelNumber") {
+        if (prevItem[field] !== value && !prevItem.itemCode) {
+          newItem.autoSuggestRequired = true;
+        }
+      }  
       newItems[index] = newItem;
       return newItems;
     });
@@ -105,6 +116,12 @@ const [items, setItems] = useState<OrderItem[]>([
             console.log(content);
             const suggestions = content || [];
             setSuggestionsMap((prev) => ({ ...prev, [index]: suggestions }));
+
+            setTimeout(() => {
+                if (focusedField?.index === index) {
+                  setFocusedField({ index, field: focusedField.field }); // 再トリガー
+                }
+              }, 0);
   
             if (content && content.length > 0) {
               const found = content[0];
@@ -130,6 +147,59 @@ const [items, setItems] = useState<OrderItem[]>([
             console.error("在庫情報の取得に失敗しました:", error);
           }
         }
+
+        // 品名と型番のサジェスト取得
+        if (
+            item.autoSuggestRequired &&
+            !item.itemCode &&
+            (item.itemName?.trim() || item.modelNumber?.trim() || item.category?.trim())
+          ) {
+            try {
+              const res = await api.get("/inventory/search", {
+                params: {
+                  itemName: item.itemName || "",
+                  modelNumber: item.modelNumber || "",
+                  category: item.category || "",
+                },
+              });
+          
+              const content = res.data?.data?.content || [];
+              console.log(content);
+              setSuggestionsMap((prev) => ({ ...prev, [index]: content }));
+
+              setTimeout(() => {
+                if (focusedField?.index === index) {
+                  setFocusedField({ index, field: focusedField.field }); // 再トリガー
+                }
+              }, 0);
+
+              // ※候補が1件だけなら自動補完
+              if (content.length === 1) {
+                const found = content[0];
+                const updated = [...items];
+                updated[index] = {
+                  ...updated[index],
+                  itemCode: found.itemCode,
+                  itemName: found.itemName,
+                  category: found.category,
+                  modelNumber: found.modelNumber,
+                  autoSuggestRequired: false,
+                  autoFetchRequired: false,
+                  readOnlyFields: {
+                    itemName: true,
+                    category: true,
+                    modelNumber: true,
+                  },
+                };
+              } else {
+                // 候補が複数あればサジェスト表示はUI側で処理
+                const updated = [...items];
+                updated[index].autoSuggestRequired = false;
+              }
+            } catch (error) {
+              console.error("補完候補の取得に失敗:", error);
+            }
+          }
       });
   
       await Promise.all(promises);
@@ -137,7 +207,6 @@ const [items, setItems] = useState<OrderItem[]>([
   
     fetchAndUpdate();
   }, [items]);
-
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -156,6 +225,8 @@ const [items, setItems] = useState<OrderItem[]>([
         remarks: item.remarks,
       })),
     };
+    console.log(formData);
+    return;
     onSubmit(formData);
   };
 
@@ -225,20 +296,34 @@ const [items, setItems] = useState<OrderItem[]>([
                 type="text"
                 value={item.itemCode}
                 onChange={(e) => updateItem(index, "itemCode", e.target.value)}
-                onFocus={() => setIsFocused(true)}
+                onFocus={() => setFocusedField({ index, field: "itemCode" })}
                 onBlur={() => {
-                  // 少し遅らせて候補選択イベントが走るようにする
-                  setTimeout(() => setIsFocused(false), 100);
-                }}
+                    setTimeout(() => {
+                      const currentItem = items[index];
+                      // itemCode が空欄 or readOnlyなら候補を強制反映しない
+                      if (
+                        !skipBlurRef.current && // ← フラグがfalseのときだけ補完
+                        currentItem.itemCode.trim() !== "" && // 空欄ではない
+                        suggestionsMap[index]?.length > 0
+                      ) {
+                        const found = suggestionsMap[index][0];
+                        // フォーカス外したとき、候補があるなら補完
+                        updateItem(index, "itemCode", found.itemCode);
+                      }
+                      skipBlurRef.current = false;
+                      setFocusedField(null);
+                    }, 150);
+                  }}
                 className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
               />
-              {isFocused && suggestionsMap[index]?.length > 0 && (
+              {focusedField?.index === index && focusedField.field === "itemCode" && suggestionsMap[index]?.length > 0 && (
                 <ul className="absolute z-10 mt-1 w-full max-w-[500px] border border-gray-300 bg-white shadow-lg rounded text-sm text-gray-800 max-h-48 overflow-auto transition-all duration-200 opacity-100">
                     {suggestionsMap[index].map((sug) => (
                     <li
                         key={sug.itemCode}
                         className="px-2 py-1 hover:bg-gray-100 cursor-pointer"
                         onMouseDown={() => {
+                            skipBlurRef.current = true;
                             // onBlurより前に発火させるため onMouseDown を使用
                             updateItem(index, "itemCode", sug.itemCode);
                           }}
@@ -257,12 +342,34 @@ const [items, setItems] = useState<OrderItem[]>([
               <input
                 type="text"
                 value={item.itemName}
-                onChange={(e) => updateItem(index, "itemName", e.target.value)}
                 readOnly={item.readOnlyFields?.itemName}
                 className={`w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition 
                     ${item.readOnlyFields?.itemName ? "text-gray-400" : "text-gray-900"}`
                 }
+                onChange={(e) => updateItem(index, "itemName", e.target.value)}
+                onFocus={() => setFocusedField({ index, field: "itemName" })}
+                onBlur={() => setTimeout(() => setFocusedField(null), 100)}
+                required
               />
+                {focusedField?.index === index && focusedField.field === "itemName" && suggestionsMap[index]?.length > 0 && (
+                <ul className="absolute z-10 mt-1 w-full max-w-[500px] border border-gray-300 bg-white shadow-lg rounded text-sm text-gray-800 max-h-48 overflow-auto transition-all duration-200 opacity-100">
+                    {suggestionsMap[index].map((sug) => (
+                    <li
+                        key={sug.itemCode}
+                        className="px-2 py-1 hover:bg-gray-100 cursor-pointer"
+                        onMouseDown={() => {
+                            // onBlurより前に発火させるため onMouseDown を使用
+                            updateItem(index, "itemCode", sug.itemCode);
+                          }}
+                        onClick={() => {
+                        updateItem(index, "itemCode", sug.itemCode);
+                        }}
+                    >
+                        {sug.itemCode} : {sug.itemName} / {sug.modelNumber}
+                    </li>
+                    ))}
+                </ul>
+                )}
             </div>
             <div className="col-span-6 row-span-2">
               <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>備考</label>
@@ -295,6 +402,7 @@ const [items, setItems] = useState<OrderItem[]>([
                         item.readOnlyFields?.category ? "text-gray-400" : "text-gray-900"
                       }
                     `}
+                required
               />
             </div>
             <div className="col-span-4">
@@ -302,14 +410,36 @@ const [items, setItems] = useState<OrderItem[]>([
               <input
                 type="text"
                 value={item.modelNumber}
-                onChange={(e) => updateItem(index, "modelNumber", e.target.value)}
                 readOnly={item.readOnlyFields?.modelNumber}
                 className={`w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition
                     ${
                         item.readOnlyFields?.modelNumber ? "text-gray-400" : "text-gray-900"
-                      }
-                `}
+                    }
+                    `}
+                onChange={(e) => updateItem(index, "modelNumber", e.target.value)}                
+                onFocus={() => setFocusedField({ index, field: "modelNumber" })}
+                onBlur={() => setTimeout(() => setFocusedField(null), 100)}
+                required
               />
+                {focusedField?.index === index && focusedField.field === "modelNumber" && (
+                <ul className="absolute z-10 mt-1 w-full max-w-[500px] border border-gray-300 bg-white shadow-lg rounded text-sm text-gray-800 max-h-48 overflow-auto transition-all duration-200 opacity-100">
+                    {suggestionsMap[index].map((sug) => (
+                    <li
+                        key={sug.itemCode}
+                        className="px-2 py-1 hover:bg-gray-100 cursor-pointer"
+                        onMouseDown={() => {
+                            // onBlurより前に発火させるため onMouseDown を使用
+                            updateItem(index, "itemCode", sug.itemCode);
+                          }}
+                        onClick={() => {
+                        updateItem(index, "itemCode", sug.itemCode);
+                        }}
+                    >
+                        {sug.itemCode} : {sug.itemName} / {sug.modelNumber}
+                    </li>
+                    ))}
+                </ul>
+                )}
             </div>
             <div className="col-span-2">
               <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>数量</label>

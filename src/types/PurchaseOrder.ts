@@ -60,6 +60,7 @@ export interface OrderItem {
   remarks: string;
 
   autoFetchRequired?: boolean;
+  autoSuggestRequired?: boolean;
   readOnlyFields?: {
     itemName: boolean;
     category: boolean;

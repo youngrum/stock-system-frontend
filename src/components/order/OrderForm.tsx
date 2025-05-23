@@ -1,29 +1,40 @@
 "use client";
 
-import { useState } from "react";
-import { PurchaseOrderRequest } from "@/types/PurchaseOrder";
+import { useState, useEffect } from "react";
+import { PurchaseOrderRequest,OrderItem } from "@/types/PurchaseOrder";
+import { InventoryItem } from "@/types/InventoryItem";
 import { X } from "lucide-react";
+import api from "@/services/api";
 
 type Props = {
   onSubmit: (formData: PurchaseOrderRequest) => void;
 };
 
 export default function OrderForm({ onSubmit }: Props) {
-  const [items, setItems] = useState([
+const [items, setItems] = useState<OrderItem[]>([
     {
-      itemCode: "",
-      itemName: "",
-      category: "",
-      modelNumber: "",
-      price: 0,
-      quantity: 1,
-      remarks: "",
+        itemCode: "",
+        itemName: "",
+        category: "",
+        modelNumber: "",
+        price: 0,
+        quantity: 1,
+        remarks: "",
+        autoFetchRequired: false,
+        readOnlyFields: {
+        itemName: false,
+        category: false,
+        modelNumber: false,
+        },
     },
-  ]);
+]);
+      
   const [supplier, setSupplier] = useState("");
   const [orderDate, setOrderDate] = useState<string>("");
   const [shippingFee, setShippingFee] = useState<number>(0);
   const [remarks, setRemarks] = useState("");
+  const [suggestionsMap, setSuggestionsMap] = useState<Record<number, InventoryItem[]>>({});
+  const [isFocused, setIsFocused] = useState(false);
 
   const addItem = () => {
     setItems([
@@ -45,13 +56,88 @@ export default function OrderForm({ onSubmit }: Props) {
   };
 
   const updateItem = (index: number, field: string, value: string) => {
-    const updated = [...items];
-    updated[index] = {
-      ...updated[index],
-      [field]: field === "quantity" || field === "price" || field === "shippingFee" ? Number(value) : value,
-    };
-    setItems(updated);
+    setItems((prevItems) => {
+      const newItems = [...prevItems];
+      const prevItem = prevItems[index];
+      const newItem = {
+        ...prevItem,
+        [field]: field === "quantity" || field === "price" || field === "shippingFee"
+          ? Number(value)
+          : value,
+      };
+
+      // itemCode が変わったかを検知
+      if (field === "itemCode") {
+        if ( prevItem.itemCode !== value) {
+            newItem.autoFetchRequired = true; // フラグを立てる（useEffect検知用）
+        }
+
+        // itemCodeが空に戻ったら readOnly を解除
+        if (value.trim() === "") {
+            newItem.itemName = "";
+            newItem.category = "";
+            newItem.modelNumber = "";
+            newItem.readOnlyFields = {
+            itemName: false,
+            category: false,
+            modelNumber: false,
+            };
+        }
+      }
+  
+      newItems[index] = newItem;
+      return newItems;
+    });
   };
+
+  useEffect(() => {
+    const fetchAndUpdate = async () => {
+      const promises = items.map(async (item, index) => {
+        if (item.autoFetchRequired && item.itemCode) {
+          try {
+            const res = await api.get("/inventory/search", {
+              params: {
+                itemCode: item.itemCode,
+              },
+            });
+  
+            const content = res.data?.data?.content;
+            console.log(content);
+            const suggestions = content || [];
+            setSuggestionsMap((prev) => ({ ...prev, [index]: suggestions }));
+  
+            if (content && content.length > 0) {
+              const found = content[0];
+              const updated = [...items];
+              updated[index] = {
+                ...updated[index],
+                itemName: found.itemName,
+                category: found.category,
+                modelNumber: found.modelNumber,
+                autoFetchRequired: false,
+                readOnlyFields: {
+                    itemName: true,
+                    category: true,
+                    modelNumber: true,
+                  },
+              };
+              setItems(updated);
+            } else {
+              console.warn("在庫IDに一致するデータが見つかりません:", item.itemCode);
+            }
+          } catch (error) {
+            console.log(error);
+            console.error("在庫情報の取得に失敗しました:", error);
+          }
+        }
+      });
+  
+      await Promise.all(promises);
+    };
+  
+    fetchAndUpdate();
+  }, [items]);
+
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,14 +219,38 @@ export default function OrderForm({ onSubmit }: Props) {
             className="grid grid-cols-20 gap-x-4 gap-y-1 pt-4 rounded-md bg-white mb-4"
           >
             {/* 上段 */}
-            <div className="col-span-4">
+            <div className="col-span-4 rerative">
               <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>在庫ID</label>
               <input
                 type="text"
                 value={item.itemCode}
                 onChange={(e) => updateItem(index, "itemCode", e.target.value)}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => {
+                  // 少し遅らせて候補選択イベントが走るようにする
+                  setTimeout(() => setIsFocused(false), 100);
+                }}
                 className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
               />
+              {isFocused && suggestionsMap[index]?.length > 0 && (
+                <ul className="absolute z-10 mt-1 w-full max-w-[500px] border border-gray-300 bg-white shadow-lg rounded text-sm text-gray-800 max-h-48 overflow-auto transition-all duration-200 opacity-100">
+                    {suggestionsMap[index].map((sug) => (
+                    <li
+                        key={sug.itemCode}
+                        className="px-2 py-1 hover:bg-gray-100 cursor-pointer"
+                        onMouseDown={() => {
+                            // onBlurより前に発火させるため onMouseDown を使用
+                            updateItem(index, "itemCode", sug.itemCode);
+                          }}
+                        onClick={() => {
+                        updateItem(index, "itemCode", sug.itemCode);
+                        }}
+                    >
+                        {sug.itemCode} : {sug.itemName} / {sug.modelNumber}
+                    </li>
+                    ))}
+                </ul>
+                )}
             </div>
             <div className="col-span-9">
               <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>品名</label>
@@ -148,7 +258,10 @@ export default function OrderForm({ onSubmit }: Props) {
                 type="text"
                 value={item.itemName}
                 onChange={(e) => updateItem(index, "itemName", e.target.value)}
-                className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                readOnly={item.readOnlyFields?.itemName}
+                className={`w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition 
+                    ${item.readOnlyFields?.itemName ? "text-gray-400" : "text-gray-900"}`
+                }
               />
             </div>
             <div className="col-span-6 row-span-2">
@@ -176,7 +289,12 @@ export default function OrderForm({ onSubmit }: Props) {
                 type="text"
                 value={item.category}
                 onChange={(e) => updateItem(index, "category", e.target.value)}
-                className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                readOnly={item.readOnlyFields?.category}
+                className={`w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition
+                    ${
+                        item.readOnlyFields?.category ? "text-gray-400" : "text-gray-900"
+                      }
+                    `}
               />
             </div>
             <div className="col-span-4">
@@ -185,7 +303,12 @@ export default function OrderForm({ onSubmit }: Props) {
                 type="text"
                 value={item.modelNumber}
                 onChange={(e) => updateItem(index, "modelNumber", e.target.value)}
-                className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                readOnly={item.readOnlyFields?.modelNumber}
+                className={`w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition
+                    ${
+                        item.readOnlyFields?.modelNumber ? "text-gray-400" : "text-gray-900"
+                      }
+                `}
               />
             </div>
             <div className="col-span-2">

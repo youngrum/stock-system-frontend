@@ -48,3 +48,21 @@ export interface PurchaseOrderDetailRequest {
   quantity: number;
   remarks: string;
 }
+
+
+export interface OrderItem {
+  itemCode: string;
+  itemName: string;
+  category: string;
+  modelNumber: string;
+  price: number;
+  quantity: number;
+  remarks: string;
+
+  autoFetchRequired?: boolean;
+  readOnlyFields?: {
+    itemName: boolean;
+    category: boolean;
+    modelNumber: boolean;
+  };
+};

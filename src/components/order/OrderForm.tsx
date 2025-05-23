@@ -226,7 +226,6 @@ const [items, setItems] = useState<OrderItem[]>([
       })),
     };
     console.log(formData);
-    return;
     onSubmit(formData);
   };
 

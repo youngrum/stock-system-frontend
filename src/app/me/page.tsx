@@ -1,8 +1,8 @@
 // src/app/me/page.tsx
-'use client'
-import { useAppStore } from '@/stores/useAppStore'
-import { useAuthGuard } from '@/lib/hooks/useAuthGuard';
-import Link from 'next/link'
+"use client";
+import { useAppStore } from "@/stores/useAppStore";
+import { useAuthGuard } from "@/lib/hooks/useAuthGuard";
+import Link from "next/link";
 
 export default function MePage() {
   const authName = useAppStore((state) => state.authName);
@@ -14,34 +14,34 @@ export default function MePage() {
 
   return (
     <div className="flex bg-white w-full justify-center p-8">
-        {/* 左カラム：リンクボタン */}
-        <div className="w-1/3 space-y-4">
-          {[
-            { label: '入庫登録', path: '/inventory' },
-            { label: '出庫登録', path: '/inventory' },
-            { label: '在庫一覧・検索', path: '/inventory' },
-            { label: 'トランザクション', path: '/inventory/transactions' },
-            { label: '発注登録', path: '/orders' },
-            { label: '納品登録', path: '/receive-from-order' },
-            { label: '発注履歴・検索', path: '/order-history' }
-          ].map(link => (
-            <Link
-              key={link.path}
-              href={link.path}
-              className="block bg-[#0d113d] text-white py-3 px-6 rounded text-center hover:bg-[#1b215e]"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </div>
+      {/* 左カラム：リンクボタン */}
+      <div className="w-1/3 space-y-4">
+        {[
+          { label: "入庫登録", path: "/inventory" },
+          { label: "出庫登録", path: "/inventory" },
+          { label: "在庫一覧・検索", path: "/inventory" },
+          { label: "トランザクション", path: "/inventory/transactions" },
+          { label: "発注登録", path: "/order" },
+          { label: "納品登録", path: "/receive-from-order" },
+          { label: "発注履歴・検索", path: "/order-history" },
+        ].map((link) => (
+          <Link
+            key={link.path}
+            href={link.path}
+            className="block bg-[#0d113d] text-white py-3 px-6 rounded text-center hover:bg-[#1b215e]"
+          >
+            {link.label}
+          </Link>
+        ))}
+      </div>
 
-        {/* 右カラム：ユーザー表示 */}
-        <div className="hidden md:flex w-1/2 items-center justify-center max-w-md">
-          <div className="text-center">
-            <p className="text-2xl font-semibold">ようこそ</p>
-            <p className="text-4xl font-bold mt-2">{authName}さん</p>
-          </div>
+      {/* 右カラム：ユーザー表示 */}
+      <div className="hidden md:flex w-1/2 items-center justify-center max-w-md">
+        <div className="text-center">
+          <p className="text-2xl font-semibold">ようこそ</p>
+          <p className="text-4xl font-bold mt-2">{authName}さん</p>
         </div>
+      </div>
     </div>
-  )
+  );
 }

@@ -49,7 +49,6 @@ export interface PurchaseOrderDetailRequest {
   remarks: string;
 }
 
-
 export interface OrderItem {
   itemCode: string;
   itemName: string;
@@ -66,4 +65,29 @@ export interface OrderItem {
     category: boolean;
     modelNumber: boolean;
   };
-};
+}
+
+export interface PurchaseOrderResponse {
+  orderNo: string;
+  supplier: string;
+  orderSubtotal: number;
+  operator: string;
+  orderDate: string;
+  shippingFee: number;
+  status: string;
+  remarks?: string;
+  details?: PurchaseOrderDetailResponse[];
+}
+
+export interface PurchaseOrderDetailResponse {
+  orderNo: string; // どの発注の明細か
+  itemCode: string;
+  itemName: string;
+  modelNumber: string;
+  category: string;
+  purchasePrice: number;
+  quantity: number;
+  status: string; // 納品済みかなど
+  receivedQuantity?: number; // 納品数など追加用途
+  // その他表示・更新に必要なフィールド
+}

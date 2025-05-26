@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import api from "@/services/api";
 import PurchaseList from "@/components/order/PurchaseList";
 import RecieveFromOrderModal from "@/components/order/RecieveFromOrderModal";
+import Pagination from "@/components/ui/Pagination";
 import {
   PurchaseOrderResponse,
   PurchaseOrderDetailResponse,
@@ -29,8 +30,7 @@ export default function OrderHistoryPage() {
             size: 10, // ← 1ページあたりの件数
           },
         });
-        console.log(res.data);
-        setData(res.data.content); // APIのレスポンス形式により必要に応じて調整
+        setData(res.data.content);
         setTotalPages(res.data.totalPages);
       } catch (err) {
         console.error("発注履歴取得エラー:", err);
@@ -39,7 +39,7 @@ export default function OrderHistoryPage() {
       }
     };
     fetchPurchaseList();
-  }, []);
+  }, [page]);
 
   // モーダルの開閉制御
   const openModal = (detail: PurchaseOrderDetailResponse) => {
@@ -52,11 +52,12 @@ export default function OrderHistoryPage() {
   const handleRegisterDelivery = async (
     item: PurchaseOrderDetailResponse,
     quantity: number
+
   ) => {
-    await api.post("/v1/api/receive-from-order", {
-      orderNo: item.orderNo,
-      itemCode: item.itemCode,
-      receivedQuantity: quantity,
+    console.log("%o", item);
+    await api.post("/receive-from-order", {
+      orderNo: item.orderNo, // itemに含まれていない
+      items: [{ itemCode: item.itemCode, receivedQuantity: quantity}]
     });
     // 成功後、履歴を再取得するなど
     closeModal();
@@ -75,6 +76,11 @@ export default function OrderHistoryPage() {
           onSubmit={handleRegisterDelivery}
         />
       )}
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+      />
     </main>
   );
 }

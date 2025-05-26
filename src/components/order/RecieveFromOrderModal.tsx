@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PurchaseOrderDetailResponse } from "@/types/PurchaseOrder";
 
 type Props = {
@@ -17,7 +17,12 @@ export default function RecieveFromOrderModal({
   onClose,
   onSubmit,
 }: Props) {
+  const maxValue = detail.quantity - (detail.receivedQuantity ?? 0);
   const [quantity, setQuantity] = useState<number>(detail.quantity);
+
+  useEffect(() => {
+    setQuantity(maxValue);
+  }, [detail]);
 
   if (!open) return null;
 
@@ -31,6 +36,7 @@ export default function RecieveFromOrderModal({
           </div>
           <div>品名: {detail.itemName}</div>
           <div>発注数: {detail.quantity}</div>
+          <div>受領数: {detail.receivedQuantity}</div>
         </div>
         <div className="mb-4">
           <label className="block mb-1 text-xs">納品数</label>
@@ -38,7 +44,7 @@ export default function RecieveFromOrderModal({
             type="number"
             value={quantity}
             min={1}
-            max={detail.quantity}
+            max={maxValue}
             className="w-full border rounded px-2 py-1"
             onChange={(e) => setQuantity(Number(e.target.value))}
           />

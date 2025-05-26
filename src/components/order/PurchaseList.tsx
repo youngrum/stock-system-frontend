@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { SquareMinus ,SquarePlus } from 'lucide-react';
 import {
   PurchaseOrderResponse,
   PurchaseOrderDetailResponse,
@@ -29,7 +30,9 @@ export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
       {/* 一覧 */}
       {orders.map((order, idx) => (
         <React.Fragment key={order.orderNo}>
-          <div className="grid grid-cols-18 items-center py-2 hover:bg-gray-50 border-b text-sm">
+          <div className="grid grid-cols-18 gap-y-4 items-center py-2 hover:bg-gray-50 border-b text-sm"
+          onClick={() => setExpandedIndex(expandedIndex === idx ? null : idx)}
+          >
             <span className="col-span-2">{order.orderNo}</span>
             <span className="col-span-2">{order.supplier}</span>
             <span className="col-span-2">
@@ -44,25 +47,23 @@ export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
             <span className="truncate col-span-3" title={order.remarks}>
               {order.remarks}
             </span>
-            <button
-              onClick={() =>
-                setExpandedIndex(expandedIndex === idx ? null : idx)
-              }
-            >
-              {expandedIndex === idx ? "－" : "＋"}
-            </button>
+            <span className="col-span-1">
+              <button className={` transition-transform duration-300 ${expandedIndex === idx? "rotate-180" : "rotate-0"}`}>
+                {expandedIndex === idx ? <SquareMinus /> : <SquarePlus />}
+              </button>
+            </span>
 
           {/* アコーディオン明細 */}
-          {expandedIndex === idx && (
-            <div className="py-2 col-span-18">
-              <table className="w-full text-sm ">
+            <div className={`col-span-18 transition-all duration-500 ease-in-out overflow-hidden ${expandedIndex === idx ? "max-h-[400px]" : "max-h-0"}`}>
+              <table className="w-full text-sm py-2 ">
                 <thead>
                   <tr className="font-semibold bg-blue-50">
                     <th className="py-1 col-span-3">商品ID</th>
                     <th className="py-1 col-span-3">品名</th>
                     <th className="py-1 col-span-2">型番</th>
                     <th className="py-1 col-span-2">カテゴリ</th>
-                    <th className="py-1 col-span-2">数量</th>
+                    <th className="py-1 col-span-2">発注数</th>
+                    <th className="py-1 col-span-2">受領数</th>
                     <th className="py-1 col-span-2">単価</th>
                     <th className="py-1 col-span-2">ステータス</th>
                     <th className="py-1 col-span-2">納品登録</th>
@@ -78,12 +79,15 @@ export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
                       <td className="py-1 col-span-2">{detail.modelNumber}</td>
                       <td className="py-1 col-span-2">{detail.category}</td>
                       <td className="py-1 col-span-2">{detail.quantity}</td>
+                      <td className="py-1 col-span-2">{detail.receivedQuantity}</td>
                       <td className="py-1 col-span-2">{detail.purchasePrice}円</td>
                       <td className="py-1 col-span-2">{detail.status}</td>
                       <td className="py-1 col-span-2">
+                        
                         <button
-                          className="text-xs bg-blue-600 text-white rounded px-2 py-1 hover:bg-blue-700"
+                          className={`text-xs  text-white rounded px-2 py-1 ${detail.status === `完了` ? `bg-gray-600`: `bg-blue-600 hover:bg-blue-700` }`}
                           onClick={() => onRegisterDelivery(detail)}
+                          disabled={detail.status === "完了"}
                         >
                           納品登録
                         </button>
@@ -93,7 +97,6 @@ export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
                 </tbody>
               </table>
             </div>
-          )}
         </div>
         </React.Fragment>
       ))}

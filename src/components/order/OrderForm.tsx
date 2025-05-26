@@ -19,7 +19,7 @@ const [items, setItems] = useState<OrderItem[]>([
         modelNumber: "",
         price: 0,
         quantity: 1,
-        remarks: "",
+        remarks: "-",
         autoFetchRequired: false,
         autoSuggestRequired: false,
         readOnlyFields: {
@@ -33,7 +33,7 @@ const [items, setItems] = useState<OrderItem[]>([
   const [supplier, setSupplier] = useState("");
   const [orderDate, setOrderDate] = useState<string>("");
   const [shippingFee, setShippingFee] = useState<number>(0);
-  const [remarks, setRemarks] = useState("");
+  const [remarks, setRemarks] = useState("-");
   const [suggestionsMap, setSuggestionsMap] = useState<Record<number, InventoryItem[]>>({});
   const [focusedField, setFocusedField] = useState<null | { index: number; field: string }>(null);
   const skipBlurRef = useRef(false); // フォームのフォーカス外しのフラグ
@@ -48,7 +48,7 @@ const [items, setItems] = useState<OrderItem[]>([
         modelNumber: "",
         price: 0,
         quantity: 1,
-        remarks: "",
+        remarks: "-",
       },
     ]);
   };

@@ -89,5 +89,4 @@ export interface PurchaseOrderDetailResponse {
   quantity: number;
   status: string; // 納品済みかなど
   receivedQuantity?: number; // 納品数など追加用途
-  // その他表示・更新に必要なフィールド
 }

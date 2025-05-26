@@ -64,7 +64,7 @@ export default function OrderHistoryPage() {
   };
 
   return (
-    <main className="p-8">
+    <main className="bg-white border-gray-400 p-3 shadow p-5">
       <h2 className="text-xl font-bold mb-4">発注履歴一覧</h2>
       <PurchaseList orders={data} onRegisterDelivery={openModal} />
       {selectedDetail && (

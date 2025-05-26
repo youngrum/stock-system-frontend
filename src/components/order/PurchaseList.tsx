@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { SquareMinus ,SquarePlus } from 'lucide-react';
+import { SquareMinus ,SquarePlus, PackagePlus } from 'lucide-react';
 import {
   PurchaseOrderResponse,
   PurchaseOrderDetailResponse,
@@ -43,7 +43,19 @@ export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
             </span>
             <span className="col-span-2">{order.orderDate}</span>
             <span className="col-span-2">{order.operator}</span>
-            <span className="col-span-2">{order.status}</span>
+            <span className={`
+                px-3 py-1 rounded-full text-xs col-span-2
+                ${order.status === "完了"
+                  ? "bg-green-500 text-white"
+                  : order.status === "未完納" || order.status === "未入庫"
+                    ? "bg-lime-300 text-green-900"
+                    : order.status === "一部入庫"
+                      ? "bg-yellow-400 text-yellow-900"
+                      : ""
+                }
+              `}>
+                {order.status}
+                </span>
             <span className="truncate col-span-3" title={order.remarks}>
               {order.remarks}
             </span>
@@ -66,7 +78,7 @@ export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
                     <th className="py-1 col-span-2">受領数</th>
                     <th className="py-1 col-span-2">単価</th>
                     <th className="py-1 col-span-2">ステータス</th>
-                    <th className="py-1 col-span-2">納品登録</th>
+                    <th className="py-1 col-span-2">更新</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -74,22 +86,44 @@ export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
                     <tr key={detail.itemCode}
                       className={`${i % 2 === 0 ? 'bg-gray-50': 'bg-blue-50'}`}
                     >
-                      <td className="py-1 col-span-2">{detail.itemCode}</td>
-                      <td className="py-1 truncate max-w-[150px] col-span-2">{detail.itemName}</td>
-                      <td className="py-1 col-span-2">{detail.modelNumber}</td>
-                      <td className="py-1 col-span-2">{detail.category}</td>
-                      <td className="py-1 col-span-2">{detail.quantity}</td>
-                      <td className="py-1 col-span-2">{detail.receivedQuantity}</td>
-                      <td className="py-1 col-span-2">{detail.purchasePrice}円</td>
-                      <td className="py-1 col-span-2">{detail.status}</td>
-                      <td className="py-1 col-span-2">
+                      <td className="py-2 col-span-2">{detail.itemCode}</td>
+                      <td className="py-2 truncate max-w-[150px] col-span-2">{detail.itemName}</td>
+                      <td className="py-2 col-span-2">{detail.modelNumber}</td>
+                      <td className="py-2 col-span-2">{detail.category}</td>
+                      <td className="py-2 col-span-2">{detail.quantity}</td>
+                      <td className="py-2 col-span-2">{detail.receivedQuantity}</td>
+                      <td className="py-2 col-span-2">{detail.purchasePrice}円</td>
+                      <td>
+                      <span
+                        className={`
+                          px-3 py-1 rounded-full text-xs
+                          ${detail.status === "完了"
+                            ? "bg-green-500 text-white"
+                            : detail.status === "未完納" || detail.status === "未入庫"
+                              ? "bg-lime-300 text-green-900"
+                              : detail.status === "一部入庫"
+                                ? "bg-yellow-400 text-yellow-900"
+                                : ""
+                          }
+                        `}
+                      >{detail.status}</span>
+                      </td>
+                      <td className="py-2 col-span-2">
                         
                         <button
-                          className={`text-xs  text-white rounded px-2 py-1 ${detail.status === `完了` ? `bg-gray-600`: `bg-blue-600 hover:bg-blue-700` }`}
-                          onClick={() => onRegisterDelivery(detail)}
+                          className={
+                            "text-xs text-white rounded px-2 py-1 " +
+                            (detail.status !== "完了" ? "hover:opacity-80 transition" : "")
+                          }
+                          onClick={(e) => {onRegisterDelivery(detail); e.stopPropagation();}}
+                          
                           disabled={detail.status === "完了"}
                         >
-                          納品登録
+                          <PackagePlus style={
+                              detail.status === "完了"
+                                ? { color: "#9CA3AF" }
+                                : { color: "#0d113d" }
+                            }/>
                         </button>
                       </td>
                     </tr>

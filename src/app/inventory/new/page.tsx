@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/services/api";
-import { CreateInventoryRequest } from "@/types/InventoryItem";
+import { CreateInventoryRequest, InventoryItem } from "@/types/InventoryItem";
+import { ApiSuccessResponse } from "@/types/ApiResponse";
 
 export default function InventoryNewPage() {
   const router = useRouter();
@@ -16,6 +17,7 @@ export default function InventoryNewPage() {
     remarks: "",
   });
 
+  const [successResponse, setSuccessResponse] = useState<ApiSuccessResponse<InventoryItem> | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -42,8 +44,10 @@ export default function InventoryNewPage() {
         currentStock: form.currentStock || 0,
         remarks: form.remarks || "",
       };
-      await api.post("/inventory/new", payload);
-      router.push("/inventory");
+      const res = await api.post("/inventory/new", payload);
+      console.log(res.data.data);
+      setSuccessResponse(res.data.data);
+
     } catch (err) {
       setError("登録に失敗しました。");
       console.log(err);
@@ -149,6 +153,14 @@ export default function InventoryNewPage() {
           </button>
         </div>
       </form>
+      {successResponse && (
+      <div>
+        <div>登録に成功しました。</div>
+        <div>在庫ID: {successResponse.data.itemCode}</div>
+        <button onClick={() => router.push("/inventory")}>続けて登録</button>
+        <button onClick={() => router.push("/inventory")}>在庫検索に戻る</button>
+      </div>
+    )}
     </div>
   );
 }

@@ -23,6 +23,7 @@ export default function InventoryTable({
             <th className="text-base px-4 py-3">品名</th>
             <th className="text-base px-4 py-3">カテゴリ</th>
             <th className="text-base px-4 py-3">型番</th>
+            <th className="text-base px-4 py-3">メーカー</th>
             <th className="text-base px-4 py-3">在庫数</th>
             <th className="text-base px-4 py-3">更新日</th>
             <th className="text-base px-4 py-3">履歴</th>
@@ -61,6 +62,7 @@ export default function InventoryTable({
               <td className="px-4 py-3 max-w-[300px] truncate">
                 {item.modelNumber ?? "-"}
               </td>
+              <td className="px-4 py-3">{item.manufacturer}</td>
               <td className="px-4 py-3">{item.currentStock}</td>
               <td className="px-4 py-3">{formatDate(item.lastUpdated)}</td>
               <td className="px-4 py-3">

@@ -24,6 +24,7 @@ export interface CreateInventoryRequest {
   itemName: string;
   category: string;
   modelNumber: string;
+  manufacturer: string;
   currentStock: number;
   remarks: string;
 }

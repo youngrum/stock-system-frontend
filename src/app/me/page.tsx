@@ -17,13 +17,11 @@ export default function MePage() {
       {/* 左カラム：リンクボタン */}
       <div className="w-1/3 space-y-4">
         {[
-          { label: "入庫登録", path: "/inventory" },
-          { label: "出庫登録", path: "/inventory" },
-          { label: "在庫一覧・検索", path: "/inventory" },
+          { label: "在庫登録(新規用)", path: "/inventory/new" },
+          { label: "在庫一覧・検索(入庫・出庫)", path: "/inventory" },
           { label: "トランザクション", path: "/inventory/transactions" },
           { label: "発注登録", path: "/order" },
-          { label: "納品登録", path: "/receive-from-order" },
-          { label: "発注履歴・検索", path: "/order-history" },
+          { label: "発注履歴・検索・納品登録)", path: "/order-history" },
         ].map((link) => (
           <Link
             key={link.path}

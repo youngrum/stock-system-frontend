@@ -11,6 +11,7 @@ export default function InventoryNewPage() {
     itemName: "",
     category: "",
     modelNumber: "",
+    manufacturer: "",
     currentStock: 0,
     remarks: "",
   });
@@ -37,6 +38,7 @@ export default function InventoryNewPage() {
         itemName: form.itemName,
         category: form.category,
         modelNumber: form.modelNumber || "-",
+        manufacturer: form.manufacturer || "-",
         currentStock: form.currentStock || 0,
         remarks: form.remarks || "",
       };
@@ -89,6 +91,18 @@ export default function InventoryNewPage() {
             type="text"
             name="modelNumber"
             value={form.modelNumber}
+            onChange={handleChange}
+            className="w-full border border-gray-300 rounded px-3 py-2"
+          />
+        </div>
+        <div>
+          <label htmlFor="manufacturer" className="block mb-1 font-medium">
+            メーカー
+          </label>
+          <input
+            type="text"
+            name="manufacturer"
+            value={form.manufacturer}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded px-3 py-2"
           />

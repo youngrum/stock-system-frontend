@@ -67,7 +67,7 @@ type Props = {
           {transactions.map((tx) => (
             <tr key={tx.transactionId} className="border-b hover:bg-gray-50">
               <td className="py-2 px-3">
-              {tx.transactionType === "MANUAL_RECEIVE" ? (
+              {tx.transactionType === "MANUAL_RECEIVE" || tx.transactionType === "PURCHASE_RECEIVE" ? (
                   <div className="text-green-800 flex justify-center items-center">
                     <PackagePlus className="w-5 h-5 mr-1" />
                     入庫

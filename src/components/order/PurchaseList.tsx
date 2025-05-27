@@ -70,7 +70,7 @@ export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
               <table className="w-full text-sm py-2 ">
                 <thead>
                   <tr className="font-semibold bg-blue-50">
-                    <th className="py-1 col-span-3">商品ID</th>
+                    <th className="py-1 col-span-3">在庫ID</th>
                     <th className="py-1 col-span-3">品名</th>
                     <th className="py-1 col-span-2">型番</th>
                     <th className="py-1 col-span-2">カテゴリ</th>
@@ -96,7 +96,7 @@ export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
                       <td>
                       <span
                         className={`
-                          px-3 py-1 rounded-full text-xs
+                          px-5 py-1 rounded-full text-xs
                           ${detail.status === "完了"
                             ? "bg-green-500 text-white"
                             : detail.status === "未完納" || detail.status === "未入庫"

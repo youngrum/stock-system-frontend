@@ -32,7 +32,7 @@ export default function RecieveFromOrderModal({
         <h3 className="font-bold mb-2">納品登録</h3>
         <div className="mb-4 text-sm space-y-1">
           <div>
-            商品ID: <span className="font-mono">{detail.itemCode}</span>
+            在庫ID: <span className="font-mono">{detail.itemCode}</span>
           </div>
           <div>品名: {detail.itemName}</div>
           <div>発注数: {detail.quantity}</div>

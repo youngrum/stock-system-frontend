@@ -20,12 +20,13 @@ export default function InventoryReceiveModal({
   itemCode,
 }: InventoryReceiveModalProps) {
   const [inventory, setInventory] = useState<InventoryItem | null>(null);
-  const [quantity, setQuantity] = useState(1);
-  const [supplier, setSupplier] = useState("");
-  const [purchasePrice, setPurchasePrice] = useState("");
-  const [shippingFee, setShippingFee] = useState("");
-  const [remarks, setRemarks] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [quantity, setQuantity] = useState<number>(1);
+  const [supplier, setSupplier] = useState<string>("");
+  const [purchasePrice, setPurchasePrice] = useState<string>("");
+  const [shippingFee, setShippingFee] = useState<number>(0);
+  const [remarks, setRemarks] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
+
   useEffect(() => {
     if (isOpen && itemCode) {
       api
@@ -53,7 +54,6 @@ export default function InventoryReceiveModal({
     }
     setLoading(true);
     try {
-      console.log("%o", inventory);
       await new Promise((resolve) => setTimeout(resolve, 3000));
       const res = await api.post(`/inventory/receive/${itemCode}`, {
         itemCode: inventory?.itemCode || null,
@@ -62,16 +62,15 @@ export default function InventoryReceiveModal({
         purchasePrice: purchasePrice || 0,
         shippingFee: shippingFee || 0,
         remarks: remarks || "-",
-        orderNo: null,
       });
 
-      const response = res.data.data;
+      const response = res.data;
       console.log(response);
       alert(`入庫登録に成功しました（実行処理id: ${response.transactionId}）`);
       onClose();
       onSuccess();
     } catch (err) {
-      console.error(err);
+      console.log(err);
     } finally {
       setLoading(false);
     }

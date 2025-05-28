@@ -7,7 +7,7 @@ export interface InventoryItem {
   supplier: string;
   manufacturer: string;
   purchasePrice: number;
-  shoppingFee: number;
+  shippingFee: number;
   quantity: number;
   lastUpdated: string;
   remarks: string;

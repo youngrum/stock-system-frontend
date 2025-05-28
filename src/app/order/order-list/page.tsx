@@ -30,6 +30,7 @@ export default function OrderHistoryPage() {
             size: 10, // ← 1ページあたりの件数
           },
         });
+        console.log(res.data.content)
         setData(res.data.content);
         setTotalPages(res.data.totalPages);
       } catch (err) {

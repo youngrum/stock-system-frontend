@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { InventoryItem } from "@/types/InventoryItem";
 import { X } from "lucide-react";
 import api from "@/services/api";
+import Loader from "@/components/ui/Loader";
 
 interface InventoryDispatchModalProps {
   isOpen: boolean;
@@ -15,8 +16,8 @@ interface InventoryDispatchModalProps {
 export default function InventoryDispatchModal({
   isOpen,
   onClose,
-  itemCode,
   onSuccess,
+  itemCode,
 }: InventoryDispatchModalProps) {
   const [inventory, setInventory] = useState<InventoryItem | null>(null);
   const [quantity, setQuantity] = useState(1);
@@ -36,8 +37,8 @@ export default function InventoryDispatchModal({
     if (!quantity || quantity <= 0) return;
 
     const confirmed = window.confirm(
-      `本当にこの内容で出庫しますか？\n\n対象ID:${itemCode}\n\n数量: ${quantity}\n備考: ${
-        remarks || "なし"
+      `この内容で出庫しますか？\n在庫ID:${itemCode}\n品名：${inventory.itemName}\nカテゴリー：${inventory.category}\n数量: ${quantity}\n備考: ${
+      remarks || "なし"
       }`
     );
 
@@ -49,13 +50,17 @@ export default function InventoryDispatchModal({
     setLoading(true);
     try {
       console.log("%o", inventory);
-      await api.post(`/inventory/dispatch/${itemCode}`, {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      const res = await api.post(`/inventory/dispatch/${itemCode}`, {
         itemCode: inventory?.itemCode || null,
         quantity: quantity,
         remarks: remarks || "-",
       });
       onClose();
       onSuccess();
+      const response = res.data.data;
+      console.log(response);
+      alert(`出庫登録に成功しました（実行処理id: ${response.transactionId}）`);
     } catch (err) {
       console.error(err);
     } finally {
@@ -66,7 +71,9 @@ export default function InventoryDispatchModal({
   if (!isOpen || !inventory) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <>
+    {loading && <Loader />}
+    <div className="fixed inset-0 z-30 flex items-center justify-center">
       <div
         className="absolute inset-0 bg-[#0d113d] opacity-40"
         onClick={onClose}
@@ -121,5 +128,6 @@ export default function InventoryDispatchModal({
         </div>
       </div>
     </div>
+    </>
   );
 }

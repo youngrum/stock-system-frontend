@@ -4,7 +4,8 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/services/api";
 import { CreateInventoryRequest, InventoryItem } from "@/types/InventoryItem";
-import { ApiSuccessResponse } from "@/types/ApiResponse";
+import { ApiSuccessResponse, ApiErrorResponse } from "@/types/ApiResponse";
+import Loader from "@/components/ui/Loader";
 
 export default function InventoryNewPage() {
   const router = useRouter();
@@ -20,7 +21,6 @@ export default function InventoryNewPage() {
   const [successResponse, setSuccessResponse] =
     useState<ApiSuccessResponse<InventoryItem> | null>(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -35,7 +35,6 @@ export default function InventoryNewPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setError("");
     try {
       const payload: CreateInventoryRequest = {
         itemName: form.itemName,
@@ -45,19 +44,36 @@ export default function InventoryNewPage() {
         currentStock: form.currentStock || 0,
         remarks: form.remarks || "",
       };
+      // await new Promise((resolve) => setTimeout(resolve, 10000));
       const res = await api.post("/inventory/new", payload);
       console.log(res.data);
       setSuccessResponse(res.data);
-    } catch (err) {
-      setError("登録に失敗しました。");
+    } catch (err: unknown) {
       console.log(err);
+      if (err.response && err.response.data) {
+        const error: ApiErrorResponse = err.response.data;
+        alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用
+      }
     } finally {
       setLoading(false);
     }
   };
 
+  const handleContinue = () => {
+    setSuccessResponse(null);
+    setForm({
+      itemName: "",
+      category: "",
+      modelNumber: "",
+      manufacturer: "",
+      currentStock: 0,
+      remarks: "",
+    });
+  };
+
   return (
     <>
+      {loading && <Loader />}
       <div className="max-w-xl mx-auto bg-white border-gray-400 shadow p-5">
         <h1 className="text-2xl font-bold mb-6">新規在庫登録</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -136,7 +152,6 @@ export default function InventoryNewPage() {
               className="w-full border border-gray-300 rounded px-3 py-2"
             />
           </div>
-          {error && <p className="text-red-500 text-sm">{error}</p>}
           <div className="flex justify-end gap-2">
             <button
               type="button"
@@ -162,7 +177,7 @@ export default function InventoryNewPage() {
             <p className="mb-5">在庫ID: {successResponse.data.itemCode}</p>
             <button
               className="px-4 py-1 rounded bg-blue-600 text-white mr-2"
-              onClick={() => router.push("/inventory/new")}
+              onClick={handleContinue}
             >
               続けて登録
             </button>

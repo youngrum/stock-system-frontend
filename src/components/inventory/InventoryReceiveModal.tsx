@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { InventoryItem } from "@/types/InventoryItem";
 import { X } from "lucide-react";
 import api from "@/services/api";
+import Loader from "@/components/ui/Loader";
 
 interface InventoryReceiveModalProps {
   isOpen: boolean;
@@ -25,7 +26,6 @@ export default function InventoryReceiveModal({
   const [shippingFee, setShippingFee] = useState("");
   const [remarks, setRemarks] = useState("");
   const [loading, setLoading] = useState(false);
-
   useEffect(() => {
     if (isOpen && itemCode) {
       api
@@ -40,9 +40,9 @@ export default function InventoryReceiveModal({
 
     // ✅ 最終確認ダイアログの追加
     const confirmed = window.confirm(
-      `本当にこの内容で入庫しますか？\n\n対象ID:${itemCode}\n\n数量: ${quantity}\n仕入先: ${
+      `本当にこの内容で入庫しますか？\n在庫ID:${itemCode}\n品名：${inventory.itemName}\nカテゴリー：${inventory.category}\n仕入先: ${
         supplier || "未入力"
-      }\n単価: ${purchasePrice || "未入力"}\n送料: ${
+      }\n↓\n数量: ${quantity}\n単価: ${purchasePrice || "未入力"}\n送料: ${
         shippingFee || "未入力"
       }\n備考: ${remarks || "なし"}`
     );
@@ -54,7 +54,8 @@ export default function InventoryReceiveModal({
     setLoading(true);
     try {
       console.log("%o", inventory);
-      await api.post(`/inventory/receive/${itemCode}`, {
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+      const res = await api.post(`/inventory/receive/${itemCode}`, {
         itemCode: inventory?.itemCode || null,
         quantity: quantity,
         supplier: supplier || "不明",
@@ -63,6 +64,10 @@ export default function InventoryReceiveModal({
         remarks: remarks || "-",
         orderNo: null,
       });
+
+      const response = res.data.data;
+      console.log(response);
+      alert(`入庫登録に成功しました（実行処理id: ${response.transactionId}）`);
       onClose();
       onSuccess();
     } catch (err) {
@@ -75,7 +80,9 @@ export default function InventoryReceiveModal({
   if (!isOpen || !inventory) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    <>
+    {loading && <Loader />}
+    <div className="fixed inset-0 z-30 flex items-center justify-center">
       {/* Overlay */}
       <div
         className="absolute inset-0 bg-[#0d113d] opacity-40"
@@ -177,5 +184,6 @@ export default function InventoryReceiveModal({
         </div>
       </div>
     </div>
+    </>
   );
 }

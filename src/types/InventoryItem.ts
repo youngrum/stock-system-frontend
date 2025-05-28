@@ -1,16 +1,16 @@
 export interface InventoryItem {
   itemCode: string;
   itemName: string;
-  modelNumber?: string;
+  modelNumber: string;
   category: string;
   currentStock: number;
-  supplier?: string;
-  manufacturer?: string;
-  purchasePrice?: number;
-  shoppingFee?: number;
+  supplier: string;
+  manufacturer: string;
+  purchasePrice: number;
+  shoppingFee: number;
   quantity: number;
   lastUpdated: string;
-  remarks?: string;
+  remarks: string;
 }
 
 export interface InventorySearchParams {

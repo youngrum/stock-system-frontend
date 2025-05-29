@@ -1,5 +1,5 @@
 export interface Transaction {
-    transactionType: 'MANUAL_RECEIVE' | 'MANUAL_DISPATCH' | 'PURCHASE_RECEIVE' | 'ORDER_REGIST';
+    transactionType: 'MANUAL_RECEIVE' | 'MANUAL_DISPATCH' | 'PURCHASE_RECEIVE' | 'ORDER_REGIST' | 'ITEM_REGIST';
     transactionId: bigint;
     quantity: number;
     operator: string;

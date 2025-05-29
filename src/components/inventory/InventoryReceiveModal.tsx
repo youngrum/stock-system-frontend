@@ -152,7 +152,7 @@ export default function InventoryReceiveModal({
               <input
                 type="number"
                 value={shippingFee}
-                onChange={(e) => setShippingFee(e.target.value)}
+                onChange={(e) => setShippingFee(Number(e.target.value))}
                 className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100"
                 style={{ border: "1px solid #9F9F9F" }}
                 placeholder="1000"

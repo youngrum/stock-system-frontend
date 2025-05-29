@@ -5,6 +5,7 @@ import { formatDate } from "@/lib/utils/dateFormat";
 import { Transaction } from "@/types/Transaction";
 import { TransactionDetail } from "@/types/PurchaseOrder";
 import TransactionDetailModal from "@/components/inventory/TransactionDetailModal";
+import { transactionDisplayMap } from '@/lib/utils/transactionConstants';
 import Link from "next/link";
 import { useState } from "react";
 
@@ -39,6 +40,11 @@ export default function TransactionTable({ data }: { data: Transaction[] }) {
                   <div className="text-blue-800 flex justify-center items-center">
                     <Bookmark className="w-5 h-5 mr-1" />
                     発注登録
+                  </div>
+                ) : tx.transactionType === "ITEM_REGIST" ? (
+                  <div className="text-blue-800 flex justify-center items-center">
+                    <Bookmark className="w-5 h-5 mr-1" />
+                    在庫登録
                   </div>
                 ) : (
                   <div className="text-red-800 flex justify-center items-center">

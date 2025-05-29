@@ -77,6 +77,11 @@ type Props = {
                     <Bookmark className="w-5 h-5 mr-1" />
                     発注登録
                   </div>
+                ) : tx.transactionType === "ITEM_REGIST" ? (
+                  <div className="text-blue-800 flex justify-center items-center">
+                    <Bookmark className="w-5 h-5 mr-1" />
+                    在庫登録
+                  </div>
                 ) : (
                   <div className="text-red-800 flex justify-center items-center">
                     <Truck className="w-5 h-5 mr-1" />
@@ -89,6 +94,7 @@ type Props = {
               <td className="py-2 px-3">
               {tx.transactionType === "MANUAL_DISPATCH" ? `-${tx.quantity}`
                 : tx.transactionType === "ORDER_REGIST" ? `(${tx.quantity})`
+                : tx.transactionType === "ITEM_REGIST" ? `${tx.quantity}`
                 : `+${tx.quantity}`}
             </td>
               <td className="py-2 px-3">{tx.remarks || "-"}</td>

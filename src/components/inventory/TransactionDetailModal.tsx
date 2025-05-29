@@ -25,11 +25,14 @@ export default function TransactionDetailModal({ transaction, onClose }: Props) 
         <p className="text-sm text-gray-600">カテゴリ / 型番 <br/>{stock.category} / {stock.modelNumber}</p>
 
         <div className="space-y-2">
-          <p>処理種別: {transaction.transactionType === 'ORDER_REGIST' ? '発注登録' :
-            transaction.transactionType === 'MANUAL_DISPATCH' ? '出庫' : '入庫'}</p>
+          <p>処理種別: 
+            {transaction.transactionType === 'ORDER_REGIST' ? '発注登録' :
+            transaction.transactionType === 'MANUAL_DISPATCH' ? '出庫' : 
+            transaction.transactionType === 'ITEM_REGIST' ? '在庫登録':
+            '入庫'}</p>
           <p>数量:{transaction.transactionType === "MANUAL_DISPATCH"
                     ? `-${transaction.quantity}`
-                  : transaction.transactionType === "ORDER_REGIST"
+                  : transaction.transactionType === "ORDER_REGIST" || transaction.transactionType === "ITEM_REGIST"
                     ? `(${transaction.quantity})`
                   : `+${transaction.quantity}`
           }</p>

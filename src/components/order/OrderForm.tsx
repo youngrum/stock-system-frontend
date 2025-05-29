@@ -5,7 +5,6 @@ import { PurchaseOrderRequest,OrderItem } from "@/types/PurchaseOrder";
 import { InventoryItem } from "@/types/InventoryItem";
 import { X } from "lucide-react";
 import api from "@/services/api";
-import { ApiErrorResponse } from "@/types/ApiResponse";
 
 type Props = {
   onSubmit: (formData: PurchaseOrderRequest) => void;

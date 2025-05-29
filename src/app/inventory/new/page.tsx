@@ -164,7 +164,10 @@ export default function InventoryNewPage() {
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 border rounded bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+              className="px-4 py-2 border rounded  text-white hover:opacity-80 disabled:opacity-50"
+              style={{
+                background: "linear-gradient(to bottom, #3D00B8, #3070C3)",
+              }}
             >
               {loading ? "登録中..." : "在庫を登録する"}
             </button>

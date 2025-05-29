@@ -5,6 +5,7 @@ import { InventoryItem } from "@/types/InventoryItem";
 import { X } from "lucide-react";
 import api from "@/services/api";
 import Loader from "@/components/ui/Loader";
+import { ApiErrorResponse } from "@/types/ApiResponse";
 
 interface InventoryDispatchModalProps {
   isOpen: boolean;
@@ -37,7 +38,7 @@ export default function InventoryDispatchModal({
     if (!quantity || quantity <= 0) return;
 
     const confirmed = window.confirm(
-      `この内容で出庫しますか？\n在庫ID:${itemCode}\n品名：${inventory.itemName}\nカテゴリー：${inventory.category}\n数量: ${quantity}\n備考: ${
+      `この内容で出庫しますか？\n在庫ID:${itemCode}\n品名：${inventory?.itemName}\nカテゴリー：${inventory?.category}\n数量: ${quantity}\n備考: ${
       remarks || "なし"
       }`
     );

@@ -9,10 +9,12 @@ import {
 import api from "@/services/api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import Loader from "@/components/ui/Loader";
+import { ApiErrorResponse } from "@/types/ApiResponse";
 
 export default function OrderNewPage() {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string>("");
   const router = useRouter();
 
   const handleOrderSubmit = async (
@@ -23,6 +25,7 @@ export default function OrderNewPage() {
     console.log("%o", formData);
 
     try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const res = await api.post(`/orders`, {
         supplier: formData.supplier,
         shippingFee: formData.shippingFee,
@@ -44,7 +47,12 @@ export default function OrderNewPage() {
       alert(`発注登録に成功しました（発注番号: ${response.orderNo}）`);
 
       router.push("/order");
-    } catch (err) {
+    }   catch (err: unknown) {
+      console.log(err);
+      if (err.response && err.response.data) {
+        const error: ApiErrorResponse = err.response.data;
+        alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用
+      }
       setError("登録に失敗しました。");
       console.log(err);
     } finally {
@@ -53,8 +61,12 @@ export default function OrderNewPage() {
   };
 
   return (
+    <>
+      {loading && <Loader />}
+      {error && <div className="text-red-500">{error}</div>}
     <main className="max-w-8xl mx-auto bg-white border-gray-400 shadow p-5">
       <OrderForm onSubmit={handleOrderSubmit} />
     </main>
+    </>
   );
 }

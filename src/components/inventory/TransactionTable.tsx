@@ -5,7 +5,6 @@ import { formatDate } from "@/lib/utils/dateFormat";
 import { Transaction } from "@/types/Transaction";
 import { TransactionDetail } from "@/types/PurchaseOrder";
 import TransactionDetailModal from "@/components/inventory/TransactionDetailModal";
-import { transactionDisplayMap } from '@/lib/utils/transactionConstants';
 import Link from "next/link";
 import { useState } from "react";
 

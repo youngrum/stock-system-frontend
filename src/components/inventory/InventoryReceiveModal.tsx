@@ -5,6 +5,7 @@ import { InventoryItem } from "@/types/InventoryItem";
 import { X } from "lucide-react";
 import api from "@/services/api";
 import Loader from "@/components/ui/Loader";
+import { ApiErrorResponse } from "@/types/ApiResponse";
 
 interface InventoryReceiveModalProps {
   isOpen: boolean;
@@ -22,7 +23,7 @@ export default function InventoryReceiveModal({
   const [inventory, setInventory] = useState<InventoryItem | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
   const [supplier, setSupplier] = useState<string>("");
-  const [purchasePrice, setPurchasePrice] = useState<string>("");
+  const [purchasePrice, setPurchasePrice] = useState<number>(0);
   const [shippingFee, setShippingFee] = useState<number>(0);
   const [remarks, setRemarks] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
@@ -41,7 +42,7 @@ export default function InventoryReceiveModal({
 
     // ✅ 最終確認ダイアログの追加
     const confirmed = window.confirm(
-      `本当にこの内容で入庫しますか？\n在庫ID:${itemCode}\n品名：${inventory.itemName}\nカテゴリー：${inventory.category}\n仕入先: ${
+      `本当にこの内容で入庫しますか？\n在庫ID:${itemCode}\n品名：${inventory?.itemName || "不明"}\nカテゴリー：${inventory?.category || "不明"}\n仕入先: ${
         supplier || "未入力"
       }\n↓\n数量: ${quantity}\n単価: ${purchasePrice || "未入力"}\n送料: ${
         shippingFee || "未入力"
@@ -54,7 +55,8 @@ export default function InventoryReceiveModal({
     }
     setLoading(true);
     try {
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      console.log("%o", inventory);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const res = await api.post(`/inventory/receive/${itemCode}`, {
         itemCode: inventory?.itemCode || null,
         quantity: quantity,
@@ -69,8 +71,12 @@ export default function InventoryReceiveModal({
       alert(`入庫登録に成功しました（実行処理id: ${response.transactionId}）`);
       onClose();
       onSuccess();
-    } catch (err) {
+    }  catch (err: unknown) {
       console.log(err);
+      if (err.response && err.response.data) {
+        const error: ApiErrorResponse = err.response.data;
+        alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用
+      }
     } finally {
       setLoading(false);
     }
@@ -141,7 +147,8 @@ export default function InventoryReceiveModal({
               <input
                 type="number"
                 value={purchasePrice}
-                onChange={(e) => setPurchasePrice(e.target.value)}
+                min={0}
+                onChange={(e) => setPurchasePrice(Number(e.target.value))}
                 className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100"
                 style={{ border: "1px solid #9F9F9F" }}
                 placeholder="150"
@@ -152,6 +159,7 @@ export default function InventoryReceiveModal({
               <input
                 type="number"
                 value={shippingFee}
+                min={0}
                 onChange={(e) => setShippingFee(Number(e.target.value))}
                 className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100"
                 style={{ border: "1px solid #9F9F9F" }}

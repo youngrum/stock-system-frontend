@@ -2,8 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import {
-  PackagePlus,
-  Truck,
   Search,
   Blocks,
   FileText,
@@ -68,7 +66,7 @@ export default function Sidebar({ isSidebarOpen }: sideBarProps) {
             </button>
 
             {/* ツールチップ表示：在庫一覧/検索のときだけ */}
-            {isSidebarOpen && item.label === "在庫一覧/検索" && (
+            {/* {isSidebarOpen && item.label === "在庫一覧/検索" && (
               <div className="absolute left-full top-1/2 ml-2 transform -translate-y-1/2 w-max bg-gray-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
                 <ul>
                   <li className="flex items-center gap-2">
@@ -81,7 +79,7 @@ export default function Sidebar({ isSidebarOpen }: sideBarProps) {
                   </li>
                 </ul>
               </div>
-            )}
+            )} */}
           </div>
         ))}
       </div>

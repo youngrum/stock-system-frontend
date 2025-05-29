@@ -44,7 +44,7 @@ export default function InventoryNewPage() {
         currentStock: form.currentStock || 0,
         remarks: form.remarks || "",
       };
-      // await new Promise((resolve) => setTimeout(resolve, 10000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const res = await api.post("/inventory/new", payload);
       console.log(res.data);
       setSuccessResponse(res.data);

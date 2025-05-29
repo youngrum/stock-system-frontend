@@ -50,7 +50,7 @@ export default function InventoryDispatchModal({
     setLoading(true);
     try {
       console.log("%o", inventory);
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       const res = await api.post(`/inventory/dispatch/${itemCode}`, {
         itemCode: inventory?.itemCode || null,
         quantity: quantity,
@@ -61,8 +61,11 @@ export default function InventoryDispatchModal({
       const response = res.data.data;
       console.log(response);
       alert(`出庫登録に成功しました（実行処理id: ${response.transactionId}）`);
-    } catch (err) {
-      console.error(err);
+    } catch (err: unknown) {;
+        if (err.response && err.response.data) {
+          const error: ApiErrorResponse = err.response.data;
+          alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用
+        }else {console.log(err)}
     } finally {
       setLoading(false);
     }

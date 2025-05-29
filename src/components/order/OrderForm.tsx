@@ -5,6 +5,7 @@ import { PurchaseOrderRequest,OrderItem } from "@/types/PurchaseOrder";
 import { InventoryItem } from "@/types/InventoryItem";
 import { X } from "lucide-react";
 import api from "@/services/api";
+import { ApiErrorResponse } from "@/types/ApiResponse";
 
 type Props = {
   onSubmit: (formData: PurchaseOrderRequest) => void;
@@ -142,10 +143,8 @@ const [items, setItems] = useState<OrderItem[]>([
             } else {
               console.warn("在庫IDに一致するデータが見つかりません:", item.itemCode);
             }
-          } catch (error) {
-            console.log(error);
-            console.error("在庫情報の取得に失敗しました:", error);
-          }
+          } catch (err: unknown) {
+              console.log(err);
         }
 
         // 品名と型番のサジェスト取得
@@ -200,6 +199,7 @@ const [items, setItems] = useState<OrderItem[]>([
               console.error("補完候補の取得に失敗:", error);
             }
           }
+        }
       });
   
       await Promise.all(promises);
@@ -264,7 +264,7 @@ const [items, setItems] = useState<OrderItem[]>([
           <input
             type="number"
             value={shippingFee}
-            onChange={(e) => setShippingFee(e.target.value)}
+            onChange={(e) => setShippingFee(Number(e.target.value))}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
             required
           />

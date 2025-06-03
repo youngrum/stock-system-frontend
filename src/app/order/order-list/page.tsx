@@ -10,6 +10,8 @@ import {
   PurchaseOrderResponse,
   PurchaseOrderDetailResponse,
 } from "@/types/PurchaseOrder";
+import { ApiErrorResponse } from "@/types/ApiResponse";
+import Loader from "@/components/ui/Loader";
 
 export default function OrderHistoryPage() {
   const [selectedDetail, setSelectedDetail] =
@@ -33,8 +35,14 @@ export default function OrderHistoryPage() {
         console.log(res.data.content)
         setData(res.data.content);
         setTotalPages(res.data.totalPages);
-      } catch (err) {
-        console.error("発注履歴取得エラー:", err);
+      } catch (error) {
+        console.error(error);
+        const err = error as { response?: { data: ApiErrorResponse } }
+        if (err.response && err.response.data) {
+          const error: ApiErrorResponse = err.response.data;
+          alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用
+          console.error("発注履歴取得エラー:", err);
+        }
       } finally {
         setLoading(false);
       }
@@ -66,6 +74,8 @@ export default function OrderHistoryPage() {
   };
 
   return (
+    <>
+    {loading && <Loader />}
     <main className="bg-white border-gray-400 p-3 shadow p-5">
       <h2 className="text-xl font-bold mb-4">発注履歴一覧</h2>
       <PurchaseList orders={data} onRegisterDelivery={openModal} />
@@ -83,5 +93,6 @@ export default function OrderHistoryPage() {
         onPageChange={setPage}
       />
     </main>
+    </>
   );
 }

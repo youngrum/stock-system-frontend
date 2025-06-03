@@ -48,8 +48,9 @@ export default function InventoryNewPage() {
       const res = await api.post("/inventory/new", payload);
       console.log(res.data);
       setSuccessResponse(res.data);
-    } catch (err: unknown) {
-      console.log(err);
+    } catch (error) {
+      console.error(error);
+      const err = error as { response?: { data: ApiErrorResponse } }
       if (err.response && err.response.data) {
         const error: ApiErrorResponse = err.response.data;
         alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用

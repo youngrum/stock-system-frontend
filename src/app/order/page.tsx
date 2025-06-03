@@ -47,8 +47,9 @@ export default function OrderNewPage() {
       alert(`発注登録に成功しました（発注番号: ${response.orderNo}）`);
 
       router.push("/order");
-    }   catch (err: unknown) {
-      console.log(err);
+    } catch (error) {
+      console.error(error);
+      const err = error as { response?: { data: ApiErrorResponse } }
       if (err.response && err.response.data) {
         const error: ApiErrorResponse = err.response.data;
         alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用

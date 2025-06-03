@@ -56,8 +56,9 @@ export default function InventoryListsPage() {
       console.log(res.data.data.content);
       setData(res.data.data.content); // ← ここがAPIのレスポンスに依存する（必要に応じて .data.content）
       setTotalPages(res.data.data.totalPages);
-    }   catch (err: unknown) {
-      console.log(err);
+    } catch (error) {
+      console.error(error);
+      const err = error as { response?: { data: ApiErrorResponse } }
       if (err.response && err.response.data) {
         const error: ApiErrorResponse = err.response.data;
         alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用

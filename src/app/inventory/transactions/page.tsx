@@ -6,6 +6,7 @@ import TransactionTable from '@/components/inventory/TransactionTable';
 import {Transaction} from '@/types/Transaction'
 import { useAuthGuard } from '@/lib/hooks/useAuthGuard';
 import Pagination from "@/components/ui/Pagination";
+import { ApiErrorResponse } from "@/types/ApiResponse";
 
 export default function TransactionPage() {
   const [data, setData] = useState<Transaction[]>([]);
@@ -25,7 +26,13 @@ export default function TransactionPage() {
       setData(res.data.data.content); // APIのレスポンス形式により必要に応じて調整
       console.log(res.data.data.totalPages);
       setTotalPages(res.data.data.totalPages);
-    } catch (err) {
+    } catch (error) {
+      console.error('トランザクション取得エラー:', error);
+      const err = error as { response?: { data: ApiErrorResponse } }
+      if (err.response && err.response.data) {
+        const error: ApiErrorResponse = err.response.data;
+        alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用
+      }
       console.error('トランザクション取得エラー:', err);
     } finally {
       setLoading(false);

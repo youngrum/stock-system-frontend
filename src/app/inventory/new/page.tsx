@@ -45,6 +45,15 @@ export default function InventoryNewPage() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+
+    const confirmed = window.confirm(`本当にこの内容で入庫しますか？\n品名：${form.itemName}\nカテゴリー：${form?.category}\n仕入先: ${
+        form.modelNumber || "未入力"
+      }\n↓\n数量: ${form.currentStock}\n備考: ${form.remarks || "なし"}`)
+
+    if (!confirmed) {
+      window.confirm("処理を取り消しました");
+      return;
+    }
     e.preventDefault();
     setLoading(true);
     try {

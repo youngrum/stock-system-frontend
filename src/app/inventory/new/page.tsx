@@ -1,14 +1,25 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/services/api";
 import { CreateInventoryRequest, InventoryItem } from "@/types/InventoryItem";
 import { ApiSuccessResponse, ApiErrorResponse } from "@/types/ApiResponse";
 import Loader from "@/components/ui/Loader";
+import { useAuthGuard } from '@/lib/hooks/useAuthGuard';
+import { CATEGORIES } from "@/data/categories";
 
 export default function InventoryNewPage() {
   const router = useRouter();
+  const isLoggedIn = useAuthGuard();
+
+  // 認証ガードを使用して、ログインしていない場合はログインページにリダイレクト
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push("/login");
+    }
+  }, [isLoggedIn, router]);
+
   const [form, setForm] = useState({
     itemName: "",
     category: "",
@@ -22,8 +33,9 @@ export default function InventoryNewPage() {
     useState<ApiSuccessResponse<InventoryItem> | null>(null);
   const [loading, setLoading] = useState(false);
 
+
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
     setForm((prevForm) => ({
@@ -42,7 +54,7 @@ export default function InventoryNewPage() {
         modelNumber: form.modelNumber || "-",
         manufacturer: form.manufacturer || "-",
         currentStock: form.currentStock || 0,
-        remarks: form.remarks || "",
+        remarks: form.remarks || "-",
       };
       await new Promise((resolve) => setTimeout(resolve, 1000));
       const res = await api.post("/inventory/new", payload);
@@ -96,14 +108,21 @@ export default function InventoryNewPage() {
             <label htmlFor="category" className="block mb-1 font-medium">
               カテゴリ *
             </label>
-            <input
-              type="text"
+            <select
               name="category"
+              id="category"
               value={form.category}
               onChange={handleChange}
               required
               className="w-full border border-gray-300 rounded px-3 py-2"
-            />
+            >
+              <option value="">-- カテゴリを選択してください --</option> {/* デフォルトの選択肢 */}
+              {CATEGORIES.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
           </div>
           <div>
             <label htmlFor="modelNumber" className="block mb-1 font-medium">
@@ -131,7 +150,7 @@ export default function InventoryNewPage() {
           </div>
           <div>
             <label htmlFor="currentStock" className="block mb-1 font-medium">
-              在庫数 *
+              在庫数 * <span className="text-sm">(ID発行のみなら、0でOK)</span>
             </label>
             <input
               type="number"

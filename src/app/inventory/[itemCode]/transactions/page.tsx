@@ -45,11 +45,12 @@ type Props = {
 
   return (
     <div className="bg-white border-gray-400 p-3 shadow p-5">
-      <h2 className="text-2xl font-bold mb-2">各処理履歴</h2>
-      <h3 className="font-bold mb-2">{itemCode}</h3>
+      <h2 className="text-2xl font-bold mb-2">個別在庫処理履歴</h2>
+      <h3 className="text-md text-gray-600 mb-2">{itemCode}</h3>
       {stockInfo && (
-        <h4 className="text-md text-gray-600 mb-6">
-          {stockInfo.itemName} ／ {stockInfo.category} ／ {stockInfo.modelNumber}
+        <h4 className="font-bold mb-6">
+          {stockInfo.itemName} <br/>
+          {stockInfo.category} ／ {stockInfo.modelNumber}
         </h4>
       )}
 

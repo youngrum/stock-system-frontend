@@ -48,8 +48,16 @@ export default function InventoryTable({
               <td className="px-4 py-3">
                 <Link
                   href="#"
-                  onClick={() => onDispach(item)}
-                  className="text-[#0d113d]"
+                  onClick={(e) => {
+                    // currentStockが文字列の"0"と比較
+                    if (item.currentStock === 0) {
+                      e.preventDefault(); // クリックイベントをキャンセル
+                    } else {
+                      onDispach(item);
+                    }
+                  }}
+                  className={`text-[#0d113d] ${item.currentStock === 0 ? "opacity-50 cursor-not-allowed" : ""}`}
+                  title={item.currentStock == 0 ? "在庫0です" : undefined} // ホバー時のツールチップ
                 >
                   <Truck className="mx-auto" />
                 </Link>
@@ -63,7 +71,11 @@ export default function InventoryTable({
                 {item.modelNumber ?? "-"}
               </td>
               <td className="px-4 py-3">{item.manufacturer}</td>
-              <td className="px-4 py-3">{item.currentStock}</td>
+              <td className="px-4 py-3">
+                <span className={item.currentStock === 0 ? "text-red-500" : ""}>
+                  {item.currentStock}
+                </span>
+                </td>
               <td className="px-4 py-3">{formatDate(item.lastUpdated)}</td>
               <td className="px-4 py-3">
                 <Link

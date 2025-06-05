@@ -7,7 +7,7 @@ export interface ApiSuccessResponse<T> {
   
 // エラー時
 export interface ApiErrorResponse {
-    timestamp: string
+    timestamp: Date
     status: number
     error: string
     message: string

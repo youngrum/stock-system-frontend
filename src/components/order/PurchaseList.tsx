@@ -45,9 +45,9 @@ export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
             <span className="col-span-2">{order.operator}</span>
             <span className={`
                 px-3 py-1 rounded-full text-xs col-span-2
-                ${order.status === "完納"
+                ${order.status === "完了"
                   ? "bg-green-500 text-white"
-                  : order.status === "未完納" || order.status === "未入庫"
+                  : order.status === "未完了" || order.status === "未入庫"
                     ? "bg-lime-300 text-green-900"
                     : order.status === "一部入庫"
                       ? "bg-yellow-400 text-yellow-900"
@@ -99,7 +99,7 @@ export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
                           px-5 py-1 rounded-full text-xs
                           ${detail.status === "完了"
                             ? "bg-green-500 text-white"
-                            : detail.status === "未完納" || detail.status === "未入庫"
+                            : detail.status === "未完了" || detail.status === "未入庫"
                               ? "bg-lime-300 text-green-900"
                               : detail.status === "一部入庫"
                                 ? "bg-yellow-400 text-yellow-900"

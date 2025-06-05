@@ -44,7 +44,7 @@ export default function Sidebar({ isSidebarOpen }: sideBarProps) {
   return (
     <aside
       className={`
-      fixed left-0 top-16 z-30
+      fixed left-0 pt-20 z-30
       w-48 min-h-screen
       bg-[linear-gradient(to_bottom,_#3D00B8,_#3070C3)]
       text-white p-4

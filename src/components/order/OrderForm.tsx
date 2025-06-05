@@ -229,14 +229,12 @@ const [items, setItems] = useState<OrderItem[]>([
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
+    <form onSubmit={handleSubmit}
       className="max-w-4xl mx-auto p-6 space-y-6"
       style={{ color: "#101540" }}
     >
       <h2 className="text-2xl font-bold">発注登録</h2>
       <h3 className="text-lg font-semibold mb-3">共通情報</h3>
-
       <div className="grid md:grid-cols-3 gap-x-4 gap-y-2 border-b pb-3 text-sm">
         <div>
           <label className="block mb-1 pb-2 pt-1 font-semibold">仕入先</label>
@@ -349,7 +347,7 @@ const [items, setItems] = useState<OrderItem[]>([
                 onBlur={() => setTimeout(() => setFocusedField(null), 100)}
                 required
               />
-                {focusedField?.index === index && focusedField.field === "itemName" && suggestionsMap[index]?.length > 0 && (
+                {focusedField?.index === index && focusedField.field === "itemName" && suggestionsMap[index]?.length > 0  && suggestionsMap[index] && (
                 <ul className="absolute z-10 mt-1 w-full max-w-[500px] border border-gray-300 bg-white shadow-lg rounded text-sm text-gray-800 max-h-48 overflow-auto transition-all duration-200 opacity-100">
                     {suggestionsMap[index].map((sug) => (
                     <li
@@ -419,7 +417,7 @@ const [items, setItems] = useState<OrderItem[]>([
                 onBlur={() => setTimeout(() => setFocusedField(null), 100)}
                 required
               />
-                {focusedField?.index === index && focusedField.field === "modelNumber" && (
+                {focusedField?.index === index && focusedField.field === "modelNumber" && suggestionsMap[index] && suggestionsMap[index].length > 0 && (
                 <ul className="absolute z-10 mt-1 w-full max-w-[500px] border border-gray-300 bg-white shadow-lg rounded text-sm text-gray-800 max-h-48 overflow-auto transition-all duration-200 opacity-100">
                     {suggestionsMap[index].map((sug) => (
                     <li

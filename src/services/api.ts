@@ -23,7 +23,8 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   response => response,
   error => {
-    if (error.response?.status === 401) {
+    const isLoginRequest = error.config.url?.endsWith('/login');
+    if (error.response?.status === 401 && !isLoginRequest) {
       const { clearAuth } = useAppStore.getState();
       clearAuth();
       window.location.href = '/login'; // App Routerでも確実に遷移させる

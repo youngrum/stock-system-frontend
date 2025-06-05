@@ -97,7 +97,11 @@ export default function InventoryDispatchModal({
           <p className="text-sm text-gray-600">{inventory.modelNumber}</p>
           <p>カテゴリ: {inventory.category}</p>
           <p>メーカー: {inventory.manufacturer}</p>
-          <p>現在庫: {inventory.currentStock}</p>
+          <p>
+          現在庫: <span className={inventory.currentStock == 0 ? "text-red-700" : ""}>
+            {inventory.currentStock}
+          </span>
+</p>
         </div>
 
         <div className="space-y-4">

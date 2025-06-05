@@ -24,3 +24,10 @@ export interface Transaction {
     }
     totalPages: number;
 }
+
+export interface TransactionSearchParams {
+    itemCode: string;
+    operator: string;
+    fromDate: string; 
+    toDate: string; 
+}

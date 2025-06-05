@@ -28,7 +28,7 @@ export default function Sidebar({ isSidebarOpen }: sideBarProps) {
     },
     { label: "在庫一覧/検索", path: "/inventory", icon: <Search size={18} /> },
     {
-      label: "トランザクション",
+      label: "入出庫処理履歴・検索",
       path: "/inventory/transactions",
       icon: <Search size={18} />,
     },
@@ -45,7 +45,7 @@ export default function Sidebar({ isSidebarOpen }: sideBarProps) {
     <aside
       className={`
       fixed left-0 pt-20 z-30
-      w-48 min-h-screen
+      w-60 min-h-screen
       bg-[linear-gradient(to_bottom,_#3D00B8,_#3070C3)]
       text-white p-4
       transform transition-transform duration-300 ease-in-out

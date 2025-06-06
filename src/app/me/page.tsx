@@ -21,7 +21,7 @@ export default function MePage() {
           { label: "在庫一覧・検索(入庫・出庫)", path: "/inventory" },
           { label: "トランザクション", path: "/inventory/transactions" },
           { label: "発注登録", path: "/order" },
-          { label: "発注履歴・検索・納品登録)", path: "/order-history" },
+          { label: "発注履歴・検索・納品登録", path: "/order-history" },
         ].map((link) => (
           <Link
             key={link.path}

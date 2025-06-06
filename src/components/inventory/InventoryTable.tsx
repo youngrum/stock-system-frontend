@@ -62,15 +62,15 @@ export default function InventoryTable({
                   <Truck className="mx-auto" />
                 </Link>
               </td>
-              <td className="px-4 py-3">{item.itemCode}</td>
-              <td className="px-4 py-3 max-w-[300px] truncate">
+              <td className="px-4 py-3" title={item.itemCode}>{item.itemCode}</td>
+              <td className="px-4 py-3 max-w-[300px] truncate"  title={item.itemName}>
                 {item.itemName}
               </td>
-              <td className="px-4 py-3">{item.category}</td>
+              <td className="px-4 py-3" title={item.category}>{item.category}</td>
               <td className="px-4 py-3 max-w-[300px] truncate">
                 {item.modelNumber ?? "-"}
               </td>
-              <td className="px-4 py-3">{item.manufacturer}</td>
+              <td className="px-4 py-3" title={item.manufacturer}>{item.manufacturer}</td>
               <td className="px-4 py-3">
                 <span className={item.currentStock === 0 ? "text-red-500" : ""}>
                   {item.currentStock}

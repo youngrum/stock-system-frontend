@@ -24,7 +24,7 @@ export default function LoginForm() {
   const onSubmit = async (data: LoginFormInputs) => {
     try {
       await loginWithCredentials(data.username, data.password)
-      router.push('/me')
+      router.push('/inventory') // ログイン成功後のリダイレクト先
     } catch (error) {
       const err = error as { response?: { data: ApiErrorResponse } }
       console.log(err);

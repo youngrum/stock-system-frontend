@@ -4,6 +4,7 @@ import {TransactionSearchParams} from '@/types/Transaction'
 import { useState } from "react";
 import { Search } from 'lucide-react';
 
+
 export default function TransactionSearchForm({
   onSearch,
 }: {
@@ -64,7 +65,7 @@ export default function TransactionSearchForm({
         {/* カテゴリ */}
         <div>
           <input
-            type="text"
+            type="date"
             value={fromDate}
             onChange={(e) => setFromDate(e.target.value)}
             placeholder="開始日を入力"
@@ -75,10 +76,10 @@ export default function TransactionSearchForm({
         {/* 型番 */}
         <div>
           <input
-            type="text"
+            type="date"
             value={toDate}  
             onChange={(e) => setToDate(e.target.value)}
-            placeholder="kを入力"
+            placeholder="終了日を入力"
             className="w-full px-3 py-2 text-[#0d113d] rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100" style={{ border: '1px solid #9F9F9F' }}
           />
         </div>

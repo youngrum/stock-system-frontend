@@ -9,6 +9,8 @@ import Pagination from "@/components/ui/Pagination";
 import { ApiErrorResponse } from "@/types/ApiResponse";
 import { Search, X } from "lucide-react";
 import TransactionSearchForm from '@/components/inventory/TransactionSearchForm';
+import Loader from "@/components/ui/Loader";
+
 
 export default function TransactionPage() {
   const [data, setData] = useState<Transaction[]>([]);
@@ -26,7 +28,9 @@ export default function TransactionPage() {
   });
 
   const fetchTransactions = async () => {
+    setLoading(true);
     try {
+      await new Promise((resolve) => setTimeout(resolve, 500));
       const res = await api.get('/transactions',{
           params: {
             ...searchParams, // itemCode, operator, fromDate, toDate を展開
@@ -34,7 +38,7 @@ export default function TransactionPage() {
             size: 10  // ← 1ページあたりの件数
           }});
       console.log(res.data.data.content);
-      setData(res.data.data.content); // APIのレスポンス形式により必要に応じて調整
+      setData(res.data.data.content);
       console.log(res.data.data.totalPages);
       setTotalPages(res.data.data.totalPages);
     } catch (error) {
@@ -53,7 +57,7 @@ export default function TransactionPage() {
   useEffect(() => {
     if (!isLoggedIn) return;
     fetchTransactions();
-  }, [page]);
+  }, [searchParams, page]);
 
   return (
     <main className="bg-white border-gray-400 shadow p-5">
@@ -88,7 +92,7 @@ export default function TransactionPage() {
           `}
           ><TransactionSearchForm onSearch={setSearchParams} /></div>
         
-          {loading ? <p>読み込み中...</p> : <TransactionTable data={data} />}
+          {loading ? <Loader /> : <TransactionTable data={data} />}
       <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
     </main>
     );

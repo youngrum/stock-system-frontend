@@ -12,6 +12,7 @@ import { InventorySearchParams } from "@/types/InventoryItem";
 import { useEffect, useState } from "react";
 import { Search, X } from "lucide-react";
 import { useRouter } from "next/navigation";
+import Loader from "@/components/ui/Loader";
 
 import api from "@/services/api";
 import { ApiErrorResponse } from "@/types/ApiResponse";
@@ -124,7 +125,7 @@ export default function InventoryListsPage() {
 
       {error && <p>{error}</p>}
       {loading ? (
-        <p>読み込み中...</p>
+        <Loader /> 
       ) : (
         <InventoryTable
           data={data}

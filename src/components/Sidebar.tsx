@@ -26,7 +26,7 @@ export default function Sidebar({ isSidebarOpen }: sideBarProps) {
       path: "/inventory/new",
       icon: <Blocks size={18} />,
     },
-    { label: "在庫一覧/検索", path: "/inventory", icon: <Search size={18} /> },
+    { label: "在庫一覧/検索", path: "/inventory", icon: <ListOrdered size={18} /> },
     {
       label: "入出庫処理履歴・検索",
       path: "/inventory/transactions",

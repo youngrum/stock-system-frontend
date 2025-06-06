@@ -17,16 +17,16 @@ export default function InventoryTable({
       <table className="w-full text-sm text-center border-collapse">
         <thead style={{ color: "#101540" }}>
           <tr className="font-semibold">
-            <th className="text-base px-4 py-3">入庫</th>
-            <th className="text-base px-4 py-3">出庫</th>
-            <th className="text-base px-4 py-3">ID</th>
-            <th className="text-base px-4 py-3">品名</th>
-            <th className="text-base px-4 py-3">カテゴリ</th>
-            <th className="text-base px-4 py-3">型番</th>
-            <th className="text-base px-4 py-3">メーカー</th>
-            <th className="text-base px-4 py-3">在庫数</th>
-            <th className="text-base px-4 py-3">更新日</th>
-            <th className="text-base px-4 py-3">履歴</th>
+            <th className="text-base pl-4 pr-1 py-3 max-w-[60px]">入庫</th>
+            <th className="text-base pl-4 pr-1 py-3 max-w-[60px]">出庫</th>
+            <th className="text-base pl-4 pr-1 py-3">ID</th>
+            <th className="text-base pl-4 pr-1 py-3">品名</th>
+            <th className="text-base pl-4 pr-1 py-3">カテゴリ</th>
+            <th className="text-base pl-4 pr-1 py-3">型番</th>
+            <th className="text-base pl-4 pr-1 py-3">メーカー</th>
+            <th className="text-base pl-4 pr-1 py-3">在庫数</th>
+            <th className="text-base pl-4 pr-1 py-3">更新日</th>
+            <th className="text-base pl-4 pr-1 py-3">履歴</th>
           </tr>
         </thead>
         <tbody className="text-gray-700">
@@ -36,7 +36,7 @@ export default function InventoryTable({
               className="hover:bg-gray-200"
               style={{ borderBottom: "1px solid #101540" }}
             >
-              <td className="px-4 py-3 items-center">
+              <td className="pl-4 pr-1 py-3 items-center max-w-[50px]" >
                 <Link
                   href="#"
                   onClick={() => onReceive(item)}
@@ -45,7 +45,7 @@ export default function InventoryTable({
                   <PackagePlus className="mx-auto" />
                 </Link>
               </td>
-              <td className="px-4 py-3">
+              <td className="pl-4 pr-1 py-3 max-w-[50px]">
                 <Link
                   href="#"
                   onClick={(e) => {

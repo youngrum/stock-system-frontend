@@ -55,7 +55,7 @@ export default function TransactionTable({ data }: { data: Transaction[] }) {
               <td className="px-4 py-2">{formatDate(tx.transactionTime)}</td>
               <td className="px-4 py-2">{tx.stockItem.itemCode || "-"}</td>
               <td
-                className="px-4 py-2 max-w-[200px] truncate whitespace-nowrap"
+                className="px-4 py-2 max-w-[300px] truncate whitespace-nowrap"
                 title={tx.stockItem?.itemName}
               >
                 {tx.stockItem.itemName || "-"}
@@ -74,7 +74,7 @@ export default function TransactionTable({ data }: { data: Transaction[] }) {
               </td>
               <td className="px-4 py-2">{tx.operator}</td>
               <td
-                className="px-4 py-2 max-w-[200px] truncate whitespace-nowrap"
+                className="px-4 py-2 max-w-[50px] truncate whitespace-nowrap"
                 title={tx.remarks}
               >
                 {tx.remarks || "-"}

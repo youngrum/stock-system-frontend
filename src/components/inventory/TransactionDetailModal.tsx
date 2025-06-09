@@ -1,10 +1,10 @@
 'use client';
 
 import { X } from 'lucide-react';
-import { TransactionDetail} from '@/types/PurchaseOrder'
+import { Transaction } from '@/types/Transaction';
 
 interface Props {
-  transaction: TransactionDetail;
+  transaction: Transaction;
   onClose: () => void;
 }
 
@@ -53,7 +53,7 @@ export default function TransactionDetailModal({ transaction, onClose }: Props) 
             <ul className="list-disc list-inside text-sm text-gray-700">
               {order.details?.map((d, i) => (
                 <li key={i}>
-                  {d.itemCode} - {d.itemName}（￥{d.purchasePrice} × {d.quantity}）
+                  {stock.itemCode} - {stock.itemName}（￥{d.purchasePrice} × {d.quantity}）
                 </li>
               ))}
             </ul>

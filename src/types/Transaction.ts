@@ -9,18 +9,24 @@ export interface Transaction {
     stockItem :{
       itemCode: string;
       itemName: string;
+      category: string;
+      modelNumber: string;
     }
     purchaseOrder: {
         orderNo: string,
         supplier: string,
         orderSubtotal: number,
-        orderDate: Date,
+        orderDate: string,
         shippingFee: number,
         operator: string,
         status: string,
         remarks: string,
-        createdAt: Date,
-        details: []
+        createdAt: string,
+        details: 
+        {
+            purchasePrice: number,
+            quantity: number
+        }[]
     }
     totalPages: number;
 }

@@ -3,14 +3,13 @@
 import { PackagePlus, Truck, ExternalLink, Bookmark } from "lucide-react";
 import { formatDate } from "@/lib/utils/dateFormat";
 import { Transaction } from "@/types/Transaction";
-import { TransactionDetail } from "@/types/PurchaseOrder";
 import TransactionDetailModal from "@/components/inventory/TransactionDetailModal";
 import Link from "next/link";
 import { useState } from "react";
 
 export default function TransactionTable({ data }: { data: Transaction[] }) {
   const [selectedTransaction, setSelectedTransaction] =
-    useState<TransactionDetail | null>(null);
+    useState<Transaction | null>(null);
   return (
     <div className="overflow-x-auto bg-white">
       <table className="w-full text-sm text-center border-collapse">

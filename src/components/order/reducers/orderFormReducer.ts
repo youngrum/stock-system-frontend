@@ -11,6 +11,7 @@ export type OrderItemState = {
   quantity: number;
   remarks: string;
   readOnlyFields: {
+    itemCode?: boolean; // itemCodeは常に編集可能
     itemName: boolean;
     category: boolean;
     modelNumber: boolean;
@@ -30,7 +31,7 @@ export type OrderFormState = {
 };
 
 export type OrderFormAction =
-  | { type: "UPDATE_ITEM_FIELD"; index: number; field: keyof OrderItemState; value: any }
+  | { type: "UPDATE_ITEM_FIELD"; index: number; field: keyof OrderItemState; value: OrderItemState[keyof OrderItemState]}
   | { type: "ADD_ITEM" }
   | { type: "REMOVE_ITEM"; index: number }
   | { type: "SET_SUPPLIER"; value: string }
@@ -41,9 +42,9 @@ export type OrderFormAction =
   | { type: "CLEAR_SUGGESTIONS"; index: number }
   | { type: "SET_FOCUSED_FIELD"; index: number; field: string }
   | { type: "CLEAR_FOCUSED_FIELD" }
-  | { type: "LOCK_ITEM_FIELDS"; index: number; fields: (keyof OrderItemState)[] }
-  | { type: "UNLOCK_ITEM_FIELDS"; index: number; fields: (keyof OrderItemState)[] }
-  | { type: "RESET_ITEM_LOCK_STATUS"; index: number } // 品目ロック状態をリセット
+  | { type: "LOCK_ITEM_FIELDS"; index: number; fields: (keyof OrderItemState['readOnlyFields'])[] }
+  | { type: "UNLOCK_ITEM_FIELDS"; index: number; fields: (keyof OrderItemState['readOnlyFields'])[] }
+  | { type: "RESET_ITEM_LOCK_STATUS"; index: number }
   | { type: "SET_HIGHLIGHTED_SUGGESTION"; index: number }
   | { type: "INCREMENT_HIGHLIGHTED_SUGGESTION" }
   | { type: "DECREMENT_HIGHLIGHTED_SUGGESTION" }

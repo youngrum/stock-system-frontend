@@ -1,20 +1,18 @@
-"use client";
+// app/inventory/[itemCode]/transactions/page.tsx
+'use client';
 
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
 import { Transaction } from '@/types/Transaction';
 import { PackagePlus, Truck, Bookmark} from "lucide-react";
-import  Pagination from "@/components/ui/Pagination"
+import Pagination from "@/components/ui/Pagination"
 import { InventoryItem } from '@/types/InventoryItem';
 import api from "@/services/api";
 
-type Props = {
-    params: {
-      itemCode: string;
-    };
-  };
-  
-  export default function InventoryTransactionPage({ params }: Props) {
-  const itemCode = params.itemCode;
+
+export default function InventoryTransactionPage() {
+  const params = useParams();
+  const itemCode = params.itemCode as string;
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [stockInfo, setStockInfo] = useState<InventoryItem | null>(null);
   const [totalPages, setTotalPages] = useState<number>(0);
@@ -25,11 +23,7 @@ type Props = {
 
     const fetchData = async () => {
       try {
-        const txRes = await api.get(`/inventory/${itemCode}/history`,{
-          params: {
-            page,  // ← 0始まり
-            size: 10  // ← 1ページあたりの件数
-          }});
+        const txRes = await api.get(`/inventory/${itemCode}/history`);
         setTransactions(txRes.data.data.content);
         setTotalPages(txRes.data.data.totalPages);
 

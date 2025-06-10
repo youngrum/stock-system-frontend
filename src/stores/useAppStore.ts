@@ -4,8 +4,8 @@ import { persist } from 'zustand/middleware';
 interface AppState {
   token: string | null // 認証トークン
   authName: string | null // ログインユーザー名
-  setToken: (token: string) => void // トークンの取得
-  setAuthName: (authName: string) => void
+  setToken: (token: string | null) => void // トークンの取得
+  setAuthName: (authName: string | null) => void
   clearAuth: () => void // 認証情報解放
   // isSidebarOpen: boolean // サイドバーの開閉フラグ
   // toggleSidebar: () => void // サイドバーの開閉フラグ切り替え

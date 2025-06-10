@@ -38,7 +38,7 @@ export default function InventoryTransactionPage() {
   }, [itemCode, page]);
 
   return (
-    <div className="bg-white border-gray-400 p-3 shadow p-5">
+    <div className="bg-white border-gray-400 shadow p-5">
       <h2 className="text-2xl font-bold mb-2">個別在庫処理履歴</h2>
       <h3 className="text-md text-gray-600 mb-2">{itemCode}</h3>
       {stockInfo && (

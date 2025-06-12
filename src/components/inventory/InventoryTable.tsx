@@ -26,7 +26,7 @@ export default function InventoryTable({
             <th className="text-base pl-4 pr-1 py-3">メーカー</th>
             <th className="text-base pl-4 pr-1 py-3">在庫数</th>
             <th className="text-base pl-4 pr-1 py-3">更新日</th>
-            <th className="text-base pl-4 pr-1 py-3">履歴</th>
+            <th className="text-base pl-4 pr-1 py-3 line-through">履歴</th>
           </tr>
         </thead>
         <tbody className="text-gray-700">
@@ -77,13 +77,21 @@ export default function InventoryTable({
                 </span>
                 </td>
               <td className="px-4 py-3">{formatDate(item.lastUpdated)}</td>
-              <td className="px-4 py-3">
-                <Link
+              <td className="px-4 py-3 line-through">
+                {/** 静的ファイルとしてビルドすると動的ページ生成できないのでリンク先閉鎖 */}
+                {/* <Link
                   href={`/inventory/${item.itemCode}/transactions`}
                   className="text-[#0d113d]"
                 >
                   <ExternalLink className="mx-auto" />
-                </Link>
+                </Link> */}
+                <button
+                  onClick={(e) => e.preventDefault()} // クリックイベントをキャンセル
+                  className="text-[#0d113d] cursor-not-allowed"
+                  disabled
+                >
+                  <ExternalLink className="mx-auto" />
+                </button>
               </td>
             </tr>
           ))}

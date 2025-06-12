@@ -25,7 +25,9 @@ export interface Transaction {
         details: 
         {
             purchasePrice: number,
-            quantity: number
+            quantity: number,
+            itemCode: string,
+            itemName: string,
         }[]
     }
     totalPages: number;

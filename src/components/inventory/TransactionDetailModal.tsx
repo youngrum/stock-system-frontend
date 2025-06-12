@@ -53,7 +53,7 @@ export default function TransactionDetailModal({ transaction, onClose }: Props) 
             <ul className="list-disc list-inside text-sm text-gray-700">
               {order.details?.map((d, i) => (
                 <li key={i}>
-                  {stock.itemCode} - {stock.itemName}（￥{d.purchasePrice} × {d.quantity}）
+                  {d.itemCode} - {d.itemName}（￥{d.purchasePrice} × {d.quantity}）
                 </li>
               ))}
             </ul>

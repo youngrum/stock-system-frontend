@@ -15,10 +15,6 @@ type sideBarProps = {
 
 export default function Sidebar({ isSidebarOpen }: sideBarProps) {
   const router = useRouter();
-  // const pathname = usePathname();
-
-  // const isInventory = pathname.startsWith("/inventory/search");
-  // const isOrders = pathname.startsWith("/orders");
 
   const menuItems = [
     {
@@ -26,16 +22,23 @@ export default function Sidebar({ isSidebarOpen }: sideBarProps) {
       path: "/inventory/new",
       icon: <Blocks size={18} />,
     },
-    { label: "在庫一覧/検索", path: "/inventory", icon: <ListOrdered size={18} /> },
     {
-      label: "入出庫処理履歴・検索",
+      label: "在庫一覧/検索",
+      path: "/inventory",
+      icon: <ListOrdered size={18} />,
+    },
+    {
+      label: "入出庫処理履歴/検索",
       path: "/inventory/transactions",
       icon: <Search size={18} />,
     },
-    { label: "発注登録", path: "/order", icon: <FileText size={18} /> },
-    // { label: "納品登録", path: "/orders/receive", icon: <PackagePlus size={18} /> },
     {
-      label: "発注一覧/検索",
+      label: "発注登録",
+      path: "/order",
+      icon: <FileText size={18} />,
+    },
+    {
+      label: "発注履歴一覧/検索",
       path: "/order/order-list",
       icon: <ListOrdered size={18} />,
     },
@@ -44,44 +47,35 @@ export default function Sidebar({ isSidebarOpen }: sideBarProps) {
   return (
     <aside
       className={`
-      fixed left-0 pt-20 z-30
-      w-60 min-h-screen
-      bg-[linear-gradient(to_bottom,_#3D00B8,_#3070C3)]
-      text-white p-4
-      transform transition-transform duration-300 ease-in-out
-      ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
-    `}
+        fixed left-0 pt-20 z-30
+        w-60 min-h-screen
+        bg-[linear-gradient(to_bottom,_#3D00B8,_#3070C3)]
+        text-white p-4
+        transform transition-transform duration-300 ease-in-out
+        ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}
+      `}
     >
       <div className="flex flex-col gap-2">
-        {menuItems.map((item) => (
-          <div key={item.path} className="relative group">
+        {menuItems.map((item) => {
+          const isDisabled =
+            item.label === "発注登録" ||
+            item.label === "発注履歴一覧/検索";
+          return (
             <button
-              onClick={() => router.push(item.path)}
-              className="text-white my-2"
+              key={item.path}
+              onClick={() => {
+                router.push(item.path);
+              }}
+              className={`
+                text-white my-2 flex items-center
+                ${isDisabled ? "opacity-50 line-through" : "hover:opacity-80"}
+              `}
             >
-              <p className="flex items-center">
-                <span className="pr-2">{item.icon}</span>
-                {item.label}
-              </p>
+              <span className="pr-2">{item.icon}</span>
+              {item.label}
             </button>
-
-            {/* ツールチップ表示：在庫一覧/検索のときだけ */}
-            {/* {isSidebarOpen && item.label === "在庫一覧/検索" && (
-              <div className="absolute left-full top-1/2 ml-2 transform -translate-y-1/2 w-max bg-gray-700 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-                <ul>
-                  <li className="flex items-center gap-2">
-                    <PackagePlus />
-                    入庫処理
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <Truck />
-                    出庫処理
-                  </li>
-                </ul>
-              </div>
-            )} */}
-          </div>
-        ))}
+          );
+        })}
       </div>
     </aside>
   );

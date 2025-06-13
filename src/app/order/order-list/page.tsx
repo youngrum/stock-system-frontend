@@ -23,30 +23,26 @@ export default function OrderHistoryPage() {
   const [loading, setLoading] = useState(true);
 
   // 履歴データ取得
-  useEffect(() => {
-    const fetchPurchaseList = async () => {
-      try {
-        const res = await api.get("/order-history", {
-          params: {
-            page, // ← 0始まり
-            size: 10, // ← 1ページあたりの件数
-          },
-        });
-        console.log(res.data.content)
-        setData(res.data.content);
-        setTotalPages(res.data.totalPages);
-      } catch (error) {
-        console.error(error);
-        const err = error as { response?: { data: ApiErrorResponse } }
-        if (err.response && err.response.data) {
-          const error: ApiErrorResponse = err.response.data;
-          alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用
-          console.error("発注履歴取得エラー:", err);
-        }
-      } finally {
-        setLoading(false);
+  const fetchPurchaseList = async () => {
+    try {
+      const res = await api.get("/order-history");
+      console.log(res.data.content)
+      setData(res.data.content);
+      setTotalPages(res.data.totalPages);
+    } catch (error) {
+      console.error(error);
+      const err = error as { response?: { data: ApiErrorResponse } }
+      if (err.response && err.response.data) {
+        const error: ApiErrorResponse = err.response.data;
+        alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用
+        console.error("発注履歴取得エラー:", err);
       }
-    };
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+  useEffect(() => {
     fetchPurchaseList();
   }, [page]);
 
@@ -64,13 +60,27 @@ export default function OrderHistoryPage() {
 
   ) => {
     console.log("%o", item);
-    await api.post("/receive-from-order", {
+    try {
+    const res = await api.post("/receive-from-order", {
       orderNo: item.orderNo, // itemに含まれていない
       items: [{ itemCode: item.itemCode, receivedQuantity: quantity}]
     });
+    console.log("納品登録成功:", res.data);
+    // 成功時の処理
+    alert("納品登録が完了しました。");
+
     // 成功後、履歴を再取得するなど
     closeModal();
     // ここで再フェッチもしくはローカル更新
+    fetchPurchaseList();
+    } catch (error) {
+      console.error("納品登録エラー:", error);
+      const err = error as { response?: { data: ApiErrorResponse } }
+      if (err.response && err.response.data) {
+        const error: ApiErrorResponse = err.response.data;
+        alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用
+      }
+    }
   };
 
   return (

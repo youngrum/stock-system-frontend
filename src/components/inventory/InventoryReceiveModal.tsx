@@ -56,7 +56,6 @@ export default function InventoryReceiveModal({
     setLoading(true);
     try {
       console.log("%o", inventory);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       const res = await api.post(`/inventory/receive/${itemCode}`, {
         itemCode: inventory?.itemCode || null,
         quantity: quantity,

@@ -25,7 +25,6 @@ export default function OrderNewPage() {
     console.log("%o", formData);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       const res = await api.post(`/orders`, {
         supplier: formData.supplier,
         shippingFee: formData.shippingFee,

@@ -51,7 +51,6 @@ export default function InventoryDispatchModal({
     setLoading(true);
     try {
       console.log("%o", inventory);
-      await new Promise((resolve) => setTimeout(resolve, 1000));
       const res = await api.post(`/inventory/dispatch/${itemCode}`, {
         itemCode: inventory?.itemCode || null,
         quantity: quantity,

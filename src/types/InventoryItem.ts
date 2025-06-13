@@ -1,3 +1,4 @@
+// 在庫アイテムの型定義
 export interface InventoryItem {
   itemCode: string;
   itemName: string;
@@ -13,7 +14,7 @@ export interface InventoryItem {
   lastUpdated: string;
   remarks: string;
 }
-
+// 在庫検索のパラメータの型定義
 export interface InventorySearchParams {
   itemCode?: string;
   itemName?: string;
@@ -21,6 +22,7 @@ export interface InventorySearchParams {
   modelNumber?: string;
 }
 
+// 在庫新規登録の型定義
 export interface CreateInventoryRequest {
   itemName: string;
   category: string;

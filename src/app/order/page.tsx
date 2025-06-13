@@ -29,7 +29,7 @@ export default function OrderNewPage() {
         supplier: formData.supplier,
         shippingFee: formData.shippingFee,
         orderDate: formData.orderDate,
-        remarks: formData.remarks || "",
+        remarks: formData.remarks || "-",
         details: formData.details.map((item: PurchaseOrderDetailRequest) => ({
           itemCode: item.itemCode || "",
           itemName: item.itemName,
@@ -37,7 +37,7 @@ export default function OrderNewPage() {
           modelNumber: item.modelNumber,
           purchasePrice: item.price || 0,
           quantity: item.quantity,
-          remarks: item.remarks || "",
+          remarks: item.remarks || "-",
         })),
       });
 

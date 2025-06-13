@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { PurchaseOrderRequest, OrderItem } from "@/types/PurchaseOrder";
+import { PurchaseOrderRequest } from "@/types/PurchaseOrder";
 import { InventoryItem } from "@/types/InventoryItem";
+import { OrderItemState } from "@/components/order/reducers/orderFormReducer";
 import { X } from "lucide-react";
 import api from "@/services/api";
 
@@ -11,7 +12,7 @@ type Props = {
 };
 
 export default function OrderForm({ onSubmit }: Props) {
-  const [items, setItems] = useState<OrderItem[]>([
+  const [items, setItems] = useState<OrderItemState[]>([
     {
       itemCode: "",
       itemName: "",

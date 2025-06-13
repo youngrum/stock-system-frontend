@@ -26,7 +26,7 @@ export default function InventoryNewPage() {
     modelNumber: "",
     manufacturer: "",
     currentStock: 0,
-    remarks: "",
+    remarks: "-",
   });
 
   const [successResponse, setSuccessResponse] =
@@ -88,7 +88,7 @@ export default function InventoryNewPage() {
       modelNumber: "",
       manufacturer: "",
       currentStock: 0,
-      remarks: "",
+      remarks: "-",
     });
   };
 

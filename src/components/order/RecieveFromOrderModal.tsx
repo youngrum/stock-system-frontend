@@ -22,7 +22,7 @@ export default function RecieveFromOrderModal({
 
   useEffect(() => {
     setQuantity(maxValue);
-  }, [detail]);
+  }, [maxValue]);
 
   if (!open) return null;
 

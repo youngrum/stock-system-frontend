@@ -269,7 +269,7 @@ export default function OrderForm({ onSubmit }: Props) {
     if (fetchPromises.length > 0) {
       Promise.all(fetchPromises).catch(console.error);
     }
-  }, [items.map(item => `${item.autoFetchRequired}-${item.itemCode}-${item.autoSuggestRequired}-${item.itemName}-${item.modelNumber}-${item.category}`).join(',')]);
+  }, [items]);
 
   const handleItemCodeBlur = (index: number) => {
     setTimeout(() => {

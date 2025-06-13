@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { PurchaseOrderRequest, OrderItem } from "@/types/PurchaseOrder";
+import { PurchaseOrderRequest } from "@/types/PurchaseOrder";
 import { InventoryItem } from "@/types/InventoryItem";
+import { OrderItemState } from "@/components/order/reducers/orderFormReducer";
 import { X } from "lucide-react";
 import api from "@/services/api";
 
@@ -11,7 +12,7 @@ type Props = {
 };
 
 export default function OrderForm({ onSubmit }: Props) {
-  const [items, setItems] = useState<OrderItem[]>([
+  const [items, setItems] = useState<OrderItemState[]>([
     {
       itemCode: "",
       itemName: "",
@@ -269,7 +270,7 @@ export default function OrderForm({ onSubmit }: Props) {
     if (fetchPromises.length > 0) {
       Promise.all(fetchPromises).catch(console.error);
     }
-  }, [items.map(item => `${item.autoFetchRequired}-${item.itemCode}-${item.autoSuggestRequired}-${item.itemName}-${item.modelNumber}-${item.category}`).join(',')]);
+  }, [items]);
 
   const handleItemCodeBlur = (index: number) => {
     setTimeout(() => {
@@ -357,6 +358,7 @@ export default function OrderForm({ onSubmit }: Props) {
           <label className="block mb-1 pb-2 pt-1 font-semibold">送料</label>
           <input
             type="number"
+            min={0}
             value={shippingFee}
             onChange={(e) => setShippingFee(Number(e.target.value))}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
@@ -526,6 +528,7 @@ export default function OrderForm({ onSubmit }: Props) {
               <input
                 type="number"
                 value={item.price}
+                min={1}
                 onChange={(e) => updateItem(index, "price", e.target.value)}
                 className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
               />

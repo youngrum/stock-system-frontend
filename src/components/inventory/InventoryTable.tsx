@@ -77,7 +77,7 @@ export default function InventoryTable({
                 </span>
                 </td>
               <td className="px-4 py-3">{formatDate(item.lastUpdated)}</td>
-              <td className="px-4 py-3 line-through">
+              <td className="pl-4 pr-1 line-through">
                 {/** 静的ファイルとしてビルドすると動的ページ生成できないのでリンク先閉鎖 */}
                 {/* <Link
                   href={`/inventory/${item.itemCode}/transactions`}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import api from '@/services/api';
 import TransactionTable from '@/components/inventory/TransactionTable';
 import {Transaction, TransactionSearchParams} from '@/types/Transaction'
@@ -27,19 +27,16 @@ export default function TransactionPage() {
     toDate: "",
   });
 
-  const fetchTransactions = async () => {
+  const fetchTransactions = useCallback(async () => {
     setLoading(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
       const res = await api.get('/transactions',{
           params: {
             ...searchParams, // itemCode, operator, fromDate, toDate を展開
-            page,  // ← 0始まり
-            size: 10  // ← 1ページあたりの件数
           }});
       console.log(res.data.data.content);
       setData(res.data.data.content);
-      console.log(res.data.data.totalPages);
       setTotalPages(res.data.data.totalPages);
     } catch (error) {
       console.error('トランザクション取得エラー:', error);
@@ -52,12 +49,12 @@ export default function TransactionPage() {
     } finally {
       setLoading(false);
     }
-  };
+  },[searchParams]);
 
   useEffect(() => {
     if (!isLoggedIn) return;
     fetchTransactions();
-  }, [searchParams, page]);
+  }, [fetchTransactions, isLoggedIn]);
 
   return (
     <main className="bg-white border-gray-400 shadow p-5">

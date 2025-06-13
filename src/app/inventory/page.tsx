@@ -9,7 +9,7 @@ import Pagination from "@/components/ui/Pagination";
 import { useAuthGuard } from "@/lib/hooks/useAuthGuard";
 import { InventoryItem } from "@/types/InventoryItem";
 import { InventorySearchParams } from "@/types/InventoryItem";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Search, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/ui/Loader";
@@ -45,13 +45,11 @@ export default function InventoryListsPage() {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     try {
       const res = await api.get("/inventory/search", {
         params: {
           ...searchParams, // itemCode, itemName を展開
-          page,
-          size: 10,
         },
       });
       console.log(res.data.data.content);
@@ -68,13 +66,13 @@ export default function InventoryListsPage() {
     } finally {
       setLoading(false);
     }
-  };
+  },[searchParams]);
 
   useEffect(() => {
     if (!isLoggedIn) return;
 
     fetchData();
-  }, [searchParams, page]);
+  }, [fetchData, isLoggedIn]);
 
   return (
     <main className="bg-white border-gray-400 shadow p-5">

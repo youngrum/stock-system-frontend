@@ -358,6 +358,7 @@ export default function OrderForm({ onSubmit }: Props) {
           <label className="block mb-1 pb-2 pt-1 font-semibold">送料</label>
           <input
             type="number"
+            min={0}
             value={shippingFee}
             onChange={(e) => setShippingFee(Number(e.target.value))}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
@@ -527,6 +528,7 @@ export default function OrderForm({ onSubmit }: Props) {
               <input
                 type="number"
                 value={item.price}
+                min={1}
                 onChange={(e) => updateItem(index, "price", e.target.value)}
                 className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
               />

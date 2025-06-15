@@ -10,12 +10,13 @@ export type OrderItemState = {
   price: number;
   quantity: number;
   remarks: string;
+  autoFetchRequired?: boolean;
+  autoSuggestRequired: boolean;
   readOnlyFields: {
     itemCode?: boolean; // itemCodeは常に編集可能
     itemName: boolean;
     category: boolean;
     modelNumber: boolean;
-    manufacturer: boolean;
   };
 };
 
@@ -59,11 +60,11 @@ const initialOrderItem: OrderItemState = {
   price: 0,
   quantity: 1,
   remarks: "-",
+  autoSuggestRequired: false,
   readOnlyFields: {
     itemName: false,
     category: false,
     modelNumber: false,
-    manufacturer: false,
   },
 };
 
@@ -94,7 +95,6 @@ export function orderFormReducer(state: OrderFormState, action: OrderFormAction)
                 itemName: false,
                 category: false,
                 modelNumber: false,
-                manufacturer: false,
               },
             };
           }

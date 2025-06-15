@@ -1,16 +1,15 @@
-'use client';
+"use client";
 
-import { useEffect, useState, useCallback } from 'react';
-import api from '@/services/api';
-import TransactionTable from '@/components/inventory/TransactionTable';
-import {Transaction, TransactionSearchParams} from '@/types/Transaction'
-import { useAuthGuard } from '@/lib/hooks/useAuthGuard';
+import { useEffect, useState, useCallback } from "react";
+import api from "@/services/api";
+import TransactionTable from "@/components/inventory/TransactionTable";
+import { Transaction, TransactionSearchParams } from "@/types/Transaction";
+import { useAuthGuard } from "@/lib/hooks/useAuthGuard";
 import Pagination from "@/components/ui/Pagination";
 import { ApiErrorResponse } from "@/types/ApiResponse";
 import { Search, X } from "lucide-react";
-import TransactionSearchForm from '@/components/inventory/TransactionSearchForm';
+import TransactionSearchForm from "@/components/inventory/TransactionSearchForm";
 import Loader from "@/components/ui/Loader";
-
 
 export default function TransactionPage() {
   const [data, setData] = useState<Transaction[]>([]);
@@ -31,25 +30,28 @@ export default function TransactionPage() {
     setLoading(true);
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
-      const res = await api.get('/transactions',{
-          params: {
-            ...searchParams, // itemCode, operator, fromDate, toDate を展開
-          }});
+      const res = await api.get("/transactions", {
+        params: {
+          ...searchParams, // itemCode, operator, fromDate, toDate を展開
+        },
+      });
       console.log(res.data.data.content);
       setData(res.data.data.content);
       setTotalPages(res.data.data.totalPages);
     } catch (error) {
-      console.error('トランザクション取得エラー:', error);
-      const err = error as { response?: { data: ApiErrorResponse } }
+      console.error("トランザクション取得エラー:", error);
+      const err = error as { response?: { data: ApiErrorResponse } };
       if (err.response && err.response.data) {
         const error: ApiErrorResponse = err.response.data;
-        alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用
+        alert(
+          `エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`
+        ); // エラーメッセージを利用
       }
-      console.error('トランザクション取得エラー:', err);
+      console.error("トランザクション取得エラー:", err);
     } finally {
       setLoading(false);
     }
-  },[searchParams]);
+  }, [searchParams, page]);
 
   useEffect(() => {
     if (!isLoggedIn) return;
@@ -81,16 +83,22 @@ export default function TransactionPage() {
             )}
           </button>
         </div>
-        </div>
-        <div
-          className={`
+      </div>
+      <div
+        className={`
             transition-all duration-500 ease-in-out overflow-hidden
             ${showSearchForm ? "max-h-[400px]" : "max-h-0"}
           `}
-          ><TransactionSearchForm onSearch={setSearchParams} /></div>
-        
-          {loading ? <Loader /> : <TransactionTable data={data} />}
-      <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
+      >
+        <TransactionSearchForm onSearch={setSearchParams} />
+      </div>
+
+      {loading ? <Loader /> : <TransactionTable data={data} />}
+      <Pagination
+        currentPage={page}
+        totalPages={totalPages}
+        onPageChange={setPage}
+      />
     </main>
-    );
+  );
 }

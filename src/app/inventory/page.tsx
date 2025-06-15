@@ -57,16 +57,18 @@ export default function InventoryListsPage() {
       setTotalPages(res.data.data.totalPages);
     } catch (error) {
       console.error(error);
-      const err = error as { response?: { data: ApiErrorResponse } }
+      const err = error as { response?: { data: ApiErrorResponse } };
       if (err.response && err.response.data) {
         const error: ApiErrorResponse = err.response.data;
-        alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用
+        alert(
+          `エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`
+        ); // エラーメッセージを利用
       }
       setError("在庫データの取得に失敗しました");
     } finally {
       setLoading(false);
     }
-  },[searchParams]);
+  }, [searchParams, page]);
 
   useEffect(() => {
     if (!isLoggedIn) return;
@@ -123,7 +125,7 @@ export default function InventoryListsPage() {
 
       {error && <p>{error}</p>}
       {loading ? (
-        <Loader /> 
+        <Loader />
       ) : (
         <InventoryTable
           data={data}

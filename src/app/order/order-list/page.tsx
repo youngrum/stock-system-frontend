@@ -26,22 +26,24 @@ export default function OrderHistoryPage() {
   const fetchPurchaseList = async () => {
     try {
       const res = await api.get("/order-history");
-      console.log(res.data.content)
+      console.log(res.data.content);
       setData(res.data.content);
       setTotalPages(res.data.totalPages);
     } catch (error) {
       console.error(error);
-      const err = error as { response?: { data: ApiErrorResponse } }
+      const err = error as { response?: { data: ApiErrorResponse } };
       if (err.response && err.response.data) {
         const error: ApiErrorResponse = err.response.data;
-        alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用
+        alert(
+          `エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`
+        ); // エラーメッセージを利用
         console.error("発注履歴取得エラー:", err);
       }
     } finally {
       setLoading(false);
     }
   };
-  
+
   useEffect(() => {
     fetchPurchaseList();
   }, [page]);
@@ -57,52 +59,53 @@ export default function OrderHistoryPage() {
   const handleRegisterDelivery = async (
     item: PurchaseOrderDetailResponse,
     quantity: number
-
   ) => {
     console.log("%o", item);
     try {
-    const res = await api.post("/receive-from-order", {
-      orderNo: item.orderNo, // itemに含まれていない
-      items: [{ itemCode: item.itemCode, receivedQuantity: quantity}]
-    });
-    console.log("納品登録成功:", res.data);
-    // 成功時の処理
-    alert("納品登録が完了しました。");
+      const res = await api.post("/receive-from-order", {
+        orderNo: item.orderNo, // itemに含まれていない
+        items: [{ itemCode: item.itemCode, receivedQuantity: quantity }],
+      });
+      console.log("納品登録成功:", res.data);
+      // 成功時の処理
+      alert("納品登録が完了しました。");
 
-    // 成功後、履歴を再取得するなど
-    closeModal();
-    // ここで再フェッチもしくはローカル更新
-    fetchPurchaseList();
+      // 成功後、履歴を再取得するなど
+      closeModal();
+      // ここで再フェッチもしくはローカル更新
+      fetchPurchaseList();
     } catch (error) {
       console.error("納品登録エラー:", error);
-      const err = error as { response?: { data: ApiErrorResponse } }
+      const err = error as { response?: { data: ApiErrorResponse } };
       if (err.response && err.response.data) {
         const error: ApiErrorResponse = err.response.data;
-        alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用
+        alert(
+          `エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`
+        ); // エラーメッセージを利用
       }
     }
   };
 
   return (
     <>
-    {loading && <Loader />}
-    <main className="bg-white border-gray-400 p-3 shadow p-5">
-      <h2 className="text-xl font-bold mb-4">発注履歴一覧</h2>
-      <PurchaseList orders={data} onRegisterDelivery={openModal} />
-      {selectedDetail && (
-        <RecieveFromOrderModal
-          open={modalOpen}
-          detail={selectedDetail}
-          onClose={closeModal}
-          onSubmit={handleRegisterDelivery}
+      {loading && <Loader />}
+      <main className="bg-white border-gray-400 p-3 shadow p-5">
+        <h2 className="text-xl font-bold mb-4">発注履歴一覧</h2>
+        <PurchaseList orders={data} onRegisterDelivery={openModal} />
+        {selectedDetail && (
+          <RecieveFromOrderModal
+            open={modalOpen}
+            detail={selectedDetail}
+            onClose={closeModal}
+            onSubmit={handleRegisterDelivery}
+          />
+        )}
+        <Pagination
+          currentPage={page}
+          totalPages={totalPages}
+          onPageChange={setPage}
         />
-      )}
-      <Pagination
-        currentPage={page}
-        totalPages={totalPages}
-        onPageChange={setPage}
-      />
-    </main>
+      </main>
     </>
   );
 }

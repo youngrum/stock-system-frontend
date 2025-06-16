@@ -8,23 +8,8 @@ import Link from "next/link";
 import { useState } from "react";
 
 export default function TransactionTable({ data }: { data: Transaction[] }) {
-  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
-  const [selectedStockItem, setSelectedStockItem] = useState<Transaction['stockItem'] | null>(null);
-  const [selectedPurchaseOrder, setSelectedPurchaseOrder] = useState<Transaction['purchaseOrder'] | null>(null);
-
-  const handleTransactionSelect = (tx: Transaction) => {
-    setSelectedTransaction(tx);
-    // 親コンポーネントで関連データを展開
-    setSelectedStockItem(tx.stockItem ? { ...tx.stockItem } : null);
-    setSelectedPurchaseOrder(tx.purchaseOrder ? { ...tx.purchaseOrder } : null);
-  };
-
-  const handleModalClose = () => {
-    setSelectedTransaction(null);
-    setSelectedStockItem(null);
-    setSelectedPurchaseOrder(null);
-  };
-
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<Transaction | null>(null);
   return (
     <div className="overflow-x-auto bg-white">
       <table className="w-full text-sm text-center border-collapse">
@@ -100,7 +85,7 @@ export default function TransactionTable({ data }: { data: Transaction[] }) {
                 ) : (
                   <Link
                     href="#"
-                    onClick={() => handleTransactionSelect(tx)}
+                    onClick={() => setSelectedTransaction(tx)}
                     className="text-[#0d113d]"
                   >
                     <ExternalLink className="mx-auto" />
@@ -114,9 +99,7 @@ export default function TransactionTable({ data }: { data: Transaction[] }) {
       {selectedTransaction && (
         <TransactionDetailModal
           transaction={selectedTransaction}
-          stockItem={selectedStockItem}
-          purchaseOrder={selectedPurchaseOrder}
-          onClose={handleModalClose}
+          onClose={() => setSelectedTransaction(null)}
         />
       )}
     </div>

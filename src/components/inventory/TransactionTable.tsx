@@ -29,7 +29,8 @@ export default function TransactionTable({ data }: { data: Transaction[] }) {
           {data.map((tx, index) => (
             <tr key={index} className="border-b hover:bg-gray-50">
               <td className="px-4 py-2">
-                {tx.transactionType === "MANUAL_RECEIVE" || tx.transactionType === "PURCHASE_RECEIVE" ? (
+                {tx.transactionType === "MANUAL_RECEIVE" ||
+                tx.transactionType === "PURCHASE_RECEIVE" ? (
                   <div className="text-green-800 flex justify-center items-center">
                     <PackagePlus className="w-5 h-5 mr-1" />
                     入庫

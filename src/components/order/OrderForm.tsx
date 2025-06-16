@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { PurchaseOrderRequest } from "@/types/PurchaseOrder";
+import { PurchaseOrderRequest, PurchaseOrderDetailRequest } from "@/types/PurchaseOrder";
 import { InventoryItem } from "@/types/InventoryItem";
 import { OrderItemState } from "@/components/order/reducers/orderFormReducer";
 import { X } from "lucide-react";
@@ -18,6 +18,7 @@ export default function OrderForm({ onSubmit }: Props) {
       itemName: "",
       category: "",
       modelNumber: "",
+      manufacturer: "",
       price: 0,
       quantity: 1,
       remarks: "-",
@@ -50,6 +51,7 @@ export default function OrderForm({ onSubmit }: Props) {
         itemName: "",
         category: "",
         modelNumber: "",
+        manufacturer: "",
         price: 0,
         quantity: 1,
         remarks: "-",
@@ -125,7 +127,7 @@ export default function OrderForm({ onSubmit }: Props) {
 
   // useEffectを分離して依存関係を明確化
   useEffect(() => {
-    const fetchItemByCode = async (item: OrderItem, index: number) => {
+    const fetchItemByCode = async (item: PurchaseOrderDetailRequest, index: number) => {
       const key = `fetch-${index}-${item.itemCode}`;
       
       // 重複処理防止
@@ -185,7 +187,7 @@ export default function OrderForm({ onSubmit }: Props) {
       }
     };
 
-    const suggestItems = async (item: OrderItem, index: number) => {
+    const suggestItems = async (item: PurchaseOrderDetailRequest, index: number) => {
       const key = `suggest-${index}-${item.itemName}-${item.modelNumber}-${item.category}`;
       
       // 重複処理防止

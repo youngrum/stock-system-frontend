@@ -12,6 +12,7 @@ export interface InventoryItem {
   quantity: number;
   price: number;
   lastUpdated: string;
+  location: string;
   remarks: string;
 }
 // 在庫検索のパラメータの型定義
@@ -29,5 +30,6 @@ export interface CreateInventoryRequest {
   modelNumber: string;
   manufacturer: string;
   currentStock: number;
+  location: string;
   remarks: string;
 }

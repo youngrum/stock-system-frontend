@@ -5,12 +5,14 @@ import { Transaction } from '@/types/Transaction';
 
 interface Props {
   transaction: Transaction;
+  stockItem: Transaction['stockItem'] | null; // 事前に展開されたstockItemデータ
+  purchaseOrder: Transaction['purchaseOrder'] | null; // 事前に展開されたpurchaseOrderデータ
   onClose: () => void;
 }
 
-export default function TransactionDetailModal({ transaction, onClose }: Props) {
-  const stock = transaction.stockItem;
-  const order = transaction.purchaseOrder;
+export default function TransactionDetailModal({ transaction, stockItem, purchaseOrder, onClose }: Props) {
+  const stock = stockItem;
+  const order = purchaseOrder;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -20,9 +22,16 @@ export default function TransactionDetailModal({ transaction, onClose }: Props) 
           <X size={24} />
         </button>
 
-        <h2 className="text-xl font-semibold">{stock.itemName}</h2>
-        <h3 className="font-semibold">{stock.itemCode}</h3>
-        <p className="text-sm text-gray-600">カテゴリ / 型番 <br/>{stock.category} / {stock.modelNumber}</p>
+        {stock ? (
+          <>
+            <h2 className="text-xl font-semibold">{stock.itemName}</h2>
+            <h3 className="font-semibold">{stock.itemCode}</h3>
+            <p className="text-sm text-gray-600">カテゴリ / 型番 <br/>{stock.category} / {stock.modelNumber}</p>
+          </>
+        ) : (
+          // stockがnullの場合に表示する代替コンテンツ（例: ロード中、または情報なし）
+          <p className="text-gray-600">在庫情報がありません。</p>
+        )}
 
         <div className="space-y-2">
           <p>処理種別: 

@@ -25,7 +25,7 @@ export default function InventoryNewPage() {
     category: "",
     modelNumber: "",
     manufacturer: "",
-    currentStock: 0,
+    currentStock: "",
     location: "",
     remarks: "",
   });
@@ -169,6 +169,7 @@ export default function InventoryNewPage() {
               value={form.currentStock}
               min={0}
               onChange={handleChange}
+              placeholder="例: 10"
               required
               className="w-full border border-gray-300 rounded px-3 py-2"
             />

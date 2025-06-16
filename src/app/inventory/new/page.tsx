@@ -26,7 +26,8 @@ export default function InventoryNewPage() {
     modelNumber: "",
     manufacturer: "",
     currentStock: 0,
-    remarks: "-",
+    location: "",
+    remarks: "",
   });
 
   const [successResponse, setSuccessResponse] =
@@ -48,7 +49,7 @@ export default function InventoryNewPage() {
 
     const confirmed = window.confirm(`本当にこの内容で入庫しますか？\n品名：${form.itemName}\nカテゴリー：${form?.category}\n仕入先: ${
         form.modelNumber || "未入力"
-      }\n↓\n数量: ${form.currentStock}\n備考: ${form.remarks || "なし"}`)
+      }\n↓\n数量: ${form.currentStock}\n備考: ${form.location || "なし"}\n備考: ${form.remarks || "なし"}`)
 
     if (!confirmed) {
       window.confirm("処理を取り消しました");
@@ -63,6 +64,7 @@ export default function InventoryNewPage() {
         modelNumber: form.modelNumber || "-",
         manufacturer: form.manufacturer || "-",
         currentStock: form.currentStock || 0,
+        location: form.location || "-",
         remarks: form.remarks || "-",
       };
       const res = await api.post("/inventory/new", payload);
@@ -88,6 +90,7 @@ export default function InventoryNewPage() {
       modelNumber: "",
       manufacturer: "",
       currentStock: 0,
+      location: "-",
       remarks: "-",
     });
   };
@@ -168,6 +171,19 @@ export default function InventoryNewPage() {
               onChange={handleChange}
               required
               className="w-full border border-gray-300 rounded px-3 py-2"
+            />
+          </div>
+          <div>
+            <label htmlFor="location" className="block mb-1 font-medium">
+              保管先
+            </label>
+            <input
+              type="text"
+              name="location"
+              value={form.location}
+              onChange={handleChange}
+              className="w-full border border-gray-300 rounded px-3 py-2"
+              placeholder="例: 棚 上から3段目の左側の箱"
             />
           </div>
           <div>

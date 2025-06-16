@@ -14,19 +14,20 @@ export default function InventoryTable({
 }) {
   return (
     <div className="overflow-x-auto bg-white">
-      <table className="w-full text-sm text-center border-collapse">
+      <table className="w-full text-[12px] text-center border-collapse">
         <thead style={{ color: "#101540" }}>
           <tr className="font-semibold">
             <th className="text-base pl-4 pr-1 py-3 max-w-[60px]">入庫</th>
             <th className="text-base pl-4 pr-1 py-3 max-w-[60px]">出庫</th>
-            <th className="text-base pl-4 pr-1 py-3">ID</th>
-            <th className="text-base pl-4 pr-1 py-3">品名</th>
-            <th className="text-base pl-4 pr-1 py-3">カテゴリ</th>
-            <th className="text-base pl-4 pr-1 py-3">型番</th>
-            <th className="text-base pl-4 pr-1 py-3">メーカー</th>
-            <th className="text-base pl-4 pr-1 py-3">在庫数</th>
-            <th className="text-base pl-4 pr-1 py-3">更新日</th>
-            <th className="text-base pl-4 pr-1 py-3">履歴</th>
+            <th className="text-base px-4 py-3">ID</th>
+            <th className="text-base px-4 py-3">品名</th>
+            <th className="text-base px-4 py-3">カテゴリ</th>
+            <th className="text-base px-4 py-3">型番</th>
+            <th className="text-base px-4 py-3">メーカー</th>
+            <th className="text-base px-4 py-3">在庫数</th>
+            <th className="text-base px-4 py-3">保管先</th>
+            <th className="text-base px-4 py-3">更新日</th>
+            <th className="text-base px-4 py-3">履歴</th>
           </tr>
         </thead>
         <tbody className="text-gray-700">
@@ -76,6 +77,7 @@ export default function InventoryTable({
                   {item.currentStock}
                 </span>
                 </td>
+              <td className="px-4 py-3 truncate  max-w-[150px]" title={item.location}>{item.location}</td>
               <td className="px-4 py-3">{formatDate(item.lastUpdated)}</td>
               <td className="pl-4 pr-1 py-3">
                 <Link

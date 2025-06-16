@@ -50,6 +50,7 @@ export default function InventoryListsPage() {
       const res = await api.get("/inventory/search", {
         params: {
           ...searchParams, // itemCode, itemName を展開
+          page: page,
         },
       });
       console.log(res.data.data.content);

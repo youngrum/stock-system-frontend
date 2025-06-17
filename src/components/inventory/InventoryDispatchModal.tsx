@@ -21,7 +21,7 @@ export default function InventoryDispatchModal({
   itemCode,
 }: InventoryDispatchModalProps) {
   const [inventory, setInventory] = useState<InventoryItem | null>(null);
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState<number>("");
   const [remarks, setRemarks] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -36,6 +36,10 @@ export default function InventoryDispatchModal({
 
   const handleSubmit = async () => {
     if (!quantity || quantity <= 0) return;
+    if(inventory.currentStock < quantity) {
+      alert(`出庫可能な数量は現在の在庫数(${inventory.currentStock})以下である必要があります。`);
+      return;
+    }
 
     const confirmed = window.confirm(
       `この内容で出庫しますか？\n在庫ID:${itemCode}\n品名：${inventory?.itemName}\nカテゴリー：${inventory?.category}\n数量: ${quantity}\n備考: ${
@@ -54,7 +58,7 @@ export default function InventoryDispatchModal({
       const res = await api.post(`/inventory/dispatch/${itemCode}`, {
         itemCode: inventory?.itemCode || null,
         quantity: quantity,
-        remarks: remarks || "-",
+        remarks: remarks,
       });
       onClose();
       onSuccess();
@@ -97,10 +101,11 @@ export default function InventoryDispatchModal({
           <p>カテゴリ: {inventory.category}</p>
           <p>メーカー: {inventory.manufacturer}</p>
           <p>
-          現在庫: <span className={inventory.currentStock == 0 ? "text-red-700" : ""}>
-            {inventory.currentStock}
-          </span>
-</p>
+            現在庫: 
+            <span className={inventory.currentStock == 0 ? "text-red-700" : ""}>
+              {inventory.currentStock}
+            </span>
+          </p>
         </div>
 
         <div className="space-y-4">
@@ -109,6 +114,7 @@ export default function InventoryDispatchModal({
             <input
               type="number"
               min={1}
+              placeholder="1"
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
               className="w-full border rounded px-3 py-2 mt-1"

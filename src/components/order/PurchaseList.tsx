@@ -30,7 +30,7 @@ export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
       {/* 一覧 */}
       {orders.map((order, idx) => (
         <React.Fragment key={order.orderNo}>
-          <div className="grid grid-cols-18 gap-y-4 items-center py-2 hover:bg-gray-50 border-b text-sm"
+          <div className="grid grid-cols-18 gap-y-4 items-center pt-2 hover:bg-gray-50 border-b text-sm"
           onClick={() => setExpandedIndex(expandedIndex === idx ? null : idx)}
           >
             <span className="col-span-2">{order.orderNo}</span>

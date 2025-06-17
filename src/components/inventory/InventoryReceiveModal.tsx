@@ -22,9 +22,9 @@ export default function InventoryReceiveModal({
 }: InventoryReceiveModalProps) {
   const [inventory, setInventory] = useState<InventoryItem | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
-  const [supplier, setSupplier] = useState<string>("不明");
-  const [purchasePrice, setPurchasePrice] = useState<number>(0);
-  const [shippingFee, setShippingFee] = useState<number>(0);
+  const [supplier, setSupplier] = useState<string>("");
+  const [purchasePrice, setPurchasePrice] = useState<number>("");
+  const [shippingFee, setShippingFee] = useState<number>("");
   const [remarks, setRemarks] = useState<string>("-");
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -43,7 +43,7 @@ export default function InventoryReceiveModal({
     // ✅ 最終確認ダイアログの追加
     const confirmed = window.confirm(
       `本当にこの内容で入庫しますか？\n在庫ID:${itemCode}\n品名：${inventory?.itemName || "不明"}\nカテゴリー：${inventory?.category || "不明"}\n仕入先: ${
-        supplier || "未入力"
+        supplier || "不明"
       }\n↓\n数量: ${quantity}\n単価: ${purchasePrice || "未入力"}\n送料: ${
         shippingFee || "未入力"
       }\n備考: ${remarks || "なし"}`

@@ -9,7 +9,7 @@ import api from "@/services/api";
 
 type Props = {
   onSubmit: (formData: PurchaseOrderRequest) => void;
-  onReset: () => void;
+  onReset: (resetFn: () => void) => void;
 };
 
 export default function OrderForm({ onSubmit, onReset }: Props) {
@@ -20,8 +20,8 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
     category: "",
     modelNumber: "",
     manufacturer: "",
-    price: "",
-    quantity: "",
+    price: 0,
+    quantity: 1,
     remarks: "",
     location: "",
     autoFetchRequired: false,
@@ -40,8 +40,8 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
       category: "",
       modelNumber: "",
       manufacturer: "",
-      price: "",
-      quantity: "",
+      price: 0,
+      quantity: 0,
       remarks: "",
       location: "",
       autoFetchRequired: false,
@@ -57,7 +57,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
 
   const [supplier, setSupplier] = useState("");
   const [orderDate, setOrderDate] = useState<string>("");
-  const [shippingFee, setShippingFee] = useState<number>("");
+  const [shippingFee, setShippingFee] = useState<number>(0);
   const [remarks, setRemarks] = useState("");
   const [suggestionsMap, setSuggestionsMap] = useState<Record<number, InventoryItem[]>>({});
   const [focusedField, setFocusedField] = useState<null | { index: number; field: string }>(null);
@@ -156,7 +156,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
     setItems([initialItemState]);
     setSupplier("");
     setOrderDate("");
-    setShippingFee("");
+    setShippingFee(0);
     setRemarks("-");
     setSuggestionsMap({});
     setFocusedField(null);
@@ -271,6 +271,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
                   itemName: true,
                   category: true,
                   modelNumber: true,
+                  location: true,
                 },
               };
             }

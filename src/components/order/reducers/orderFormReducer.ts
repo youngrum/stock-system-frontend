@@ -62,6 +62,7 @@ const initialOrderItem: OrderItemState = {
   price: 0,
   quantity: 1,
   remarks: "",
+  location: "",
   autoSuggestRequired: false,
   readOnlyFields: {
     itemName: false,

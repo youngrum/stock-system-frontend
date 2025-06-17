@@ -90,8 +90,8 @@ export default function InventoryNewPage() {
       modelNumber: "",
       manufacturer: "",
       currentStock: 0,
-      location: "-",
-      remarks: "-",
+      location: "",
+      remarks: "",
     });
   };
 
@@ -112,7 +112,8 @@ export default function InventoryNewPage() {
               value={form.itemName}
               onChange={handleChange}
               required
-              className="w-full border border-gray-300 rounded px-3 py-2"
+              className="w-full bg-gray-50 text-gray-900 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none px-3 py-2"
+              style={{ border: "1px solid #9F9F9F" }}
             ></input>
           </div>
           <div>
@@ -125,7 +126,8 @@ export default function InventoryNewPage() {
               value={form.category}
               onChange={handleChange}
               required
-              className="w-full border border-gray-300 rounded px-3 py-2"
+              className="w-full bg-gray-50 text-gray-900 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none px-3 py-2"
+              style={{ border: "1px solid #9F9F9F" }}
             >
               <option value="">-- カテゴリを選択してください --</option> {/* デフォルトの選択肢 */}
               {CATEGORIES.map((category) => (
@@ -144,7 +146,8 @@ export default function InventoryNewPage() {
               name="modelNumber"
               value={form.modelNumber}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2"
+              className="w-full bg-gray-50 text-gray-900 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none px-3 py-2"
+              style={{ border: "1px solid #9F9F9F" }}
             />
           </div>
           <div>
@@ -156,7 +159,8 @@ export default function InventoryNewPage() {
               name="manufacturer"
               value={form.manufacturer}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2"
+              className="w-full bg-gray-50 text-gray-900 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none px-3 py-2"
+              style={{ border: "1px solid #9F9F9F" }}
             />
           </div>
           <div>
@@ -171,7 +175,8 @@ export default function InventoryNewPage() {
               onChange={handleChange}
               placeholder="例: 10"
               required
-              className="w-full border border-gray-300 rounded px-3 py-2"
+              className="w-full bg-gray-50 text-gray-900 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none px-3 py-2"
+              style={{ border: "1px solid #9F9F9F" }}
             />
           </div>
           <div>
@@ -183,8 +188,9 @@ export default function InventoryNewPage() {
               name="location"
               value={form.location}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2"
+              className="w-full bg-gray-50 text-gray-900 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none px-3 py-2"
               placeholder="例: 棚 上から3段目の左側の箱"
+              style={{ border: "1px solid #9F9F9F" }}
             />
           </div>
           <div>
@@ -195,21 +201,22 @@ export default function InventoryNewPage() {
               name="remarks"
               value={form.remarks}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded px-3 py-2"
+              className="w-full bg-gray-50 text-gray-900 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none px-3 py-2"
+              style={{ border: "1px solid #9F9F9F" }}
             />
           </div>
           <div className="flex justify-end gap-2">
             <button
               type="button"
               onClick={() => router.push("/inventory")}
-              className="px-4 py-2 border rounded bg-gray-100 hover:bg-gray-200"
+              className="px-4 py-2 rounded bg-gray-100 hover:bg-gray-200"
             >
               キャンセル
             </button>
             <button
               type="submit"
               disabled={loading}
-              className="px-4 py-2 border rounded  text-white hover:opacity-80 disabled:opacity-50"
+              className="px-4 py-2 rounded text-white hover:opacity-80 disabled:opacity-50"
               style={{
                 background: "linear-gradient(to bottom, #3D00B8, #3070C3)",
               }}

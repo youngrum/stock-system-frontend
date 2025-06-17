@@ -7,15 +7,18 @@ import {
   PurchaseOrderDetailRequest,
 } from "@/types/PurchaseOrder";
 import api from "@/services/api";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Loader from "@/components/ui/Loader";
 import { ApiErrorResponse } from "@/types/ApiResponse";
 
 export default function OrderNewPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
-  const router = useRouter();
+  const resetFormRef = useRef<(() => void) | null>(null);
+
+  const handleFormReset = (resetFn: () => void) => {
+    resetFormRef.current = resetFn;
+  };
 
   const handleOrderSubmit = async (
     formData: PurchaseOrderRequest
@@ -45,7 +48,9 @@ export default function OrderNewPage() {
 
       alert(`発注登録に成功しました（発注番号: ${response.orderNo}）`);
 
-      router.push("/order");
+      if (resetFormRef.current) {
+        resetFormRef.current();
+      }
     } catch (error) {
       console.error(error);
       const err = error as { response?: { data: ApiErrorResponse } }
@@ -65,7 +70,7 @@ export default function OrderNewPage() {
       {loading && <Loader />}
       {error && <div className="text-red-500">{error}</div>}
     <main className="max-w-8xl mx-auto bg-white border-gray-400 shadow p-5">
-      <OrderForm onSubmit={handleOrderSubmit} />
+      <OrderForm onSubmit={handleOrderSubmit} onReset={handleFormReset} />
     </main>
     </>
   );

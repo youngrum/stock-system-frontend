@@ -9,9 +9,27 @@ import api from "@/services/api";
 
 type Props = {
   onSubmit: (formData: PurchaseOrderRequest) => void;
+  onReset: () => void;
 };
 
-export default function OrderForm({ onSubmit }: Props) {
+export default function OrderForm({ onSubmit, onReset }: Props) {
+  const initialItemState: OrderItemState = {
+    itemCode: "",
+    itemName: "",
+    category: "",
+    modelNumber: "",
+    manufacturer: "",
+    price: "",
+    quantity: "",
+    remarks: "-",
+    autoFetchRequired: false,
+    autoSuggestRequired: false,
+    readOnlyFields: {
+      itemName: false,
+      category: false,
+      modelNumber: false,
+    },
+  };
   const [items, setItems] = useState<OrderItemState[]>([
     {
       itemCode: "",
@@ -124,6 +142,20 @@ export default function OrderForm({ onSubmit }: Props) {
       return newItems;
     });
   };
+
+  const resetForm = () => {
+    setItems([initialItemState]);
+    setSupplier("");
+    setOrderDate("");
+    setShippingFee("");
+    setRemarks("-");
+    setSuggestionsMap({});
+    setFocusedField(null);
+  };
+
+  useEffect(() => {
+    onReset(resetForm);
+  }, [onReset]);
 
   // useEffectを分離して依存関係を明確化
   useEffect(() => {

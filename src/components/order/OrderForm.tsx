@@ -19,8 +19,8 @@ export default function OrderForm({ onSubmit }: Props) {
       category: "",
       modelNumber: "",
       manufacturer: "",
-      price: 0,
-      quantity: 1,
+      price: "",
+      quantity: "",
       remarks: "-",
       autoFetchRequired: false,
       autoSuggestRequired: false,
@@ -34,7 +34,7 @@ export default function OrderForm({ onSubmit }: Props) {
 
   const [supplier, setSupplier] = useState("");
   const [orderDate, setOrderDate] = useState<string>("");
-  const [shippingFee, setShippingFee] = useState<number>(0);
+  const [shippingFee, setShippingFee] = useState<number>("");
   const [remarks, setRemarks] = useState("-");
   const [suggestionsMap, setSuggestionsMap] = useState<Record<number, InventoryItem[]>>({});
   const [focusedField, setFocusedField] = useState<null | { index: number; field: string }>(null);
@@ -361,6 +361,7 @@ export default function OrderForm({ onSubmit }: Props) {
           <input
             type="number"
             min={0}
+            placeholder="1000"
             value={shippingFee}
             onChange={(e) => setShippingFee(Number(e.target.value))}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
@@ -520,6 +521,7 @@ export default function OrderForm({ onSubmit }: Props) {
               <input
                 type="number"
                 value={item.quantity}
+                placeholder="10"
                 min={1}
                 onChange={(e) => updateItem(index, "quantity", e.target.value)}
                 className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
@@ -530,6 +532,7 @@ export default function OrderForm({ onSubmit }: Props) {
               <input
                 type="number"
                 value={item.price}
+                placeholder="300"
                 min={1}
                 onChange={(e) => updateItem(index, "price", e.target.value)}
                 className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"

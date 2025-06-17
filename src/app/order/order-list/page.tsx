@@ -1,7 +1,7 @@
 // app/order/order-list/page.tsx
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import api from "@/services/api";
 import PurchaseList from "@/components/order/PurchaseList";
 import RecieveFromOrderModal from "@/components/order/RecieveFromOrderModal";
@@ -23,9 +23,13 @@ export default function OrderHistoryPage() {
   const [loading, setLoading] = useState(true);
 
   // 履歴データ取得
-  const fetchPurchaseList = async () => {
+  const fetchPurchaseList = useCallback(async () => {
     try {
-      const res = await api.get("/order-history");
+      const res = await api.get("/order-history", {
+        params: {
+          page: page,
+        },
+      });
       console.log(res.data.content)
       setData(res.data.content);
       setTotalPages(res.data.totalPages);
@@ -40,11 +44,11 @@ export default function OrderHistoryPage() {
     } finally {
       setLoading(false);
     }
-  };
+  },[page]);
   
   useEffect(() => {
     fetchPurchaseList();
-  }, [page]);
+  }, [fetchPurchaseList, page]);
 
   // モーダルの開閉制御
   const openModal = (detail: PurchaseOrderDetailResponse) => {

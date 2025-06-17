@@ -13,6 +13,7 @@ type Props = {
 };
 
 export default function OrderForm({ onSubmit, onReset }: Props) {
+  // 初期状態の定義 リセットに使用
   const initialItemState: OrderItemState = {
     itemCode: "",
     itemName: "",
@@ -21,13 +22,15 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
     manufacturer: "",
     price: "",
     quantity: "",
-    remarks: "-",
+    remarks: "",
+    location: "",
     autoFetchRequired: false,
     autoSuggestRequired: false,
     readOnlyFields: {
       itemName: false,
       category: false,
       modelNumber: false,
+      location: false
     },
   };
   const [items, setItems] = useState<OrderItemState[]>([
@@ -39,13 +42,15 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
       manufacturer: "",
       price: "",
       quantity: "",
-      remarks: "-",
+      remarks: "",
+      location: "",
       autoFetchRequired: false,
       autoSuggestRequired: false,
       readOnlyFields: {
         itemName: false,
         category: false,
         modelNumber: false,
+        location: false
       },
     },
   ]);
@@ -53,7 +58,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
   const [supplier, setSupplier] = useState("");
   const [orderDate, setOrderDate] = useState<string>("");
   const [shippingFee, setShippingFee] = useState<number>("");
-  const [remarks, setRemarks] = useState("-");
+  const [remarks, setRemarks] = useState("");
   const [suggestionsMap, setSuggestionsMap] = useState<Record<number, InventoryItem[]>>({});
   const [focusedField, setFocusedField] = useState<null | { index: number; field: string }>(null);
   const skipBlurRef = useRef(false);
@@ -70,6 +75,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
         category: "",
         modelNumber: "",
         manufacturer: "",
+        location: "",
         price: 0,
         quantity: 1,
         remarks: "-",
@@ -79,6 +85,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
           itemName: false,
           category: false,
           modelNumber: false,
+          location: false,
         },
       },
     ]);
@@ -121,12 +128,14 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
           newItem.itemName = "";
           newItem.category = "";
           newItem.modelNumber = "";
+          newItem.location = "";
           newItem.autoFetchRequired = false;
           newItem.autoSuggestRequired = false;
           newItem.readOnlyFields = {
             itemName: false,
             category: false,
             modelNumber: false,
+            location: false,
           };
         }
       }
@@ -190,11 +199,13 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
                 itemName: found.itemName,
                 category: found.category,
                 modelNumber: found.modelNumber,
+                location: found.location,
                 autoFetchRequired: false,
                 readOnlyFields: {
                   itemName: true,
                   category: true,
                   modelNumber: true,
+                  location: true,
                 },
               };
             }
@@ -295,7 +306,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
       if (
         item.autoSuggestRequired &&
         !item.itemCode &&
-        (item.itemName?.trim() || item.modelNumber?.trim() || item.category?.trim())
+        (item.itemName?.trim() || item.modelNumber?.trim() || item.category?.trim() || item.location?.trim())
       ) {
         fetchPromises.push(suggestItems(item, index));
       }
@@ -354,9 +365,9 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
         price: item.price,
         quantity: item.quantity,
         remarks: item.remarks,
+        location: item.location,
       })),
     };
-    console.log(formData);
     onSubmit(formData);
   };
 
@@ -483,12 +494,12 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
                 </ul>
               )}
             </div>
-            <div className="col-span-6 row-span-2">
+            <div className="col-span-6 row-span-1">
               <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>備考</label>
               <textarea
                 value={item.remarks}
                 onChange={(e) => updateItem(index, "remarks", e.target.value)}
-                className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition min-h-26"
+                className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
               />
             </div>
             <div className="col-span-1 row-span-2 flex justify-center items-center">
@@ -557,6 +568,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
                 min={1}
                 onChange={(e) => updateItem(index, "quantity", e.target.value)}
                 className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
+                required
               />
             </div>
             <div className="col-span-3">
@@ -568,6 +580,20 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
                 min={1}
                 onChange={(e) => updateItem(index, "price", e.target.value)}
                 className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
+                required
+              />
+            </div>
+            <div className="col-span-6">
+              <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>保管先</label>
+              <input
+                type="text"
+                value={item.location}
+                placeholder="足立倉庫など"
+                onChange={(e) => updateItem(index, "location", e.target.value)}
+                className={`w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition
+                  ${item.readOnlyFields?.location ? "text-gray-400" : "text-gray-900"}
+                  `}
+                  readOnly={item.readOnlyFields?.location}
               />
             </div>
           </div>

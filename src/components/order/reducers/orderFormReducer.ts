@@ -9,6 +9,7 @@ export type OrderItemState = {
   manufacturer: string;
   price: number;
   quantity: number;
+  location: string;
   remarks: string;
   autoFetchRequired?: boolean;
   autoSuggestRequired: boolean;
@@ -17,6 +18,7 @@ export type OrderItemState = {
     itemName: boolean;
     category: boolean;
     modelNumber: boolean;
+    location: boolean;
   };
 };
 
@@ -59,12 +61,13 @@ const initialOrderItem: OrderItemState = {
   manufacturer: "",
   price: 0,
   quantity: 1,
-  remarks: "-",
+  remarks: "",
   autoSuggestRequired: false,
   readOnlyFields: {
     itemName: false,
     category: false,
     modelNumber: false,
+    location: false
   },
 };
 
@@ -95,6 +98,7 @@ export function orderFormReducer(state: OrderFormState, action: OrderFormAction)
                 itemName: false,
                 category: false,
                 modelNumber: false,
+                location: false,
               },
             };
           }

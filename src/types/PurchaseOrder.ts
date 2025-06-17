@@ -14,6 +14,7 @@ export interface PurchaseOrderDetailRequest {
   category: string;
   price: number;
   quantity: number;
+  location: string;
   remarks: string;
 }
 
@@ -27,6 +28,7 @@ export interface PurchaseOrderResponse {
   shippingFee: number;
   status: string;
   remarks?: string;
+
   details?: PurchaseOrderDetailResponse[];
 }
 

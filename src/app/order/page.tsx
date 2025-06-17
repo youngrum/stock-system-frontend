@@ -26,6 +26,7 @@ export default function OrderNewPage() {
     setLoading(true);
     setError("");
     console.log("%o", formData);
+    console.log("送信直前のformData:", JSON.stringify(formData, null, 2));
 
     try {
       const res = await api.post(`/orders`, {
@@ -41,6 +42,7 @@ export default function OrderNewPage() {
           purchasePrice: item.price || 0,
           quantity: item.quantity,
           remarks: item.remarks || "-",
+          location: item.location || "",
         })),
       });
 

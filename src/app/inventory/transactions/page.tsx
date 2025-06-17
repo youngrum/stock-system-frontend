@@ -33,6 +33,7 @@ export default function TransactionPage() {
       const res = await api.get("/transactions", {
         params: {
           ...searchParams, // itemCode, operator, fromDate, toDate を展開
+          page: page,
         },
       });
       console.log(res.data.data.content);

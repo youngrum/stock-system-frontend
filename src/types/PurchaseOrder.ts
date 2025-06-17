@@ -11,6 +11,7 @@ export interface PurchaseOrderDetailRequest {
   itemCode?: string;
   itemName?: string;
   modelNumber?: string;
+  manufacturer?: string;
   category: string;
   price: number;
   quantity: number;

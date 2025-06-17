@@ -18,6 +18,7 @@ export type OrderItemState = {
     itemName: boolean;
     category: boolean;
     modelNumber: boolean;
+    manufacturer: boolean;
     location: boolean;
   };
 };
@@ -68,6 +69,7 @@ const initialOrderItem: OrderItemState = {
     itemName: false,
     category: false,
     modelNumber: false,
+    manufacturer: false,
     location: false
   },
 };
@@ -99,6 +101,7 @@ export function orderFormReducer(state: OrderFormState, action: OrderFormAction)
                 itemName: false,
                 category: false,
                 modelNumber: false,
+                manufacturer: false,
                 location: false,
               },
             };

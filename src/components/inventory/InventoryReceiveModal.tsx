@@ -21,10 +21,10 @@ export default function InventoryReceiveModal({
   itemCode,
 }: InventoryReceiveModalProps) {
   const [inventory, setInventory] = useState<InventoryItem | null>(null);
-  const [quantity, setQuantity] = useState<number>("");
+  const [quantity, setQuantity] = useState<number>();
   const [supplier, setSupplier] = useState<string>("");
-  const [purchasePrice, setPurchasePrice] = useState<number>("");
-  const [shippingFee, setShippingFee] = useState<number>("");
+  const [purchasePrice, setPurchasePrice] = useState<number>();
+  const [shippingFee, setShippingFee] = useState<number>();
   const [remarks, setRemarks] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 

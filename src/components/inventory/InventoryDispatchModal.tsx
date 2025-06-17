@@ -21,7 +21,7 @@ export default function InventoryDispatchModal({
   itemCode,
 }: InventoryDispatchModalProps) {
   const [inventory, setInventory] = useState<InventoryItem | null>(null);
-  const [quantity, setQuantity] = useState<number>("");
+  const [quantity, setQuantity] = useState<number>();
   const [remarks, setRemarks] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -35,6 +35,7 @@ export default function InventoryDispatchModal({
   }, [isOpen, itemCode, onClose]);
 
   const handleSubmit = async () => {
+    if (!inventory) return;
     if (!quantity || quantity <= 0) return;
     if(inventory.currentStock < quantity) {
       alert(`出庫可能な数量は現在の在庫数(${inventory.currentStock})以下である必要があります。`);

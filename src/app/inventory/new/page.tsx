@@ -25,7 +25,7 @@ export default function InventoryNewPage() {
     category: "",
     modelNumber: "",
     manufacturer: "",
-    currentStock: "",
+    currentStock: 0,
     location: "",
     remarks: "",
   });

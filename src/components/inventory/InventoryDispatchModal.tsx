@@ -91,7 +91,7 @@ export default function InventoryDispatchModal({
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-800"
         >
-          <X size={24} />
+          <X className="text-[#0d113d]" />
         </button>
 
         <div className="space-y-2">
@@ -117,7 +117,8 @@ export default function InventoryDispatchModal({
               placeholder="1"
               value={quantity}
               onChange={(e) => setQuantity(Number(e.target.value))}
-              className="w-full border rounded px-3 py-2 mt-1"
+              className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100"
+              style={{ border: "1px solid #9F9F9F" }}
             />
           </div>
           <div>
@@ -125,8 +126,9 @@ export default function InventoryDispatchModal({
             <textarea
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}
-              className="w-full border rounded px-3 py-2 mt-1"
+              className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100"
               rows={3}
+              style={{ border: "1px solid #9F9F9F" }}
             />
           </div>
           <button

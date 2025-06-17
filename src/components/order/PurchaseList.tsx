@@ -72,7 +72,7 @@ export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
                   <tr className="font-semibold bg-blue-50">
                     <th className="py-1 col-span-3">在庫ID</th>
                     <th className="py-1 col-span-3">品名</th>
-                    <th className="py-1 col-span-2">型番</th>
+                    <th className="py-1 col-span-2">型番・規格</th>
                     <th className="py-1 col-span-2">カテゴリ</th>
                     <th className="py-1 col-span-2">発注数</th>
                     <th className="py-1 col-span-2">受領数</th>

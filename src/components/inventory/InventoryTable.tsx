@@ -22,7 +22,7 @@ export default function InventoryTable({
             <th className="text-base px-4 py-3">ID</th>
             <th className="text-base px-4 py-3">品名</th>
             <th className="text-base px-4 py-3">カテゴリ</th>
-            <th className="text-base px-4 py-3">型番</th>
+            <th className="text-base px-4 py-3">型番・規格</th>
             <th className="text-base px-4 py-3">メーカー</th>
             <th className="text-base px-4 py-3">在庫数</th>
             <th className="text-base px-4 py-3">保管先</th>

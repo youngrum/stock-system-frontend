@@ -78,7 +78,7 @@ export default function InventorySearchForm({
             type="text"
             value={modelNumber}
             onChange={(e) => setModelNumber(e.target.value)}
-            placeholder="型番を入力"
+            placeholder="型番・規格を入力"
             className="w-full px-3 py-2 text-[#0d113d] rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100" style={{ border: '1px solid #9F9F9F' }}
           />
         </div>

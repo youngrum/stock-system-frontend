@@ -2,13 +2,13 @@
 
 import { useEffect, useState, useCallback } from "react";
 import api from "@/services/api";
-import TransactionTable from "@/components/inventory/TransactionTable";
+import TransactionTable from "@/components/transaction/TransactionTable";
 import { Transaction, TransactionSearchParams } from "@/types/Transaction";
 import { useAuthGuard } from "@/lib/hooks/useAuthGuard";
 import Pagination from "@/components/ui/Pagination";
 import { ApiErrorResponse } from "@/types/ApiResponse";
 import { Search, X } from "lucide-react";
-import TransactionSearchForm from "@/components/inventory/TransactionSearchForm";
+import TransactionSearchForm from "@/components/transaction/TransactionSearchForm";
 import Loader from "@/components/ui/Loader";
 
 export default function TransactionPage() {

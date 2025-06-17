@@ -22,7 +22,7 @@ export default function TransactionDetailModal({ transaction, onClose }: Props) 
 
         <h2 className="text-xl font-semibold">{stock.itemName}</h2>
         <h3 className="font-semibold">{stock.itemCode}</h3>
-        <p className="text-sm text-gray-600">カテゴリ / 型番 <br/>{stock.category} / {stock.modelNumber}</p>
+        <p className="text-sm text-gray-600">カテゴリ / 型番・規格 <br/>{stock.category} / {stock.modelNumber}</p>
 
         <div className="space-y-2">
           <p>処理種別: 

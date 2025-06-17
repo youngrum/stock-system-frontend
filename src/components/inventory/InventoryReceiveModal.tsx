@@ -21,11 +21,11 @@ export default function InventoryReceiveModal({
   itemCode,
 }: InventoryReceiveModalProps) {
   const [inventory, setInventory] = useState<InventoryItem | null>(null);
-  const [quantity, setQuantity] = useState<number>(1);
+  const [quantity, setQuantity] = useState<number>("");
   const [supplier, setSupplier] = useState<string>("");
   const [purchasePrice, setPurchasePrice] = useState<number>("");
   const [shippingFee, setShippingFee] = useState<number>("");
-  const [remarks, setRemarks] = useState<string>("-");
+  const [remarks, setRemarks] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
@@ -128,6 +128,7 @@ export default function InventoryReceiveModal({
               onChange={(e) => setQuantity(Number(e.target.value))}
               className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100"
               style={{ border: "1px solid #9F9F9F" }}
+              placeholder="1"
             />
           </div>
           <div>

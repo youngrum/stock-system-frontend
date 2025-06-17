@@ -45,8 +45,9 @@ export default function RecieveFromOrderModal({
             value={quantity}
             min={1}
             max={maxValue}
-            className="w-full border rounded px-2 py-1"
+            className="w-full border border-gray-300 rounded px-3 py-2"
             onChange={(e) => setQuantity(Number(e.target.value))}
+            style={{ border: "1px solid #9F9F9F" }}
           />
         </div>
         <div className="flex justify-between">

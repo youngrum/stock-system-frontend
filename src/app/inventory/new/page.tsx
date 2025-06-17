@@ -137,7 +137,7 @@ export default function InventoryNewPage() {
           </div>
           <div>
             <label htmlFor="modelNumber" className="block mb-1 font-medium">
-              型番
+              型番・規格
             </label>
             <input
               type="text"

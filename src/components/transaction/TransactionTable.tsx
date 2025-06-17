@@ -3,7 +3,7 @@
 import { PackagePlus, Truck, ExternalLink, Bookmark } from "lucide-react";
 import { formatDate } from "@/lib/utils/dateFormat";
 import { Transaction } from "@/types/Transaction";
-import TransactionDetailModal from "@/components/inventory/TransactionDetailModal";
+import TransactionDetailModal from "@/components/Transaction/TransactionDetailModal";
 import Link from "next/link";
 import { useState } from "react";
 

@@ -57,9 +57,7 @@ export default function Sidebar({ isSidebarOpen }: sideBarProps) {
     >
       <div className="flex flex-col gap-2">
         {menuItems.map((item) => {
-          const isDisabled =
-            item.label === "発注登録" ||
-            item.label === "発注履歴一覧/検索";
+          const isDisabled = "";
           return (
             <button
               key={item.path}

@@ -106,13 +106,14 @@ function CsvUploadForm() {
 
   const fetchTemplateInfo = async () => {
     try {
-      const response = await api.get("/v1/api/csv-template-info");
+      const response = await api.get("/csv-template-info");
       setTemplateInfo(response.data);
       setShowTemplateInfo(true);
     } catch (error) {
       if (error.response && error.response.data) {
-        const errorData = err.response.data;
-        setError(errorData.message || "アップロードに失敗しました。");
+        const errorData = error.response.data;
+        console.error("テンプレート情報の取得エラー:", errorData);
+        setError(errorData.message || "テンプレート情報の取得に失敗しました。");
         setUploadResult(errorData);
       } else {
         setError("テンプレート情報の取得に失敗しました。");

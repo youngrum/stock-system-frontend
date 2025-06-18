@@ -72,7 +72,7 @@ function CsvUploadForm() {
     try {
       setLoading(true);
       const response = await api.post(
-        "/upload-csv", // バックエンドのパスに合わせて更新
+        "/upload-csv",
         formData,
         {
           headers: {
@@ -106,6 +106,7 @@ function CsvUploadForm() {
 
   const fetchTemplateInfo = async () => {
     try {
+      setLoading(true);
       const response = await api.get("/csv-template-info");
       setTemplateInfo(response.data);
       setShowTemplateInfo(true);
@@ -119,6 +120,8 @@ function CsvUploadForm() {
       } else {
         setError("テンプレート情報の取得に失敗しました。");
       }
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -320,10 +323,7 @@ function CsvUploadForm() {
             }`}
           >
             {loading ? (
-              <span className="flex items-center justify-center">
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-3"></div>
-                アップロード中...
-              </span>
+              <Loader />
             ) : (
               <span className="flex items-center justify-center">
                 <Upload className="w-5 h-5 mr-2" />

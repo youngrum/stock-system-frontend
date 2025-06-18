@@ -103,6 +103,11 @@ export default function InventoryListsPage() {
             )}
           </button>
 
+          {/* csvuploadフォームリンク */}
+          <button className="px-5 py-3 border rounded p-2 hover:bg-[#1d1f3c] hover:text-gray-200 text-xl" onClick={() => router.push("/csv")}>
+            import with csv
+          </button>
+          
           {/* 新規登録ボタン */}
           <button
             className="px-5 py-3 text-xl font-medium text-white rounded shadow-md hover:opacity-90"

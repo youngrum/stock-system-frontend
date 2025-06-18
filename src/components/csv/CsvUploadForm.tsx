@@ -3,28 +3,16 @@ import { Upload, FileText, CheckCircle, AlertCircle, Info } from "lucide-react";
 import api from "@/services/api";
 import { ApiErrorResponse } from "@/types/ApiResponse";
 import Loader from "@/components/ui/Loader";
+import { UploadResult, CsvTemplateInfo } from "@/types/CsvUpload";
 
 function CsvUploadForm() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  type UploadResult = {
-    success: boolean;
-    message?: string;
-    filename?: string;
-    fileSize?: number;
-    expectedFormat?: string;
-    actualHeader?: string;
-    errors?: string[];
-    errorCount?: number;
-  } | null;
-  const [uploadResult, setUploadResult] = useState<UploadResult>(null);
-  type CsvTemplateInfo = {
-    headers: string[];
-    headerDescriptions: Record<string, string>;
-    example: Record<string, string>;
-  };
+
+  const [uploadResult, setUploadResult] = useState<UploadResult | null>(null);
+
   const [templateInfo, setTemplateInfo] = useState<CsvTemplateInfo | null>(
     null
   );

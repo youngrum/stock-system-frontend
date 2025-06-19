@@ -20,7 +20,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
     category: "",
     modelNumber: "",
     manufacturer: "",
-    price: null,
+    price: 0,
     quantity: 1,
     remarks: "",
     location: "",
@@ -41,8 +41,8 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
       category: "",
       modelNumber: "",
       manufacturer: "",
-      price: null,
-      quantity: null,
+      price: 0,
+      quantity: 0,
       remarks: "",
       location: "",
       autoFetchRequired: false,
@@ -59,7 +59,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
 
   const [supplier, setSupplier] = useState("");
   const [orderDate, setOrderDate] = useState<string>("");
-  const [shippingFee, setShippingFee] = useState<number>(null);
+  const [shippingFee, setShippingFee] = useState<number>(0);
   const [remarks, setRemarks] = useState("");
   const [suggestionsMap, setSuggestionsMap] = useState<Record<number, InventoryItem[]>>({});
   const [focusedField, setFocusedField] = useState<null | { index: number; field: string }>(null);
@@ -78,7 +78,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
         modelNumber: "",
         manufacturer: "",
         location: "",
-        price: null,
+        price: 0,
         quantity: 1,
         remarks: "",
         autoFetchRequired: false,
@@ -160,7 +160,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
     setItems([initialItemState]);
     setSupplier("");
     setOrderDate("");
-    setShippingFee(null);
+    setShippingFee(0);
     setRemarks("");
     setSuggestionsMap({});
     setFocusedField(null);

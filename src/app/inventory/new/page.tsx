@@ -97,7 +97,7 @@ export default function InventoryNewPage() {
       category: "",
       modelNumber: "",
       manufacturer: "",
-      currentStock: 0,
+      currentStock: null,
       location: "",
       remarks: "",
     });
@@ -187,7 +187,7 @@ export default function InventoryNewPage() {
             <input
               type="number"
               name="currentStock"
-              value={form.currentStock}
+              value={form.currentStock ?? ""}
               min={0}
               onChange={handleChange}
               placeholder="例: 10"

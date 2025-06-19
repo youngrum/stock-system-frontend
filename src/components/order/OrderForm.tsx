@@ -624,6 +624,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
                   value={item.price}
                   placeholder="300"
                   min={1}
+                  step="0.1"
                   onChange={(e) => updateItem(index, "price", e.target.value)}
                   className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
                   required

@@ -93,11 +93,11 @@ function CsvUploadForm() {
     } catch (error) {
       console.error(error);
       const err = error as { response?: { data: ApiErrorResponse } };
-      if (err.response && err.response.data) {
-        const error: ApiErrorResponse = err.response.data;
-        alert(
-          `エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`
-        ); // エラーメッセージを利用
+      if (err.response || err.response.data) {
+        const errorData: ApiErrorResponse = err.response.data;
+        setError(errorData.message);
+        console.error("アップロードエラー:", errorData);
+        setUploadResult(errorData);
       }
     } finally {
       setLoading(false);
@@ -427,7 +427,7 @@ function CsvUploadForm() {
             </li>
             <li>
               <strong>必須項目:</strong>{" "}
-              品名（item_name）とカテゴリ（category）は必ず入力してください
+              品名（item_name）と型番（model_number）とカテゴリ（category）は必ず入力してください
             </li>
             <li>
               <strong>在庫数:</strong>{" "}

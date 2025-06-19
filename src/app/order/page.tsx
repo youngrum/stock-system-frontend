@@ -39,6 +39,7 @@ export default function OrderNewPage() {
           itemName: item.itemName,
           category: item.category,
           modelNumber: item.modelNumber,
+          manufacturer: item.manufacturer || "-",
           purchasePrice: item.price || 0,
           quantity: item.quantity,
           remarks: item.remarks || "-",

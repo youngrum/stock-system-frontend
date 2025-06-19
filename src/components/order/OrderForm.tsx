@@ -30,6 +30,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
       itemName: false,
       category: false,
       modelNumber: false,
+      manufacturer: false,
       location: false
     },
   };
@@ -50,6 +51,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
         itemName: false,
         category: false,
         modelNumber: false,
+        manufacturer: false,
         location: false
       },
     },
@@ -65,7 +67,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
   
   // 処理中のフラグを管理（重複実行防止）
   const processingRef = useRef<Set<string>>(new Set());
-  // フォーカス状態を管理するためのリファレンス
+  
   const addItem = () => {
     setItems([
       ...items,
@@ -78,13 +80,14 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
         location: "",
         price: 0,
         quantity: 1,
-        remarks: "-",
+        remarks: "",
         autoFetchRequired: false,
         autoSuggestRequired: false,
         readOnlyFields: {
           itemName: false,
           category: false,
           modelNumber: false,
+          manufacturer: false,
           location: false,
         },
       },
@@ -122,12 +125,12 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
 
         // itemCodeが空に戻ったら状態をリセット
         if (value.trim() === "") {
-          // フォーカス状態は即座にリセットしない
           setSuggestionsMap((prev) => ({ ...prev, [index]: [] }));
           
           newItem.itemName = "";
           newItem.category = "";
           newItem.modelNumber = "";
+          newItem.manufacturer = "";
           newItem.location = "";
           newItem.autoFetchRequired = false;
           newItem.autoSuggestRequired = false;
@@ -135,6 +138,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
             itemName: false,
             category: false,
             modelNumber: false,
+            manufacturer: false,
             location: false,
           };
         }
@@ -157,7 +161,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
     setSupplier("");
     setOrderDate("");
     setShippingFee(0);
-    setRemarks("-");
+    setRemarks("");
     setSuggestionsMap({});
     setFocusedField(null);
   };
@@ -199,12 +203,14 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
                 itemName: found.itemName,
                 category: found.category,
                 modelNumber: found.modelNumber,
+                manufacturer: found.manufacturer,
                 location: found.location,
                 autoFetchRequired: false,
                 readOnlyFields: {
                   itemName: true,
                   category: true,
                   modelNumber: true,
+                  manufacturer: true,
                   location: true,
                 },
               };
@@ -265,12 +271,14 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
                 itemName: found.itemName,
                 category: found.category,
                 modelNumber: found.modelNumber,
+                manufacturer: found.manufacturer,
                 autoSuggestRequired: false,
                 autoFetchRequired: false,
                 readOnlyFields: {
                   itemName: true,
                   category: true,
                   modelNumber: true,
+                  manufacturer: true,
                   location: true,
                 },
               };
@@ -307,7 +315,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
       if (
         item.autoSuggestRequired &&
         !item.itemCode &&
-        (item.itemName?.trim() || item.modelNumber?.trim() || item.category?.trim() || item.location?.trim())
+        (item.itemName?.trim() || item.modelNumber?.trim() || item.category?.trim() || item.manufacturer?.trim() || item.location?.trim())
       ) {
         fetchPromises.push(suggestItems(item, index));
       }
@@ -366,6 +374,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
         price: item.price,
         quantity: item.quantity,
         remarks: item.remarks,
+        manufacturer: item.manufacturer,
         location: item.location,
       })),
     };
@@ -374,14 +383,14 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
 
   return (
     <form onSubmit={handleSubmit}
-      className="max-w-4xl mx-auto p-6 space-y-6"
+      className="max-w-6xl mx-auto p-6 space-y-6"
       style={{ color: "#101540" }}
     >
       <h2 className="text-2xl font-bold">発注登録</h2>
       <h3 className="text-lg font-semibold mb-3">共通情報</h3>
       <div className="grid md:grid-cols-3 gap-x-4 gap-y-2 border-b pb-3 text-sm">
         <div>
-          <label className="block mb-1 pb-2 pt-1 font-semibold">仕入先</label>
+          <label className="block mb-1 pb-2 pt-1 font-semibold">仕入先 *</label>
           <input
             type="text"
             value={supplier}
@@ -391,7 +400,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
           />
         </div>
         <div>
-          <label className="block mb-1 pb-2 pt-1 font-semibold">発注日</label>
+          <label className="block mb-1 pb-2 pt-1 font-semibold">発注日 *</label>
           <input
             type="date"
             value={orderDate}
@@ -401,7 +410,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
           />
         </div>
         <div>
-          <label className="block mb-1 pb-2 pt-1 font-semibold">送料</label>
+          <label className="block mb-1 pb-2 pt-1 font-semibold">送料 *</label>
           <input
             type="number"
             min={0}
@@ -429,195 +438,243 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
         {items.map((item, index) => (
           <div
             key={index}
-            className="grid grid-cols-20 gap-x-4 gap-y-1 pt-4 rounded-md bg-white mb-4"
+            className="bg-white border border-gray-200 rounded-lg p-4 mb-4 shadow-sm"
           >
-            {/* 上段 */}
-            <div className="col-span-4 relative">
-              <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>在庫ID</label>
-              <input
-                type="text"
-                value={item.itemCode}
-                onChange={(e) => updateItem(index, "itemCode", e.target.value)}
-                onFocus={() => handleFocus(index, "itemCode")}
-                onBlur={() => handleItemCodeBlur(index)} 
-                className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
-              />
-              {focusedField?.index === index && focusedField.field === "itemCode" && suggestionsMap[index]?.length > 0 && (
-                <ul className="absolute z-10 mt-1 w-full border border-gray-300 bg-white shadow-lg rounded text-sm text-gray-800 max-h-48 overflow-auto transition-all duration-200 opacity-100">
-                  {suggestionsMap[index].map((sug) => (
-                    <li
-                      key={sug.itemCode}
-                      className="px-2 py-1 hover:bg-gray-100 cursor-pointer"
-                      onMouseDown={() => {
-                        skipBlurRef.current = true;
-                        updateItem(index, "itemCode", sug.itemCode);
-                      }}
-                      onClick={() => {
-                        updateItem(index, "itemCode", sug.itemCode);
-                      }}
-                    >
-                      {sug.itemCode} : {sug.itemName} / {sug.modelNumber}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            <div className="col-span-9 relative">
-              <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>品名</label>
-              <input
-                type="text"
-                value={item.itemName}
-                readOnly={item.readOnlyFields?.itemName}
-                className={`w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition 
-                    ${item.readOnlyFields?.itemName ? "text-gray-400" : "text-gray-900"}`
-                }
-                onChange={(e) => updateItem(index, "itemName", e.target.value)}
-                onFocus={() => handleFocus(index, "itemName")}
-                onBlur={() => handleBlur(index, "itemName")}
-                required
-              />
-              {focusedField?.index === index && focusedField.field === "itemName" && suggestionsMap[index]?.length > 0 && (
-                <ul className="absolute z-10 mt-1 w-full max-w-[500px] border border-gray-300 bg-white shadow-lg rounded text-sm text-gray-800 max-h-48 overflow-auto transition-all duration-200 opacity-100">
-                  {suggestionsMap[index].map((sug) => (
-                    <li
-                      key={sug.itemCode}
-                      className="px-2 py-1 hover:bg-gray-100 cursor-pointer"
-                      onMouseDown={() => {
-                        updateItem(index, "itemCode", sug.itemCode);
-                      }}
-                      onClick={() => {
-                        updateItem(index, "itemCode", sug.itemCode);
-                      }}
-                    >
-                      {sug.itemCode} : {sug.itemName} / {sug.modelNumber}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            <div className="col-span-6 row-span-1">
-              <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>備考</label>
-              <textarea
-                value={item.remarks}
-                onChange={(e) => updateItem(index, "remarks", e.target.value)}
-                className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
-              />
-            </div>
-            <div className="col-span-1 row-span-2 flex justify-center items-center">
-              <button
-                type="button"
-                onClick={() => removeItem(index)}
-                className="text-red-500 hover:text-red-700 text-xl"
-              >
-                <X />
-              </button>
+            {/* 商品基本情報 - 上段 */}
+            <div className="grid grid-cols-12 gap-3 mb-3">
+              <div className="col-span-3 relative">
+                <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>在庫ID</label>
+                <input
+                  type="text"
+                  value={item.itemCode}
+                  onChange={(e) => updateItem(index, "itemCode", e.target.value)}
+                  onFocus={() => handleFocus(index, "itemCode")}
+                  onBlur={() => handleItemCodeBlur(index)} 
+                  className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                  placeholder="I-00001"
+                />
+                {focusedField?.index === index && focusedField.field === "itemCode" && suggestionsMap[index]?.length > 0 && (
+                  <ul className="absolute z-10 mt-1 w-full border border-gray-300 bg-white shadow-lg rounded text-sm text-gray-800 max-h-48 overflow-auto transition-all duration-200 opacity-100">
+                    {suggestionsMap[index].map((sug) => (
+                      <li
+                        key={sug.itemCode}
+                        className="px-2 py-1 hover:bg-gray-100 cursor-pointer"
+                        onMouseDown={() => {
+                          skipBlurRef.current = true;
+                          updateItem(index, "itemCode", sug.itemCode);
+                        }}
+                        onClick={() => {
+                          updateItem(index, "itemCode", sug.itemCode);
+                        }}
+                      >
+                        {sug.itemCode} : {sug.itemName} / {sug.modelNumber}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+              
+              <div className="col-span-5 relative">
+                <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>品名 *</label>
+                <input
+                  type="text"
+                  value={item.itemName}
+                  readOnly={item.readOnlyFields?.itemName}
+                  className={`w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition 
+                      ${item.readOnlyFields?.itemName ? "text-gray-700 bg-gray-100" : "text-gray-900"}`
+                  }
+                  onChange={(e) => updateItem(index, "itemName", e.target.value)}
+                  onFocus={() => handleFocus(index, "itemName")}
+                  onBlur={() => handleBlur(index, "itemName")}
+                  placeholder="商品名を入力"
+                  required
+                />
+                {focusedField?.index === index && focusedField.field === "itemName" && suggestionsMap[index]?.length > 0 && (
+                  <ul className="absolute z-10 mt-1 w-full max-w-[400px] border border-gray-300 bg-white shadow-lg rounded text-sm text-gray-800 max-h-48 overflow-auto transition-all duration-200 opacity-100">
+                    {suggestionsMap[index].map((sug) => (
+                      <li
+                        key={sug.itemCode}
+                        className="px-2 py-1 hover:bg-gray-100 cursor-pointer"
+                        onMouseDown={() => {
+                          updateItem(index, "itemCode", sug.itemCode);
+                        }}
+                        onClick={() => {
+                          updateItem(index, "itemCode", sug.itemCode);
+                        }}
+                      >
+                        {sug.itemCode} : {sug.itemName} / {sug.modelNumber}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              <div className="col-span-3">
+                <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>カテゴリー *</label>
+                <input
+                  type="text"
+                  value={item.category}
+                  onChange={(e) => updateItem(index, "category", e.target.value)}
+                  readOnly={item.readOnlyFields?.category}
+                  className={`w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition
+                      ${item.readOnlyFields?.category ? "text-gray-700 bg-gray-100" : "text-gray-900"}`
+                  }
+                  placeholder="電子部品"
+                  required
+                />
+              </div>
+
+              <div className="col-span-1 flex items-end justify-center">
+                <button
+                  type="button"
+                  onClick={() => removeItem(index)}
+                  className="text-red-500 hover:text-red-700 p-1 hover:bg-red-50 rounded transition-colors"
+                  title="この商品を削除"
+                >
+                  <X size={18} />
+                </button>
+              </div>
             </div>
 
-            {/* 下段 */}
-            <div className="col-span-4">
-              <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>カテゴリー</label>
-              <input
-                type="text"
-                value={item.category}
-                onChange={(e) => updateItem(index, "category", e.target.value)}
-                readOnly={item.readOnlyFields?.category}
-                className={`w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition
-                    ${item.readOnlyFields?.category ? "text-gray-400" : "text-gray-900"}
-                    `}
-                required
-              />
-            </div>
-            <div className="col-span-4 relative">
-              <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>型番</label>
-              <input
-                type="text"
-                value={item.modelNumber}
-                readOnly={item.readOnlyFields?.modelNumber}
-                className={`w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition
-                    ${item.readOnlyFields?.modelNumber ? "text-gray-400" : "text-gray-900"}
-                    `}
-                onChange={(e) => updateItem(index, "modelNumber", e.target.value)}                
-                onFocus={() => handleFocus(index, "modelNumber")}
-                onBlur={() => handleBlur(index, "modelNumber")}
-                required
-              />
-              {focusedField?.index === index && focusedField.field === "modelNumber" && suggestionsMap[index]?.length > 0 && (
-                <ul className="absolute z-10 mt-1 w-full max-w-[500px] border border-gray-300 bg-white shadow-lg rounded text-sm text-gray-800 max-h-48 overflow-auto transition-all duration-200 opacity-100">
-                  {suggestionsMap[index].map((sug) => (
-                    <li
-                      key={sug.itemCode}
-                      className="px-2 py-1 hover:bg-gray-100 cursor-pointer"
-                      onMouseDown={() => {
-                        updateItem(index, "itemCode", sug.itemCode);
-                      }}
-                      onClick={() => {
-                        updateItem(index, "itemCode", sug.itemCode);
-                      }}
-                    >
-                      {sug.itemCode} : {sug.itemName} / {sug.modelNumber}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            <div className="col-span-2">
-              <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>数量</label>
-              <input
-                type="number"
-                value={item.quantity}
-                placeholder="10"
-                min={1}
-                onChange={(e) => updateItem(index, "quantity", e.target.value)}
-                className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
-                required
-              />
-            </div>
-            <div className="col-span-3">
-              <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>単価</label>
-              <input
-                type="number"
-                value={item.price}
-                placeholder="300"
-                min={1}
-                onChange={(e) => updateItem(index, "price", e.target.value)}
-                className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
-                required
-              />
-            </div>
-            <div className="col-span-6">
-              <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>保管先</label>
-              <input
-                type="text"
-                value={item.location}
-                placeholder="足立倉庫など"
-                onChange={(e) => updateItem(index, "location", e.target.value)}
-                className={`w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-1 focus:ring-2 focus:ring-blue-500 focus:outline-none transition
-                  ${item.readOnlyFields?.location ? "text-gray-400" : "text-gray-900"}
-                  `}
+            {/* 詳細情報 - 中段 */}
+            <div className="grid grid-cols-12 gap-3 mb-3">
+              <div className="col-span-4 relative">
+                <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>型番 *</label>
+                <input
+                  type="text"
+                  value={item.modelNumber}
+                  readOnly={item.readOnlyFields?.modelNumber}
+                  className={`w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition
+                      ${item.readOnlyFields?.modelNumber ? "text-gray-700 bg-gray-100" : "text-gray-900"}`
+                  }
+                  onChange={(e) => updateItem(index, "modelNumber", e.target.value)}                
+                  onFocus={() => handleFocus(index, "modelNumber")}
+                  onBlur={() => handleBlur(index, "modelNumber")}
+                  placeholder="ABC-123-XYZ"
+                  required
+                />
+                {focusedField?.index === index && focusedField.field === "modelNumber" && suggestionsMap[index]?.length > 0 && (
+                  <ul className="absolute z-10 mt-1 w-full max-w-[400px] border border-gray-300 bg-white shadow-lg rounded text-sm text-gray-800 max-h-48 overflow-auto transition-all duration-200 opacity-100">
+                    {suggestionsMap[index].map((sug) => (
+                      <li
+                        key={sug.itemCode}
+                        className="px-2 py-1 hover:bg-gray-100 cursor-pointer"
+                        onMouseDown={() => {
+                          updateItem(index, "itemCode", sug.itemCode);
+                        }}
+                        onClick={() => {
+                          updateItem(index, "itemCode", sug.itemCode);
+                        }}
+                      >
+                        {sug.itemCode} : {sug.itemName} / {sug.modelNumber}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+
+              <div className="col-span-3">
+                <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>メーカー </label>
+                <input
+                  type="text"
+                  value={item.manufacturer}
+                  onChange={(e) => updateItem(index, "manufacturer", e.target.value)}
+                  placeholder="パナソニック"
+                  className={`w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition
+                    ${item.readOnlyFields?.manufacturer ? "text-gray-700 bg-gray-100" : "text-gray-900"}`
+                  }
+                  readOnly={item.readOnlyFields?.manufacturer}
+                />
+              </div>
+
+              <div className="col-span-5">
+                <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>保管先</label>
+                <input
+                  type="text"
+                  value={item.location}
+                  placeholder="足立倉庫など"
+                  onChange={(e) => updateItem(index, "location", e.target.value)}
+                  className={`w-full bg-gray-50 border border-gray-300 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition
+                    ${item.readOnlyFields?.location ? "text-gray-700 bg-gray-100" : "text-gray-900"}`
+                  }
                   readOnly={item.readOnlyFields?.location}
-              />
+                />
+              </div>
+            </div>
+
+            {/* 数量・価格・備考 - 下段 */}
+            <div className="grid grid-cols-12 gap-3">
+              <div className="col-span-2">
+                <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>数量 *</label>
+                <input
+                  type="number"
+                  value={item.quantity}
+                  placeholder="10"
+                  min={1}
+                  onChange={(e) => updateItem(index, "quantity", e.target.value)}
+                  className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
+                  required
+                />
+              </div>
+
+              <div className="col-span-2">
+                <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>単価 *</label>
+                <input
+                  type="number"
+                  value={item.price}
+                  placeholder="300"
+                  min={1}
+                  step="0.1"
+                  onChange={(e) => updateItem(index, "price", e.target.value)}
+                  className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
+                  required
+                />
+              </div>
+
+              <div className="col-span-2">
+                <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>小計</label>
+                <input
+                  type="text"
+                  value={(item.quantity * item.price).toLocaleString()}
+                  className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
+                  readOnly
+                />
+              </div>
+
+              <div className="col-span-6">
+                <label className="block text-sm text-gray-600 mb-1 font-semibold" style={{ color: "#101540" }}>備考</label>
+                <input
+                  type="text"
+                  value={item.remarks}
+                  onChange={(e) => updateItem(index, "remarks", e.target.value)}
+                  className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+                  placeholder="特記事項があれば入力"
+                />
+              </div>
             </div>
           </div>
         ))}
+        
         <button
           type="button"
           onClick={addItem}
-          className="mt-2 text-blue-600 hover:underline"
+          className="mt-4 px-4 py-2 text-blue-600 border border-blue-300 rounded-md hover:bg-blue-50 transition-colors flex items-center gap-2"
         >
-          ＋ 商品を追加
+          <span className="text-lg">+</span>
+          商品を追加
         </button>
       </div>
 
-      <div className="flex justify-end gap-4">
+      <div className="flex justify-end gap-4 pt-6 border-t">
         <button
           type="button"
-          className="px-4 py-2 border rounded bg-gray-100 hover:bg-gray-200"
+          className="px-6 py-2 border border-gray-300 rounded-md bg-gray-100 hover:bg-gray-200 transition-colors"
         >
           キャンセル
         </button>
         <button
           type="submit"
-          className="px-4 py-2 border rounded bg-blue-600 text-white hover:opacity-80"
+          className="px-6 py-2 rounded-md text-white hover:opacity-90 transition-opacity"
           style={{
             background: "linear-gradient(to bottom, #3D00B8, #3070C3)",
           }}

@@ -6,7 +6,7 @@ import api from "@/services/api";
 import { CreateInventoryRequest, InventoryItem } from "@/types/InventoryItem";
 import { ApiSuccessResponse, ApiErrorResponse } from "@/types/ApiResponse";
 import Loader from "@/components/ui/Loader";
-import { useAuthGuard } from '@/lib/hooks/useAuthGuard';
+import { useAuthGuard } from "@/lib/hooks/useAuthGuard";
 import { CATEGORIES } from "@/data/categories";
 
 export default function InventoryNewPage() {
@@ -34,9 +34,10 @@ export default function InventoryNewPage() {
     useState<ApiSuccessResponse<InventoryItem> | null>(null);
   const [loading, setLoading] = useState(false);
 
-
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setForm((prevForm) => ({
@@ -46,10 +47,15 @@ export default function InventoryNewPage() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-
-    const confirmed = window.confirm(`本当にこの内容で入庫しますか？\n品名：${form.itemName}\nカテゴリー：${form?.category}\n仕入先: ${
-        form.modelNumber || "未入力"
-      }\n↓\n数量: ${form.currentStock}\n備考: ${form.location || "なし"}\n備考: ${form.remarks || "なし"}`)
+    const confirmed = window.confirm(
+      `本当にこの内容で登録しますか？\n品名：${form.itemName}\nカテゴリー：${
+        form?.category
+      }\n仕入先: ${form.modelNumber || "未入力"}\nメーカー: ${
+        form.manufacturer || "不明"
+      }\n↓\n数量: ${form.currentStock}\n保管先: ${
+        form.location || "未入力"
+      }\n備考: ${form.remarks || "未入力"}`
+    );
 
     if (!confirmed) {
       window.confirm("処理を取り消しました");
@@ -72,10 +78,12 @@ export default function InventoryNewPage() {
       setSuccessResponse(res.data);
     } catch (error) {
       console.error(error);
-      const err = error as { response?: { data: ApiErrorResponse } }
+      const err = error as { response?: { data: ApiErrorResponse } };
       if (err.response && err.response.data) {
         const error: ApiErrorResponse = err.response.data;
-        alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用
+        alert(
+          `エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`
+        ); // エラーメッセージを利用
       }
     } finally {
       setLoading(false);
@@ -99,7 +107,14 @@ export default function InventoryNewPage() {
     <>
       {loading && <Loader />}
       <div className="max-w-xl mx-auto bg-white border-gray-400 shadow p-5">
-        <h1 className="text-2xl font-bold mb-6">新規在庫登録</h1>
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold">新規在庫登録</h1>
+          <div className="border rounded p-2 hover:bg-[#1d1f3c] hover:text-gray-200">
+            <button className="text-xl" onClick={() => router.push("/csv")}>
+              import with csv
+            </button>
+          </div>
+        </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="itemName" className="block mb-1 font-medium">
@@ -129,7 +144,8 @@ export default function InventoryNewPage() {
               className="w-full bg-gray-50 text-gray-900 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none px-3 py-2"
               style={{ border: "1px solid #9F9F9F" }}
             >
-              <option value="">-- カテゴリを選択してください --</option> {/* デフォルトの選択肢 */}
+              <option value="">-- カテゴリを選択してください --</option>{" "}
+              {/* デフォルトの選択肢 */}
               {CATEGORIES.map((category) => (
                 <option key={category} value={category}>
                   {category}

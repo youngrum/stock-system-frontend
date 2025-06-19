@@ -25,7 +25,7 @@ export default function InventoryNewPage() {
     category: "",
     modelNumber: "",
     manufacturer: "",
-    currentStock: 0,
+    currentStock: null,
     location: "",
     remarks: "",
   });
@@ -47,6 +47,7 @@ export default function InventoryNewPage() {
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     const confirmed = window.confirm(
       `本当にこの内容で登録しますか？\n品名：${form.itemName}\nカテゴリー：${
         form?.category
@@ -58,10 +59,9 @@ export default function InventoryNewPage() {
     );
 
     if (!confirmed) {
-      window.confirm("処理を取り消しました");
+      window.alert("処理を取り消しました"); 
       return;
     }
-    e.preventDefault();
     setLoading(true);
     try {
       const payload: CreateInventoryRequest = {
@@ -133,7 +133,7 @@ export default function InventoryNewPage() {
           </div>
           <div>
             <label htmlFor="category" className="block mb-1 font-medium">
-              カテゴリ *
+              カテゴリー *
             </label>
             <select
               name="category"
@@ -155,7 +155,7 @@ export default function InventoryNewPage() {
           </div>
           <div>
             <label htmlFor="modelNumber" className="block mb-1 font-medium">
-              型番・規格
+              型番・規格 *
             </label>
             <input
               type="text"
@@ -164,6 +164,7 @@ export default function InventoryNewPage() {
               onChange={handleChange}
               className="w-full bg-gray-50 text-gray-900 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none px-3 py-2"
               style={{ border: "1px solid #9F9F9F" }}
+              required
             />
           </div>
           <div>

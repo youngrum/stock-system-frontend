@@ -20,7 +20,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
     category: "",
     modelNumber: "",
     manufacturer: "",
-    price: 0,
+    price: null,
     quantity: 1,
     remarks: "",
     location: "",
@@ -41,8 +41,8 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
       category: "",
       modelNumber: "",
       manufacturer: "",
-      price: 0,
-      quantity: 0,
+      price: null,
+      quantity: null,
       remarks: "",
       location: "",
       autoFetchRequired: false,
@@ -59,7 +59,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
 
   const [supplier, setSupplier] = useState("");
   const [orderDate, setOrderDate] = useState<string>("");
-  const [shippingFee, setShippingFee] = useState<number>(0);
+  const [shippingFee, setShippingFee] = useState<number>(null);
   const [remarks, setRemarks] = useState("");
   const [suggestionsMap, setSuggestionsMap] = useState<Record<number, InventoryItem[]>>({});
   const [focusedField, setFocusedField] = useState<null | { index: number; field: string }>(null);
@@ -78,7 +78,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
         modelNumber: "",
         manufacturer: "",
         location: "",
-        price: 0,
+        price: null,
         quantity: 1,
         remarks: "",
         autoFetchRequired: false,
@@ -160,7 +160,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
     setItems([initialItemState]);
     setSupplier("");
     setOrderDate("");
-    setShippingFee(0);
+    setShippingFee(null);
     setRemarks("");
     setSuggestionsMap({});
     setFocusedField(null);
@@ -636,7 +636,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
                 <input
                   type="text"
                   value={(item.quantity * item.price).toLocaleString()}
-                  className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
+                  className="w-full bg-gray-100 border border-gray-300 text-gray-700 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
                   readOnly
                 />
               </div>

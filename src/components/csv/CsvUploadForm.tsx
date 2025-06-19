@@ -93,7 +93,7 @@ function CsvUploadForm() {
     } catch (error) {
       console.error(error);
       const err = error as { response?: { data: ApiErrorResponse } };
-      if (err.response || err.response.data) {
+      if (err.response && err.response.data) {
         const errorData: ApiErrorResponse = err.response.data;
         setError(errorData.message);
         console.error("アップロードエラー:", errorData);

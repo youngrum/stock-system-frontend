@@ -120,7 +120,7 @@ export default function InventoryReceiveModal({
         {/* Right: Input Form */}
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium">数量</label>
+            <label className="block text-sm font-medium">数量*</label>
             <input
               type="number"
               min={1}

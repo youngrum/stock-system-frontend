@@ -12,5 +12,6 @@ export interface ApiErrorResponse {
     error: string
     message: string
     path: string
+    success: boolean
 }
   

@@ -16,7 +16,7 @@ export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
   return (
     <div className="rounded bg-white text-center">
       {/* ヘッダー */}
-      <div className="grid grid-cols-18 font-semibold p-2">
+      <div className="grid grid-cols-18 font-semibold text-sm p-2">
         <span className="col-span-2">発注番号</span>
         <span className="col-span-2">仕入れ先</span>
         <span className="col-span-2">小計</span>
@@ -30,7 +30,7 @@ export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
       {/* 一覧 */}
       {orders.map((order, idx) => (
         <React.Fragment key={order.orderNo}>
-          <div className="grid grid-cols-18 gap-y-4 items-center pt-2 hover:bg-gray-50 border-b text-sm"
+          <div className="grid grid-cols-18 gap-y-4 items-center pt-2 hover:bg-gray-50 border-b text-[12px]"
           onClick={() => setExpandedIndex(expandedIndex === idx ? null : idx)}
           >
             <span className="col-span-2">{order.orderNo}</span>
@@ -67,9 +67,9 @@ export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
 
           {/* アコーディオン明細 */}
             <div className={`col-span-18 transition-all duration-500 ease-in-out overflow-hidden ${expandedIndex === idx ? "max-h-[400px]" : "max-h-0"}`}>
-              <table className="w-full text-sm py-2 ">
+              <table className="w-full text-sm py-2">
                 <thead>
-                  <tr className="font-semibold bg-blue-50">
+                  <tr className="font-semibold bg-blue-50 text-sm">
                     <th className="py-1 col-span-3">在庫ID</th>
                     <th className="py-1 col-span-3">品名</th>
                     <th className="py-1 col-span-2">型番・規格</th>
@@ -84,7 +84,7 @@ export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
                 <tbody>
                   {(order.details || []).map((detail, i) => (
                     <tr key={detail.itemCode}
-                      className={`${i % 2 === 0 ? 'bg-gray-50': 'bg-blue-50'}`}
+                      className={`${i % 2 === 0 ? 'bg-gray-50': 'bg-blue-50'} text-[12px]`}
                     >
                       <td className="py-2 col-span-2">{detail.itemCode}</td>
                       <td className="py-2 truncate max-w-[150px] col-span-2">{detail.itemName}</td>

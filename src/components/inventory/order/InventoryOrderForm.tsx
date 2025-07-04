@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { PurchaseOrderRequest, PurchaseOrderDetailRequest } from "@/types/PurchaseOrder";
 import { InventoryItem } from "@/types/InventoryItem";
-import { OrderItemState } from "@/components/order/reducers/orderFormReducer";
+import { OrderItemState } from "@/components/inventory/order/reducers/InventoryOrderFormReducer";
 import { X } from "lucide-react";
 import api from "@/services/api";
 

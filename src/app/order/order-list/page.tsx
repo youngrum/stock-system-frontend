@@ -3,8 +3,8 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import api from "@/services/api";
-import PurchaseList from "@/components/order/PurchaseList";
-import RecieveFromOrderModal from "@/components/order/RecieveFromOrderModal";
+import PurchaseList from "@/components/inventory/order/InventoryPurchaseList";
+import RecieveFromOrderModal from "@/components/inventory/order/InventoryRecieveFromOrderModal";
 import Pagination from "@/components/ui/Pagination";
 import {
   PurchaseOrderResponse,

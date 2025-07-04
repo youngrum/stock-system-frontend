@@ -1,79 +1,26 @@
-// app/order/new/page.tsx
+// app/order/page.tsx
 "use client";
 
-import OrderForm from "@/components/inventory/order/InventoryOrderForm";
+import { useRouter } from "next/navigation";
 import {
-  PurchaseOrderRequest,
-  PurchaseOrderDetailRequest,
-} from "@/types/PurchaseOrder";
-import api from "@/services/api";
-import { useState, useRef } from "react";
-import Loader from "@/components/ui/Loader";
-import { ApiErrorResponse } from "@/types/ApiResponse";
+  Blocks,
+  Keyboard,
+} from "lucide-react";
 
-export default function OrderNewPage() {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>("");
-  const resetFormRef = useRef<(() => void) | null>(null);
-
-  const handleFormReset = (resetFn: () => void) => {
-    resetFormRef.current = resetFn;
-  };
-
-  const handleOrderSubmit = async (
-    formData: PurchaseOrderRequest
-  ): Promise<void> => {
-    setLoading(true);
-    setError("");
-    console.log("%o", formData);
-    console.log("送信直前のformData:", JSON.stringify(formData, null, 2));
-
-    try {
-      const res = await api.post(`/orders`, {
-        supplier: formData.supplier,
-        shippingFee: formData.shippingFee,
-        orderDate: formData.orderDate,
-        remarks: formData.remarks || "-",
-        details: formData.details.map((item: PurchaseOrderDetailRequest) => ({
-          itemCode: item.itemCode || "",
-          itemName: item.itemName,
-          category: item.category,
-          modelNumber: item.modelNumber,
-          manufacturer: item.manufacturer || "-",
-          purchasePrice: item.price || 0,
-          quantity: item.quantity,
-          remarks: item.remarks || "-",
-          location: item.location || "",
-        })),
-      });
-
-      const response = res.data.data;
-
-      alert(`発注登録に成功しました（発注番号: ${response.orderNo}）`);
-
-      if (resetFormRef.current) {
-        resetFormRef.current();
-      }
-    } catch (error) {
-      console.error(error);
-      const err = error as { response?: { data: ApiErrorResponse } }
-      if (err.response && err.response.data) {
-        const error: ApiErrorResponse = err.response.data;
-        alert(`エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`); // エラーメッセージを利用
-      }
-      setError("登録に失敗しました。");
-      console.log(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+export default function OrderBranch() {
+  const router = useRouter();
 
   return (
     <>
-      {loading && <Loader />}
-      {error && <div className="text-red-500">{error}</div>}
-    <main className="max-w-8xl mx-auto bg-white border-gray-400 shadow p-5">
-      <OrderForm onSubmit={handleOrderSubmit} onReset={handleFormReset} />
+    <main className='flex bg-white w-full justify-center px-20 py-5'>
+      <div className="bg-white m-10 max-w-md" onClick={() => router.push("/inventory/order/")}>
+        <h2 class="text-3xl">在庫品発注登録フォーム</h2>
+        <div class="flex justify-center"><Blocks size={100} /></div>
+      </div>
+      <div className="bg-white p-10 max-w-md" onClick={() => router.push("/asset/order/")}>
+        <h2 class="text-3xl">設備品発注登録フォーム</h2>
+        <div class="flex justify-center"><Keyboard size={100} /></div>
+      </div>
     </main>
     </>
   );

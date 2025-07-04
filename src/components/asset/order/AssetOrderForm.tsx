@@ -386,7 +386,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
       className="max-w-6xl mx-auto p-6 space-y-6"
       style={{ color: "#101540" }}
     >
-      <h2 className="text-2xl font-bold">在庫品発注登録</h2>
+      <h2 className="text-2xl font-bold">設備品発注登録</h2>
       <h3 className="text-lg font-semibold mb-3">共通情報</h3>
       <div className="grid md:grid-cols-3 gap-x-4 gap-y-2 border-b pb-3 text-sm">
         <div>

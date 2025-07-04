@@ -22,7 +22,6 @@ export default function InventoryListsPage() {
   const isLoggedIn = useAuthGuard();
   const [data, setData] = useState<InventoryItem[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
   const [showSearchForm, setShowSearchForm] = useState(false);
   const toggleSearchForm = () => setShowSearchForm((prev) => !prev);
   const [searchParams, setSearchParams] = useState<InventorySearchParams>({
@@ -64,8 +63,9 @@ export default function InventoryListsPage() {
         alert(
           `エラーが発生しました！以下の内容を管理者に伝えてください。\n・error: ${error.error}\n・massage: ${error.message}\n・status: ${error.status}`
         ); // エラーメッセージを利用
+      }else {
+        alert("在庫情報の取得に失敗しました。");
       }
-      setError("在庫データの取得に失敗しました");
     } finally {
       setLoading(false);
     }
@@ -129,7 +129,6 @@ export default function InventoryListsPage() {
         <InventorySearchForm onSearch={setSearchParams} />
       </div>
 
-      {error && <p>{error}</p>}
       {loading ? (
         <Loader />
       ) : (

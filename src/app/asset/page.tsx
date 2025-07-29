@@ -78,7 +78,7 @@ export default function InventoryListsPage() {
           className="text-2xl font-bold text-gray-800"
           style={{ color: "#101540" }}
         >
-          在庫一覧・検索
+          設備一覧・検索
         </h2>
         {/* 右側：検索ボタン＋在庫追加ボタン */}
         <div className="flex items-center space-x-3">
@@ -136,7 +136,7 @@ export default function InventoryListsPage() {
           <AssetUpdateModal
             isOpen={isUpdateModalOpen}
             onClose={() => setIsUpdateModalOpen(false)}
-            itemCode={selectedItem.itemCode}
+            asset={selectedItem}
             onSuccess={fetchData}
           />
         </>

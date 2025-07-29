@@ -54,15 +54,16 @@ export interface InventorySearchParams {
 
 // 設備品登録のリクエスト型定義
 export interface UpdateAssetRequest {
+  id: long;                       // id
   assetCode: string;              // 設備管理番号
   serialNumber: string;           // 製造番号
-  registDate: string;             // 登録日
-  location: string;               // 保管場所
-  status: string;                 // ステータス 廃棄登録時に使用
   lastCalibrationDate: string;    // 前回校正日
   nextCalibrationDate: string;    // 次回校正日
   fixedAssetManageNo: string;     // 固定資産管理番号
+  location: string;               // 保管/設置場所
+  registDate: string;             // 登録日
   monitored: boolean;             // 監視対象
   calibrationRequired: boolean;   // 校正要否フラグ
   remarks: string;                // 備考
+  status: string;                 // ステータス 廃棄登録時に使用
 }

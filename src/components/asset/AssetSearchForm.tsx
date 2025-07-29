@@ -45,7 +45,7 @@ export default function InventorySearchForm({
             type="text"
             value={assetCode}
             onChange={(e) => setAssetCode(e.target.value)}
-            placeholder="IDを入力"
+            placeholder="管理番号を入力"
             className="w-full px-3 py-2 text-[#0d113d] rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100" style={{ border: '1px solid #9F9F9F' }}
           />
         </div>
@@ -56,7 +56,7 @@ export default function InventorySearchForm({
             type="text"
             value={assetName}
             onChange={(e) => setAssetName(e.target.value)}
-            placeholder="品名を入力"
+            placeholder="設備品名を入力"
             className="w-full px-3 py-2 text-[#0d113d] rounded focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-gray-100" style={{ border: '1px solid #9F9F9F' }}
           />
         </div>

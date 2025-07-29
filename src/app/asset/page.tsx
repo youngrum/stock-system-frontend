@@ -1,14 +1,11 @@
 // inventory/page.tsx
 "use client";
 
-import InventoryTable from "@/components/inventory/InventoryTable";
-import InventoryReceiveModal from "@/components/inventory/InventoryReceiveModal";
-import InventoryDispatchModal from "@/components/inventory/InventoryDispatchModal";
-import InventorySearchForm from "@/components/inventory/InventorySearchForm";
+import AssetTable from "@/components/asset/AssetTable";
+import AssetUpdateModal from "@/components/asset/AssetUpdateModal";
+import AssetSearchForm from "@/components/asset/AssetSearchForm";
 import Pagination from "@/components/ui/Pagination";
 import { useAuthGuard } from "@/lib/hooks/useAuthGuard";
-import { InventoryItem } from "@/types/InventoryItem";
-import { InventorySearchParams } from "@/types/InventoryItem";
 import { useEffect, useState, useCallback } from "react";
 import { Search, X } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -20,35 +17,32 @@ import { ApiErrorResponse } from "@/types/ApiResponse";
 export default function InventoryListsPage() {
   const router = useRouter();
   const isLoggedIn = useAuthGuard();
-  const [data, setData] = useState<InventoryItem[]>([]);
+  const [data, setData] = useState<AssetIetmResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [showSearchForm, setShowSearchForm] = useState(false);
   const toggleSearchForm = () => setShowSearchForm((prev) => !prev);
-  const [searchParams, setSearchParams] = useState<InventorySearchParams>({
-    itemCode: "",
-    itemName: "",
+  const [searchParams, setSearchParams] = useState<AssetSearchParams>({
+    assetCode: "",
+    assetName: "",
     category: "",
     modelNumber: "",
+    nextCalibrationDate: "",
   });
-  const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
-  const [isRecieveModalOpen, setIsRecieveModalOpen] = useState(false);
-  const handleReceiveClick = (item: InventoryItem) => {
+  const [selectedItem, setSelectedItem] = useState<AssetItem | null>(null);
+  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const handleUpdateClick = (item: AssetItem) => {
     setSelectedItem(item);
-    setIsRecieveModalOpen(true);
+    setIsUpdateModalOpen(true);
   };
-  const [isDispatchModalOpen, setIsDispatchModalOpen] = useState(false);
-  const handleDispatchClick = (item: InventoryItem) => {
-    setSelectedItem(item);
-    setIsDispatchModalOpen(true);
-  };
+
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
 
   const fetchData = useCallback(async () => {
     try {
-      const res = await api.get("/inventory/search", {
+      const res = await api.get("/asset/search", {
         params: {
-          ...searchParams, // itemCode, itemName を展開
+          ...searchParams, // assetCode, assetName を展開
           page: page,
         },
       });
@@ -78,13 +72,13 @@ export default function InventoryListsPage() {
   }, [fetchData, isLoggedIn]);
 
   return (
-    <main className="bg-white border-gray-400 shadow p-5">
+    <main className="bg-white border-gray-400 shadow p-5 max-w-7xl mx-auto">
       <div className="flex items-center justify-between mb-4">
         <h2
-          className="text-2xl font-bold text-gray-800 text-"
+          className="text-2xl font-bold text-gray-800"
           style={{ color: "#101540" }}
         >
-          在庫一覧・検索
+          設備一覧・検索
         </h2>
         {/* 右側：検索ボタン＋在庫追加ボタン */}
         <div className="flex items-center space-x-3">
@@ -114,7 +108,7 @@ export default function InventoryListsPage() {
             style={{
               background: "linear-gradient(to bottom, #3D00B8, #3070C3)",
             }}
-            onClick={() => router.push("/inventory/new")}
+            onClick={() => router.push("/asset/new")}
           >
             ＋ 新規在庫登録
           </button>
@@ -126,30 +120,23 @@ export default function InventoryListsPage() {
           ${showSearchForm ? "max-h-[400px]" : "max-h-0"}
         `}
       >
-        <InventorySearchForm onSearch={setSearchParams} />
+        <AssetSearchForm onSearch={setSearchParams} />
       </div>
 
       {loading ? (
         <Loader />
       ) : (
-        <InventoryTable
+        <AssetTable
           data={data}
-          onReceive={handleReceiveClick}
-          onDispach={handleDispatchClick}
+          onUpdate={handleUpdateClick}
         />
       )}
       {selectedItem && (
         <>
-          <InventoryReceiveModal
-            isOpen={isRecieveModalOpen}
-            onClose={() => setIsRecieveModalOpen(false)}
-            itemCode={selectedItem.itemCode}
-            onSuccess={fetchData}
-          />
-          <InventoryDispatchModal
-            isOpen={isDispatchModalOpen}
-            onClose={() => setIsDispatchModalOpen(false)}
-            itemCode={selectedItem.itemCode}
+          <AssetUpdateModal
+            isOpen={isUpdateModalOpen}
+            onClose={() => setIsUpdateModalOpen(false)}
+            asset={selectedItem}
             onSuccess={fetchData}
           />
         </>

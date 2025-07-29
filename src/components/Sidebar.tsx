@@ -42,6 +42,7 @@ export default function Sidebar({ isSidebarOpen }: sideBarProps) {
       path: "/order/order-list",
       icon: <ListOrdered size={18} />,
     },
+    { label: "設備一覧/検索", path: "/asset", icon: <ListOrdered size={18} /> },
   ];
 
   return (

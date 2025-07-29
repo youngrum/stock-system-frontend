@@ -17,6 +17,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
   const initialItemState: OrderItemState = {
     itemCode: "",
     itemName: "",
+    itemType: "",
     category: "",
     modelNumber: "",
     manufacturer: "",
@@ -38,6 +39,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
     {
       itemCode: "",
       itemName: "",
+      itemType: "",
       category: "",
       modelNumber: "",
       manufacturer: "",
@@ -74,6 +76,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
       {
         itemCode: "",
         itemName: "",
+        itemType: "",
         category: "",
         modelNumber: "",
         manufacturer: "",

@@ -35,7 +35,7 @@ export interface PurchaseOrderResponse {
 }
 
 export interface PurchaseOrderDetailResponse {
-  id: long;
+  id: number | null;
   orderNo: string; // どの発注の明細か
   itemCode: string;
   itemName: string;

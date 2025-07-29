@@ -1,6 +1,6 @@
 // 1つの設備品レコードの型
-export interface AssetIetm {
-    id: long;
+export interface AssetItem {
+    id: number | null;
     assetCode: string;
     assetName: string;
     manufacturer: string;
@@ -23,7 +23,7 @@ export interface AssetIetm {
 
 // 設備品一覧のレスポンス型
 export interface AssetIetmResponse {
-    id: long;
+    id: number | null;
     assetCode: string;
     assetName: string;
     manufacturer: string;
@@ -44,8 +44,8 @@ export interface AssetIetmResponse {
     remarks: string;
 }
 
-// 在庫検索リクエストのパラメータ型定義
-export interface InventorySearchParams {
+// 設備品検索リクエストのパラメータ型定義
+export interface AssetSearchParams {
   assetCode?: string; // 管理番号
   assetName?: string; // 設備名
   category?: string;  // カテゴリー
@@ -54,7 +54,7 @@ export interface InventorySearchParams {
 
 // 設備品登録のリクエスト型定義
 export interface UpdateAssetRequest {
-  id: long;                       // id
+  id: number | null;              // id
   assetCode: string;              // 設備管理番号
   serialNumber: string;           // 製造番号
   lastCalibrationDate: string;    // 前回校正日

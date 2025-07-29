@@ -110,7 +110,7 @@ export default function InventoryListsPage() {
             }}
             onClick={() => router.push("/asset/new")}
           >
-            ＋ 新規在庫登録
+            ＋ 新規設備登録
           </button>
         </div>
       </div>

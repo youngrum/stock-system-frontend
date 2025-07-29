@@ -65,3 +65,8 @@ export const CATEGORIES: string[] = [
   "ラインフィルター",
   "発信器",
 ];
+
+export const ASSET_CATEGORIES: string[] = [
+  "計測器",
+  ""
+]

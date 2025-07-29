@@ -4,6 +4,7 @@ import { InventoryItem } from "@/types/InventoryItem";
 export type OrderItemState = {
   itemCode: string;
   itemName: string;
+  itemType: string;
   category: string;
   modelNumber: string;
   manufacturer: string;
@@ -57,6 +58,7 @@ export type OrderFormAction =
 const initialOrderItem: OrderItemState = {
   itemCode: "",
   itemName: "",
+  itemType: "",
   category: "",
   modelNumber: "",
   manufacturer: "",

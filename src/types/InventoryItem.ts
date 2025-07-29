@@ -1,4 +1,4 @@
-// 在庫アイテムの型定義
+// 在庫アイテムののレスポンス型
 export interface InventoryItem {
   itemCode: string;
   itemName: string;

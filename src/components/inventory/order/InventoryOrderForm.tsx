@@ -17,6 +17,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
   const initialItemState: OrderItemState = {
     itemCode: "",
     itemName: "",
+    itemType: "",
     category: "",
     modelNumber: "",
     manufacturer: "",
@@ -38,6 +39,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
     {
       itemCode: "",
       itemName: "",
+      itemType: "",
       category: "",
       modelNumber: "",
       manufacturer: "",
@@ -74,6 +76,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
       {
         itemCode: "",
         itemName: "",
+        itemType: "",
         category: "",
         modelNumber: "",
         manufacturer: "",
@@ -371,6 +374,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
         itemName: item.itemName,
         category: item.category,
         modelNumber: item.modelNumber,
+        itemType:"item", // 在庫品発注の場合は "item"で統一
         price: item.price,
         quantity: item.quantity,
         remarks: item.remarks,
@@ -636,7 +640,7 @@ export default function OrderForm({ onSubmit, onReset }: Props) {
                 <input
                   type="text"
                   value={(item.quantity * item.price).toLocaleString()}
-                  className="w-full bg-gray-100 border border-gray-300 text-gray-700 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
+                  className="w-full bg-white border-b border-[#101540] text-gray-700 p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
                   readOnly
                 />
               </div>

@@ -108,7 +108,7 @@ export default function InventoryListsPage() {
             style={{
               background: "linear-gradient(to bottom, #3D00B8, #3070C3)",
             }}
-            onClick={() => router.push("/Asset/new")}
+            onClick={() => router.push("/asset/new")}
           >
             ＋ 新規在庫登録
           </button>

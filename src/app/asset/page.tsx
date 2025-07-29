@@ -10,6 +10,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Search, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/ui/Loader";
+import { AssetItem, AssetIetmResponse, AssetSearchParams } from "@/types/AssetItem"
 
 import api from "@/services/api";
 import { ApiErrorResponse } from "@/types/ApiResponse";
@@ -25,8 +26,7 @@ export default function InventoryListsPage() {
     assetCode: "",
     assetName: "",
     category: "",
-    modelNumber: "",
-    nextCalibrationDate: "",
+    modelNumber: ""
   });
   const [selectedItem, setSelectedItem] = useState<AssetItem | null>(null);
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);

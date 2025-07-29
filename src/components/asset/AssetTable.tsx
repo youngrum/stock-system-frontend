@@ -68,7 +68,7 @@ export default function AssetTable({
               <td className="px-4 py-3" title={asset.serialNumber}>
                 {asset.serialNumber ?? "-"}
               </td>
-              <td className="px-4 py-3 max-w-[300px] truncate" title={asset.purchasePrice}>
+              <td className="px-4 py-3 max-w-[300px] truncate">
                 {asset.purchasePrice === 0 ? "不明" : asset.purchasePrice}
               </td>
               <td className="px-4 py-3 max-w-[300px] truncate"  title={asset.category}>

@@ -1,13 +1,13 @@
 "use client";
 
-import { InventorySearchParams } from "@/types/InventoryItem";
+import { AssetSearchParams } from "@/types/AssetItem";
 import { useState } from "react";
 import { Search } from 'lucide-react';
 
-export default function InventorySearchForm({
+export default function AssetSearchForm({
   onSearch,
 }: {
-  onSearch: (params: InventorySearchParams) => void;
+  onSearch: (params: AssetSearchParams) => void;
 }) {
   const [assetCode, setAssetCode] = useState("");
   const [assetName, setAssetName] = useState("");

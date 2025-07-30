@@ -68,5 +68,4 @@ export const CATEGORIES: string[] = [
 
 export const ASSET_CATEGORIES: string[] = [
   "計測器",
-  ""
 ]

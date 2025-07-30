@@ -57,7 +57,7 @@ export default function AssetUpdateModal({
     }
   }, [isOpen, asset]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     
     if (type === "checkbox") {

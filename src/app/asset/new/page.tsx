@@ -20,7 +20,7 @@ export default function AssetNewPage() {
     }
   }, [isLoggedIn, router]);
 
-  const [formData, setFormData] = useState<CreateAssetRequest | null>({
+  const [formData, setFormData] = useState<CreateAssetRequest>({
     assetCode: "",
     assetName: "",
     manufacturer: "",
@@ -45,7 +45,7 @@ export default function AssetNewPage() {
     useState<ApiSuccessResponse<AssetIetmResponse> | null>(null);
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
     if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;

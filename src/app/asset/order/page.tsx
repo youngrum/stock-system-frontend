@@ -2,10 +2,8 @@
 "use client";
 
 import OrderForm from "@/components/asset/order/AssetOrderForm";
-import {
-  PurchaseOrderRequest,
-  PurchaseOrderDetailRequest,
-} from "@/types/PurchaseOrder";
+import { AssetPurchaseOrderRequest } from "@/types/PurchaseOrder";
+import { AssetPurchaseOrderDetailRequest, CalibrationOrderRequest } from "@/types/PurchaseOrderDetail";
 import api from "@/services/api";
 import { useState, useRef } from "react";
 import Loader from "@/components/ui/Loader";
@@ -21,29 +19,41 @@ export default function OrderNewPage() {
   };
 
   const handleOrderSubmit = async (
-    formData: PurchaseOrderRequest
+    formData: AssetPurchaseOrderRequest
   ): Promise<void> => {
     setLoading(true);
     setError("");
-    console.log("%o", formData);
     console.log("送信直前のformData:", JSON.stringify(formData, null, 2));
 
     try {
       const res = await api.post(`/orders`, {
         supplier: formData.supplier,
-        shippingFee: formData.shippingFee,
         orderDate: formData.orderDate,
+        shippingFee: formData.shippingFee,
+        discount: formData.discount,
+        calibrationCert: formData.calibrationCert,
+        traceabilityCert: formData.traceabilityCert,
+        orderType: formData.orderType,
         remarks: formData.remarks || "-",
-        details: formData.details.map((item: PurchaseOrderDetailRequest) => ({
+        details: formData.details.map((item: AssetPurchaseOrderDetailRequest) => ({
+          serviceType: item.serviceType,
+          itemType: item.itemType,
           itemCode: item.itemCode || "",
           itemName: item.itemName,
           category: item.category,
           modelNumber: item.modelNumber,
           manufacturer: item.manufacturer || "-",
-          purchasePrice: item.price || 0,
+          purchasePrice: item.purchasePrice || 0,
           quantity: item.quantity,
+          relatedAssetId: item.relatedAssetId || "",
           remarks: item.remarks || "-",
-          location: item.location || "",
+          services: formData.details.map((item: CalibrationOrderRequest) => ({
+              itemName: item.itemName,
+              itemType: item.itemType,
+              serviceType: item.serviceType,
+              purchasePrice: item.purchasePrice,
+              quantity: item.quantity,
+          })),
         })),
       });
 

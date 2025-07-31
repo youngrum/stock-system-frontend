@@ -64,6 +64,7 @@ export default function AssetServiceOrderForm({
         updateItem(index, "modelNumber", asset.modelNumber || "");
         updateItem(index, "manufacturer", asset.manufacturer || "");
         updateItem(index, "serialNumber", asset.serialNumber || "");
+        updateItem(index, "category", asset.category || "");
         updateItem(index, "status", asset.status || "");
         updateItem(index, "relatedAssetId", asset.id || "");
 

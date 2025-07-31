@@ -17,6 +17,10 @@ export default function AssetItemOrderForm({
   updateItem,
   removeItem,
 }: Props) {
+
+  // const [itemState, setItemState ] = useState<AssetPurchaseOrderDetailFormState | null>(null);
+
+  console.log(item);
   return (
     <div
       key={index}

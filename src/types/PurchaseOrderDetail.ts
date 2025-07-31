@@ -100,7 +100,8 @@ interface AssetItemPurchaseOrderDetailFormState extends BasePurchaseOrderDetailF
 interface AssetServicePurchaseOrderDetailFormState {
   itemType: "SERVICE";
   serviceType: string | undefined;  // CALIBRATION / REPAIR
-  assetCode: string | undefined;    // 既存設備への紐づけ用
+  assetCode: string | undefined;    // 既存設備検索用
+  relatedAssetId: number | undefined; // 既存設備への紐づけ用 バックエンドで使用
   purchasePrice: number;
   remarks: string;
 }
@@ -108,17 +109,3 @@ interface AssetServicePurchaseOrderDetailFormState {
 // 設備発注
 // 新規設備購入・既存設備修理の2フォームのリクエスト型をUnion型で提供
 export type AssetPurchaseOrderDetailFormState = AssetItemPurchaseOrderDetailFormState | AssetServicePurchaseOrderDetailFormState;
-
-//========= 以下 レスポンスの型　===========//
-
-// 設備発注
-// 校正・修理タブの管理番号入力に対するレスポンス
-export interface FromAssetCodeAssetResponse {
-  id: number;
-  assetCode: string;
-  assetName: string;
-  modelNumber: string;
-  manufacturer: string;
-  serialNumber: string;
-  status: string;
-}

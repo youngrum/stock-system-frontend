@@ -69,7 +69,7 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
   const [traceabilityCert, setTraceabilityCert] = useState<number>(0); 
   const [remarks, setRemarks] = useState<string>("");
 
-  // 現在の注文タイプ (新規購入 or 校正・修理)
+  // 現在のタブ (新規購入 / 校正・修理)
   const [currentOrderType, setCurrentOrderType] = useState<"newPurchase" | "calibrationRepair">("newPurchase");
 
   const addNewAssetItem = () => {
@@ -156,7 +156,8 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
       formData.details = newAssetItems.map((item) => {
 
         const requestItem: AssetItemPurchaseOrderDetailRequest = {
-          itemType: "ITEM",
+          itemType: item.itemType,
+          serviceType: item.serviceType,
           itemName: item.itemName || "",
           manufacturer: item.manufacturer || "",
           modelNumber: item.modelNumber || "",
@@ -170,26 +171,31 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
         if (item.calibrationPrice && item.calibrationPrice > 0) {
           requestItem.services.push({
             itemName: `${item.itemName}の校正依頼`, //フォームで入力された itemName を元に生成
-            itemType: "SERVICE",
+            itemType: item.itemType,
             serviceType: "CALIBRATION",
             purchasePrice: item.calibrationPrice,
             quantity: item.quantity, // 親アイテムの数量を使用
           });
         }
+        return requestItem;
       });
     } else {
-      formData.calibrationRepairDetails = calibrationRepairItems.map((item) => {
+      formData.details = calibrationRepairItems.map((item) => {
         const requestItem: AssetPurchaseOrderDetailRequest = {
           serviceType: item.serviceType,
-          itemName: `${item.assetCode}の${item.serviceType}_${item.serialNumber}`,
+          itemType: item.itemType,
+          itemName: `${item.assetCode}の${item.serviceType}_ ${item.serialNumber}`,
           modelNumber: item.modelNumber,
           manufacturer: item.manufacturer,
           purchasePrice: item.purchasePrice,
+          quantity: 1,
+          relatedAssetId: item.relatedAssetId,
           remarks: item.remarks,
         };
+        return requestItem;
       });
     }
-    console.log("%o", "submit前formData: " + formData);
+
     onSubmit(formData);
   };
 

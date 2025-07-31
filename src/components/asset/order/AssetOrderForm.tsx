@@ -1,8 +1,8 @@
 // components/asset/order/AssetOrderForm.tsx
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { AssetPurchaseOrderRequest, AssetPurchaseOrderFormState} from "@/types/PurchaseOrder";
+import { useState, useEffect } from "react";
+import { AssetPurchaseOrderRequest } from "@/types/PurchaseOrder";
 import { AssetPurchaseOrderDetailRequest, AssetPurchaseOrderDetailFormState} from "@/types/PurchaseOrderDetail";
 import AssetOrderTabManagement from "./AssetOrderTabManagement";
 
@@ -189,7 +189,7 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
         };
       });
     }
-
+    console.log("%o", "submit前formData: " + formData);
     onSubmit(formData);
   };
 
@@ -240,29 +240,29 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
             min={0}
             placeholder="1000"
             value={discount}
-            onChange={(e) => setDiscount(Number(e.target.value))} {/* setShippingFee から setDiscount に修正 */}
+            onChange={(e) => setDiscount(Number(e.target.value))} 
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
           />
         </div>
         <div>
-          <label className="block mb-1 pb-2 pt-1 font-semibold">校正証明書データ料(合算)</label> {/* 画像に合わせて修正 */}
+          <label className="block mb-1 pb-2 pt-1 font-semibold">校正証明書データ料(合算)</label>
           <input
             type="number"
             min={0}
             placeholder="1000"
-            value={calibrationCert} {/* traceabilityCert から calibrationCert に修正 */}
-            onChange={(e) => setCalibrationCert(Number(e.target.value))} {/* setShippingFee から setCalibrationCert に修正 */}
+            value={calibrationCert}
+            onChange={(e) => setCalibrationCert(Number(e.target.value))}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
           />
         </div>
         <div>
-          <label className="block mb-1 pb-2 pt-1 font-semibold">トレーサビリティ証明書データ料(合算)</label> {/* 画像に合わせて修正 */}
+          <label className="block mb-1 pb-2 pt-1 font-semibold">トレーサビリティ証明書データ料(合算)</label>
           <input
             type="number"
             min={0}
             placeholder="1000"
-            value={traceabilityCert} {/* discount から traceabilityCert に修正 */}
-            onChange={(e) => setTraceabilityCert(Number(e.target.value))} {/* setShippingFee から setTraceabilityCert に修正 */}
+            value={traceabilityCert}
+            onChange={(e) => setTraceabilityCert(Number(e.target.value))}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
           />
         </div>
@@ -281,9 +281,9 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
       <AssetOrderTabManagement
         newAssetItems={newAssetItems}
         calibrationRepairItems={calibrationRepairItems}
-        onUpdateNewPurchaseItem={updateNewPurchaseItem}
-        onRemoveNewPurchaseItem={removeNewPurchaseItem}
-        onAddNewPurchaseItem={addNewPurchaseItem}
+        onUpdateNewPurchaseItem={updateNewAssetItem}
+        onRemoveNewPurchaseItem={removeNewAssetItem}  
+        onAddNewPurchaseItem={addNewAssetItem}
         onUpdateCalibrationRepairItem={updateCalibrationRepairItem}
         onRemoveCalibrationRepairItem={removeCalibrationRepairItem}
         onAddCalibrationRepairItem={addCalibrationRepairItem}

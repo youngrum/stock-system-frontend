@@ -22,7 +22,7 @@ export interface AssetItem {
 }
 
 // 設備品一覧のレスポンス型
-export interface AssetIetmResponse {
+export interface AssetItemResponse {
     id: number | null;
     assetCode: string;
     assetName: string;

@@ -18,7 +18,7 @@ type Props = {
 };
 
 export default function AssetOrderTabManagement({
-  newPurchaseItems,
+  newAssetItems,
   calibrationRepairItems,
   onUpdateNewPurchaseItem,
   onRemoveNewPurchaseItem,
@@ -59,7 +59,7 @@ export default function AssetOrderTabManagement({
 
       {currentOrderType === "newPurchase" && (
         <>
-          {newPurchaseItems.map((item, index) => (
+          {newAssetItems.map((item, index) => (
             <AssetItemOrderForm
               key={index}
               item={item}

@@ -1,4 +1,6 @@
-// ベース
+
+//========= 以下 リクエストの型　===========//
+// // ベース
 // 発注明細リクエストの基底プロパティ
 interface BasePurchaseOrderDetailRequest {
   itemName:string;
@@ -107,3 +109,16 @@ interface AssetServicePurchaseOrderDetailFormState {
 // 新規設備購入・既存設備修理の2フォームのリクエスト型をUnion型で提供
 export type AssetPurchaseOrderDetailFormState = AssetItemPurchaseOrderDetailFormState | AssetServicePurchaseOrderDetailFormState;
 
+//========= 以下 レスポンスの型　===========//
+
+// 設備発注
+// 校正・修理タブの管理番号入力に対するレスポンス
+export interface FromAssetCodeAssetResponse {
+  id: number;
+  assetCode: string;
+  assetName: string;
+  modelNumber: string;
+  manufacturer: string;
+  serialNumber: string;
+  status: string;
+}

@@ -190,7 +190,8 @@ return (
           </label>
           <input
             type="number"
-             onChange={(e) => updateItem(index, "purchasePrice", e.target.value)}
+            onWheel={(e) => e.currentTarget.blur()}
+            onChange={(e) => updateItem(index, "purchasePrice", e.target.value)}
             className="w-full bg-gray-100 border border-gray-300 rounded-md p-2 text-sm text-gray-600 text-right"
             min={0}
           />

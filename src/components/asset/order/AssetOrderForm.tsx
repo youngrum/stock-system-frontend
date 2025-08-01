@@ -121,7 +121,7 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
   };
 
   const resetForm = () => {
-    setNewAssetItems([initialnewAssetItemstate]);
+    setNewAssetItems([initialAssetItemState]);
     setCalibrationRepairItems([]);
     setSupplier("");
     setOrderDate("");
@@ -233,6 +233,7 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
             min={0}
             placeholder="1000"
             value={shippingFee}
+            onWheel={(e) => e.currentTarget.blur()}
             onChange={(e) => setShippingFee(Number(e.target.value))}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
             required
@@ -245,6 +246,7 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
             min={0}
             placeholder="1000"
             value={discount}
+            onWheel={(e) => e.currentTarget.blur()}
             onChange={(e) => setDiscount(Number(e.target.value))} 
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
           />
@@ -256,6 +258,7 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
             min={0}
             placeholder="1000"
             value={calibrationCert}
+            onWheel={(e) => e.currentTarget.blur()}
             onChange={(e) => setCalibrationCert(Number(e.target.value))}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
           />
@@ -267,6 +270,7 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
             min={0}
             placeholder="1000"
             value={traceabilityCert}
+            onWheel={(e) => e.currentTarget.blur()}
             onChange={(e) => setTraceabilityCert(Number(e.target.value))}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
           />

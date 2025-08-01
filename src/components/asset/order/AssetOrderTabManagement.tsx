@@ -33,29 +33,30 @@ export default function AssetOrderTabManagement({
     <div>
       <h3 className="text-lg font-semibold mb-2">商品明細</h3>
       <div className="flex space-x-4 mb-4">
-        <button
-          type="button"
-          onClick={() => onOrderTypeChange("newPurchase")}
-          className={`px-4 py-2 rounded-md ${
-            currentOrderType === "newPurchase"
-              ? "bg-blue-600 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-          } transition-colors`}
-        >
-          新規購入
-        </button>
-        <button
-          type="button"
-          onClick={() => onOrderTypeChange("calibrationRepair")}
-          className={`px-4 py-2 rounded-md ${
-            currentOrderType === "calibrationRepair"
-              ? "bg-blue-600 text-white"
-              : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-          } transition-colors`}
-        >
-          校正・修理
-        </button>
-      </div>
+      <div className="relative">
+      <button
+        type="button"
+        onClick={() => onOrderTypeChange("newPurchase")}
+        className="px-4 py-2 text-gray-700"
+      >
+        新規購入
+      </button>
+      <button
+        type="button"
+        onClick={() => onOrderTypeChange("calibrationRepair")}
+        className="px-4 py-2 text-gray-700"
+      >
+        校正・修理
+      </button>
+
+      {/* スライドする下線 */}
+      <div
+        className={`absolute bottom-0 h-0.5 bg-[#0d113d] transition-transform duration-200 ${
+          currentOrderType === "newPurchase" ? "translate-x-0" : "translate-x-full"
+        } w-1/2`}
+      />
+    </div>
+    </div>
 
       {currentOrderType === "newPurchase" && (
         <>

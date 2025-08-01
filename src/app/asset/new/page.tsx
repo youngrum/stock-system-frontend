@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import api from "@/services/api";
-import { CreateAssetRequest, AssetIetmResponse } from "@/types/AssetItem"
+import { CreateAssetRequest, AssetItemResponse } from "@/types/AssetItem"
 import { ApiSuccessResponse, ApiErrorResponse } from "@/types/ApiResponse";
 import Loader from "@/components/ui/Loader";
 import { useAuthGuard } from "@/lib/hooks/useAuthGuard";
@@ -42,7 +42,7 @@ export default function AssetNewPage() {
   });
 
   const [successResponse, setSuccessResponse] =
-    useState<ApiSuccessResponse<AssetIetmResponse> | null>(null);
+    useState<ApiSuccessResponse<AssetItemResponse> | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {

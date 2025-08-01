@@ -120,6 +120,7 @@ export default function AssetItemOrderForm({
             value={item.quantity}
             placeholder="10"
             min={1}
+            onWheel={(e) => e.currentTarget.blur()}
             onChange={(e) => updateItem(index, "quantity", Number(e.target.value))}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
             required
@@ -138,7 +139,7 @@ export default function AssetItemOrderForm({
             value={item.purchasePrice}
             placeholder="300"
             min={1}
-            step="0.1"
+            onWheel={(e) => e.currentTarget.blur()}
             onChange={(e) => updateItem(index, "purchasePrice", Number(e.target.value))}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
             required
@@ -157,7 +158,7 @@ export default function AssetItemOrderForm({
             value={item.calibrationPrice}
             placeholder="1000"
             min={0}
-            step="0.1"
+            onWheel={(e) => e.currentTarget.blur()}
             onChange={(e) => updateItem(index, "calibrationPrice", Number(e.target.value))}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
           />

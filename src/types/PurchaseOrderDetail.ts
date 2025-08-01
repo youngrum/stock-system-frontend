@@ -40,6 +40,7 @@ export interface CalibrationOrderRequest {
 // 設備発注
 // 発注明細リクエストのうち校正・修理依頼固有のプロパティ(校正・修理タブ)
 interface AssetServicePurchaseOrderDetailRequest {
+  itemName: string;
   itemType: "SERVICE";
   serviceType: string;     // CALIBRATION / REPAIR
   relatedAssetId: number; // 既存設備への紐づけ用

@@ -10,7 +10,7 @@ import { useEffect, useState, useCallback } from "react";
 import { Search, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Loader from "@/components/ui/Loader";
-import { AssetItem, AssetIetmResponse, AssetSearchParams } from "@/types/AssetItem"
+import { AssetItem, AssetItemResponse, AssetSearchParams } from "@/types/AssetItem"
 
 import api from "@/services/api";
 import { ApiErrorResponse } from "@/types/ApiResponse";
@@ -18,7 +18,7 @@ import { ApiErrorResponse } from "@/types/ApiResponse";
 export default function InventoryListsPage() {
   const router = useRouter();
   const isLoggedIn = useAuthGuard();
-  const [data, setData] = useState<AssetIetmResponse[]>([]);
+  const [data, setData] = useState<AssetItemResponse[]>([]);
   const [loading, setLoading] = useState(true);
   const [showSearchForm, setShowSearchForm] = useState(false);
   const toggleSearchForm = () => setShowSearchForm((prev) => !prev);

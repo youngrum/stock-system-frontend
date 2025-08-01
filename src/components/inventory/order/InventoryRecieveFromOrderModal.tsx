@@ -11,7 +11,7 @@ type Props = {
   ) => void;
 };
 
-export default function RecieveFromOrderModal({
+export default function InventoryRecieveFromOrderModal({
   open,
   detail,
   onClose,

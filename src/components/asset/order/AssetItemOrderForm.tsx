@@ -135,11 +135,11 @@ export default function AssetItemOrderForm({
           </label>
           <input
             type="number"
-            value={item.price}
+            value={item.purchasePrice}
             placeholder="300"
             min={1}
             step="0.1"
-            onChange={(e) => updateItem(index, "price", Number(e.target.value))}
+            onChange={(e) => updateItem(index, "purchasePrice", Number(e.target.value))}
             className="w-full bg-gray-50 border border-gray-300 text-gray-900 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
             required
           />
@@ -190,7 +190,7 @@ export default function AssetItemOrderForm({
           </label>
           <input
             type="text"
-            value={(item.quantity * item.price).toLocaleString()}
+            value={(item.quantity * item.purchasePrice).toLocaleString()}
             className="w-full bg-gray-100 border border-gray-300 text-gray-700 rounded-md p-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition text-right"
             readOnly
           />

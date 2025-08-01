@@ -34,7 +34,7 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
       remarks: "",
   };
 
-  // ユニオンのうち AssetServicePurchaseOrderDetailFormState型
+  // ユニオンのうち AssetItemPurchaseOrderDetailFormState型
   const [newAssetItems, setNewAssetItems] = useState<AssetPurchaseOrderDetailFormState[]>([
     {
       itemType: "ITEM",
@@ -171,7 +171,6 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
         if (item.calibrationPrice && item.calibrationPrice > 0) {
           requestItem.services.push({
             itemName: `${item.itemName}の校正依頼`, //フォームで入力された itemName を元に生成
-            itemType: item.itemType,
             serviceType: "CALIBRATION",
             purchasePrice: item.calibrationPrice,
             quantity: item.quantity, // 親アイテムの数量を使用
@@ -184,7 +183,7 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
         const requestItem: AssetPurchaseOrderDetailRequest = {
           serviceType: item.serviceType,
           itemType: item.itemType,
-          itemName: `${item.assetCode}の${item.serviceType}_ ${item.serialNumber}`,
+          itemName: `${item.serviceType === "CALIBRATION" ? "校正" : "修理"}依頼_${item.assetCode}`,
           modelNumber: item.modelNumber,
           manufacturer: item.manufacturer,
           purchasePrice: item.purchasePrice,

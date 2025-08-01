@@ -32,7 +32,6 @@ interface AssetItemPurchaseOrderDetailRequest extends BasePurchaseOrderDetailReq
 // 新規設備発注の校正単価への入力をトリガーにこのオブジェクトを生成してリクエストに含める
 export interface CalibrationOrderRequest {
   itemName: string;
-  itemType: "SERVICE";
   serviceType: "CALIBRATION"; // サービス区分
   purchasePrice: number;      // 校正単価(calibrationPrice) 
   quantity: number,           // 数量 = 親の発注明細の数量

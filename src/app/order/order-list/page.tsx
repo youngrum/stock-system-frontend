@@ -3,7 +3,9 @@
 
 import React, { useEffect, useState, useCallback } from "react";
 import api from "@/services/api";
-import PurchaseList from "@/components/order/PurchaseList";
+import InventoryPurchaseList from "@/components/order/InventoryPurchaseList";
+import AssetPurchaseList from "@/components/order/AssetPurchaseList";
+import PurchaseOrderTypeTab from "@/components/order/PurchaseOrderTypeTab";
 import InventoryRecieveFromOrderModal from "@/components/inventory/order/InventoryRecieveFromOrderModal";
 import Pagination from "@/components/ui/Pagination";
 import {
@@ -13,14 +15,21 @@ import {
 import { ApiErrorResponse } from "@/types/ApiResponse";
 import Loader from "@/components/ui/Loader";
 
+
+type OrderType = "ASSET" | "INVENTTRY";
+
 export default function OrderHistoryPage() {
   const [selectedDetail, setSelectedDetail] =
     useState<PurchaseOrderDetailResponse | null>(null);
   const [modalOpen, setModalOpen] = useState(false);
-  const [data, setData] = useState<PurchaseOrderResponse[]>([]);
-  const [page, setPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(0);
+  const [assetOrders, setAssetOrders] = useState<PurchaseOrderResponse[]>([]);
+  const [inventryOrders, setInventryOrders] = useState<PurchaseOrderResponse[]>([]);
+  const [assetPage, setAssetPage] = useState(0);
+  const [inventryPage, setInventryPage] = useState(0);
+  const [assetTotalPages, setAssetTotalPages] = useState(0);
+  const [inventryTotalPages, setInventryTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState<OrderType>("ASSET");
 
   // 履歴データ取得
   const fetchPurchaseList = useCallback(async () => {
@@ -28,11 +37,17 @@ export default function OrderHistoryPage() {
       const res = await api.get("/order-history", {
         params: {
           page: page,
+          orderType: type
         },
       });
       console.log(res.data.content)
-      setData(res.data.content);
-      setTotalPages(res.data.totalPages);
+      if (type === "ASSET") {
+        setAssetOrders(res.data.content);
+        setAssetTotalPages(res.data.totalPages);
+      } else {
+        setInventryOrders(res.data.content);
+        setInventryTotalPages(res.data.totalPages);
+      }
     } catch (error) {
       console.error(error);
       const err = error as { response?: { data: ApiErrorResponse } }
@@ -44,11 +59,16 @@ export default function OrderHistoryPage() {
     } finally {
       setLoading(false);
     }
-  },[page]);
-  
-  useEffect(() => {
-    fetchPurchaseList();
-  }, [fetchPurchaseList, page]);
+  },[]);
+
+  // activeTabとpageが変更されたときにデータを再取得
+    useEffect(() => {
+      if (activeTab === "ASSET") {
+        fetchPurchaseList("ASSET", assetPage);
+      } else {
+        fetchPurchaseList("INVENT", inventryPage);
+      }
+    }, [fetchPurchaseList, activeTab, assetPage, inventryPage]);
 
   // モーダルの開閉制御
   const openModal = (detail: PurchaseOrderDetailResponse) => {
@@ -87,25 +107,55 @@ export default function OrderHistoryPage() {
     }
   };
 
+  const handlePageChange = (newPage: number) => {
+    if (activeTab === "ASSET") {
+      setAssetPage(newPage);
+    } else {
+      setInventryPage(newPage);
+    }
+  };
+
+  const tabs = [
+    { label: "在庫品", value: "INVENT" },
+    { label: "設備品(校正・修理)", value: "ASSET" },
+  ];
+
   return (
     <>
     {loading && <Loader />}
     <main className="bg-white border-gray-400 shadow p-5">
       <h2 className="text-xl font-bold mb-4">発注履歴一覧</h2>
-      <PurchaseList orders={data} onRegisterDelivery={openModal} />
-      {selectedDetail && (
-        <InventoryRecieveFromOrderModal
-          open={modalOpen}
-          detail={selectedDetail}
-          onClose={closeModal}
-          onSubmit={handleRegisterDelivery}
+        <PurchaseOrderTypeTab tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+
+        {activeTab === "ASSET" && (
+          <AssetPurchaseList orders={assetOrders} onRegisterDelivery={openModal} />
+        )}
+        {activeTab === "INVENT" && (
+          <InventoryPurchaseList orders={inventryOrders} onRegisterDelivery={openModal} />
+        )}
+        
+        {/* activeTabに応じてモーダルを出し分け */}
+        {selectedDetail && activeTab === "INVENT" && (
+          <InventoryRecieveFromOrderModal
+            open={modalOpen}
+            detail={selectedDetail}
+            onClose={closeModal}
+            onSubmit={handleRegisterDelivery}
+          />
+        )}
+        {/* {selectedDetail && activeTab === "ASSET" && (
+          <AssetRecieveFromOrderModal
+            open={modalOpen}
+            detail={selectedDetail}
+            onClose={closeModal}
+            onSubmit={handleRegisterDelivery}
+          />
+        )} */}
+        <Pagination
+          currentPage={activeTab === "ASSET" ? assetPage : inventryPage}
+          totalPages={activeTab === "ASSET" ? assetTotalPages : inventryTotalPages}
+          onPageChange={handlePageChange}
         />
-      )}
-      <Pagination
-        currentPage={page}
-        totalPages={totalPages}
-        onPageChange={setPage}
-      />
     </main>
     </>
   );

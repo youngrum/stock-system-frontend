@@ -10,7 +10,7 @@ type Props = {
   onRegisterDelivery: (detail: PurchaseOrderDetailResponse) => void;
 };
 
-export default function PurchaseList({ orders, onRegisterDelivery }: Props) {
+export default function AssetPurchaseList({ orders, onRegisterDelivery }: Props) {
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
   return (

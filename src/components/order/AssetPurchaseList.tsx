@@ -16,14 +16,17 @@ export default function AssetPurchaseList({ orders, onRegisterDelivery }: Props)
   return (
     <div className="rounded bg-white text-center">
       {/* ヘッダー */}
-      <div className="grid grid-cols-18 font-semibold text-sm p-2">
-        <span className="col-span-2">発注番号</span>
+      <div className="grid grid-cols-18 font-semibold text-sm">
+        <span className="col-span-1">発注番号</span>
         <span className="col-span-2">仕入れ先</span>
-        <span className="col-span-2">小計</span>
-        <span className="col-span-2">送料</span>
-        <span className="col-span-2">発注日</span>
+        <span className="col-span-1">小計</span>
+        <span className="col-span-1">送料</span>
+        <span className="col-span-1">値引</span>
+        <span className="col-span-2 text-[12px]">トレーサビリティ証明書<br/>データ料(合算)</span>
+        <span className="col-span-2 text-[12px]">校正証明書<br/>データ料(合算)</span>
+        <span className="col-span-1">発注日</span>
         <span className="col-span-2">担当者</span>
-        <span className="col-span-2">ステータス</span>
+        <span className="col-span-1">ステータス</span>
         <span className="col-span-3">備考</span>
         <span className="col-span-1">詳細</span>
       </div>
@@ -33,18 +36,27 @@ export default function AssetPurchaseList({ orders, onRegisterDelivery }: Props)
           <div className="grid grid-cols-18 gap-y-4 items-center pt-2 hover:bg-gray-50 border-b text-[12px]"
           onClick={() => setExpandedIndex(expandedIndex === idx ? null : idx)}
           >
-            <span className="col-span-2">{order.orderNo}</span>
+            <span className="col-span-1">{order.orderNo}</span>
             <span className="col-span-2">{order.supplier}</span>
-            <span className="col-span-2">
-              {order.orderSubtotal?.toLocaleString()}円
+            <span className="col-span-1">
+              {order.orderSubtotal?.toLocaleString() || "0" }円
+            </span>
+            <span className="col-span-1">
+              {order.shippingFee?.toLocaleString() || "0" }円
+            </span>
+            <span className="col-span-1">
+              {order.discount?.toLocaleString() || "0"}円
             </span>
             <span className="col-span-2">
-              {order.shippingFee?.toLocaleString()}円
+              {order.traceabilityCert?.toLocaleString() || "0"}円
             </span>
-            <span className="col-span-2">{order.orderDate}</span>
+            <span className="col-span-2">
+              {order.calibrationCert?.toLocaleString() || "0"}円
+            </span>
+            <span className="col-span-1">{order.orderDate}</span>
             <span className="col-span-2">{order.operator}</span>
             <span className={`
-                px-3 py-1 rounded-full text-xs col-span-2
+                px-3 py-1 rounded-full text-xs col-span-1
                 ${order.status === "完了"
                   ? "bg-green-500 text-white"
                   : order.status === "未完了" || order.status === "未入庫"
@@ -70,10 +82,11 @@ export default function AssetPurchaseList({ orders, onRegisterDelivery }: Props)
               <table className="w-full text-sm py-2">
                 <thead>
                   <tr className="font-semibold bg-blue-50 text-sm">
-                    <th className="py-1 col-span-3">在庫ID</th>
                     <th className="py-1 col-span-3">品名</th>
+                    <th className="py-1 col-span-3">管理番号</th>
+                    <th className="py-1 col-span-3">製造番号</th>
                     <th className="py-1 col-span-2">型番・規格</th>
-                    <th className="py-1 col-span-2">カテゴリ</th>
+                    <th className="py-1 col-span-2">メーカー</th>
                     <th className="py-1 col-span-2">発注数</th>
                     <th className="py-1 col-span-2">受領数</th>
                     <th className="py-1 col-span-2">単価</th>
@@ -86,13 +99,14 @@ export default function AssetPurchaseList({ orders, onRegisterDelivery }: Props)
                     <tr key={detail.id}
                       className={`${i % 2 === 0 ? 'bg-gray-50': 'bg-blue-50'} text-[12px]`}
                     >
-                      <td className="py-2 col-span-2">{detail.itemCode}</td>
                       <td className="py-2 truncate max-w-[150px] col-span-2">{detail.itemName}</td>
-                      <td className="py-2 col-span-2">{detail.modelNumber}</td>
-                      <td className="py-2 col-span-2">{detail.category}</td>
+                      <td className="py-2 col-span-2">{detail.AssetCode || "-"}</td>
+                      <td className="py-2 col-span-2">{detail.serialNumber || "-"}</td>
+                      <td className="py-2 col-span-2">{detail.modelNumber || "-"}</td>
+                      <td className="py-2 col-span-2">{detail.suplier || "-"}</td>
                       <td className="py-2 col-span-2">{detail.quantity}</td>
                       <td className="py-2 col-span-2">{detail.receivedQuantity}</td>
-                      <td className="py-2 col-span-2">{detail.purchasePrice}円</td>
+                      <td className="py-2 col-span-2">{detail.purchasePrice.toLocaleString()}円</td>
                       <td>
                       <span
                         className={`

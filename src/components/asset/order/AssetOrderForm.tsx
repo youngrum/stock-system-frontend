@@ -4,7 +4,9 @@
 import { useState, useEffect } from "react";
 import { AssetPurchaseOrderRequest } from "@/types/PurchaseOrder";
 import { AssetPurchaseOrderDetailRequest, AssetPurchaseOrderDetailFormState} from "@/types/PurchaseOrderDetail";
-import AssetOrderTabManagement from "./AssetOrderTabManagement";
+import TabNavigation from "@/components/ui/TabNavigation";
+import AssetServiceOrderForm from "@/components/asset/order/AssetServiceOrderForm"
+import AssetItemOrderForm from "@/components/asset/order/AssetItemOrderForm"
 
 type Props = {
   onSubmit: (formData: AssetPurchaseOrderRequest) => void;
@@ -68,9 +70,13 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
   const [calibrationCert, setCalibrationCert] = useState<number>(0); 
   const [traceabilityCert, setTraceabilityCert] = useState<number>(0); 
   const [remarks, setRemarks] = useState<string>("");
+  const [activeTab, setActiveTab] = useState<"newPurchase" | "calibrationRepair">("newPurchase");
 
-  // 現在のタブ (新規購入 / 校正・修理)
-  const [currentOrderType, setCurrentOrderType] = useState<"newPurchase" | "calibrationRepair">("newPurchase");
+  // タブ (新規購入 / 校正・修理)
+  const itemTypeTabs = [
+    { label: "新規購入", value: "newPurchase" },
+    { label: "校正・修理", value: "calibrationRepair" }
+  ];
 
   const addNewAssetItem = () => {
     setNewAssetItems([
@@ -130,7 +136,7 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
     setCalibrationCert(0);
     setTraceabilityCert(0);
     setRemarks("");
-    setCurrentOrderType("newPurchase"); // フォームリセット時にタブも初期化
+    setActiveTab("newPurchase"); // フォームリセット時にタブも初期化
   };
 
   useEffect(() => {
@@ -152,7 +158,7 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
       details: [],
     };
 
-    if (currentOrderType === "newPurchase") {
+    if (activeTab === "newPurchase") {
       formData.details = newAssetItems.map((item) => {
 
         const requestItem: AssetItemPurchaseOrderDetailRequest = {
@@ -287,18 +293,49 @@ export default function AssetOrderForm({ onSubmit, onReset }: Props) {
         </div>
       </div>
 
-      <AssetOrderTabManagement
-        newAssetItems={newAssetItems}
-        calibrationRepairItems={calibrationRepairItems}
-        onUpdateNewPurchaseItem={updateNewAssetItem}
-        onRemoveNewPurchaseItem={removeNewAssetItem}  
-        onAddNewPurchaseItem={addNewAssetItem}
-        onUpdateCalibrationRepairItem={updateCalibrationRepairItem}
-        onRemoveCalibrationRepairItem={removeCalibrationRepairItem}
-        onAddCalibrationRepairItem={addCalibrationRepairItem}
-        onOrderTypeChange={setCurrentOrderType}
-        currentOrderType={currentOrderType}
-      />
+      <TabNavigation tabs={itemTypeTabs} value={activeTab} onChange={setActiveTab} variant="underline"/>
+
+      {activeTab === "newPurchase" && (
+        <>
+        {newAssetItems.map((item, index) => (
+          <AssetItemOrderForm
+            key={index}
+            item={item}
+            index={index}
+            updateItem={updateNewAssetItem}
+            removeItem={removeNewAssetItem}
+          />
+        ))}
+        <button
+          type="button"
+          onClick={addNewAssetItem}
+          className="mt-4 px-4 py-2 text-blue-600 border border-blue-300 rounded-md hover:bg-blue-50 flex items-center gap-2"
+        >
+          + 商品を追加
+        </button>
+        </>
+      )}
+
+      {activeTab === "calibrationRepair" && (
+      <>
+      {calibrationRepairItems.map((item, index) => (
+          <AssetServiceOrderForm
+            key={index}
+            item={item}
+            index={index}
+            updateItem={updateCalibrationRepairItem}
+            removeItem={removeCalibrationRepairItem}
+          />
+        ))}
+        <button
+          type="button"
+          onClick={addCalibrationRepairItem}
+          className="mt-4 px-4 py-2 text-blue-600 border border-blue-300 rounded-md hover:bg-blue-50 flex items-center gap-2"
+        >
+          + 校正・修理品目を追加
+        </button>
+        </>
+      )}
         
       <div className="flex justify-end gap-4 pt-6 border-t">
         <button

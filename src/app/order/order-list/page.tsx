@@ -5,7 +5,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import api from "@/services/api";
 import InventoryPurchaseList from "@/components/order/InventoryPurchaseList";
 import AssetPurchaseList from "@/components/order/AssetPurchaseList";
-import PurchaseOrderTypeTab from "@/components/order/PurchaseOrderTypeTab";
+import TabNavigation from "@/components/ui/TabNavigation";
 import InventoryRecieveFromOrderModal from "@/components/inventory/order/InventoryRecieveFromOrderModal";
 import Pagination from "@/components/ui/Pagination";
 import {
@@ -16,7 +16,7 @@ import { ApiErrorResponse } from "@/types/ApiResponse";
 import Loader from "@/components/ui/Loader";
 
 
-type OrderType = "ASSET" | "INVENTTRY";
+type OrderType = "ASSET" | "INVENTORY";
 
 export default function OrderHistoryPage() {
   const [selectedDetail, setSelectedDetail] =
@@ -32,7 +32,7 @@ export default function OrderHistoryPage() {
   const [activeTab, setActiveTab] = useState<OrderType>("ASSET");
 
   // 履歴データ取得
-  const fetchPurchaseList = useCallback(async () => {
+  const fetchPurchaseList = useCallback(async (type: OrderType, page: number) => {
     try {
       const res = await api.get("/order-history", {
         params: {
@@ -66,7 +66,7 @@ export default function OrderHistoryPage() {
       if (activeTab === "ASSET") {
         fetchPurchaseList("ASSET", assetPage);
       } else {
-        fetchPurchaseList("INVENT", inventryPage);
+        fetchPurchaseList("INVENTORY", inventryPage);
       }
     }, [fetchPurchaseList, activeTab, assetPage, inventryPage]);
 
@@ -116,7 +116,7 @@ export default function OrderHistoryPage() {
   };
 
   const tabs = [
-    { label: "在庫品", value: "INVENT" },
+    { label: "在庫品", value: "INVENTORY" },
     { label: "設備品(校正・修理)", value: "ASSET" },
   ];
 
@@ -125,17 +125,17 @@ export default function OrderHistoryPage() {
     {loading && <Loader />}
     <main className="bg-white border-gray-400 shadow p-5">
       <h2 className="text-xl font-bold mb-4">発注履歴一覧</h2>
-        <PurchaseOrderTypeTab tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+        <TabNavigation tabs={tabs} value={activeTab} onChange={setActiveTab} variant="underline"/>
 
         {activeTab === "ASSET" && (
           <AssetPurchaseList orders={assetOrders} onRegisterDelivery={openModal} />
         )}
-        {activeTab === "INVENT" && (
+        {activeTab === "INVENTORY" && (
           <InventoryPurchaseList orders={inventryOrders} onRegisterDelivery={openModal} />
         )}
         
         {/* activeTabに応じてモーダルを出し分け */}
-        {selectedDetail && activeTab === "INVENT" && (
+        {selectedDetail && activeTab === "INVENTORY" && (
           <InventoryRecieveFromOrderModal
             open={modalOpen}
             detail={selectedDetail}

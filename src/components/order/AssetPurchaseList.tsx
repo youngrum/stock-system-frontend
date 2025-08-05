@@ -83,7 +83,7 @@ export default function AssetPurchaseList({ orders, onRegisterDelivery }: Props)
                 </thead>
                 <tbody>
                   {(order.details || []).map((detail, i) => (
-                    <tr key={detail.itemCode}
+                    <tr key={detail.id}
                       className={`${i % 2 === 0 ? 'bg-gray-50': 'bg-blue-50'} text-[12px]`}
                     >
                       <td className="py-2 col-span-2">{detail.itemCode}</td>

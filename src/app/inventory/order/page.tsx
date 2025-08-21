@@ -30,6 +30,7 @@ export default function OrderNewPage() {
 
     try {
       const res = await api.post(`/orders`, {
+        orderType: "INVENTORY",
         supplier: formData.supplier,
         shippingFee: formData.shippingFee,
         orderDate: formData.orderDate,
